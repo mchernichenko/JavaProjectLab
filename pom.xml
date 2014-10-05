@@ -7,7 +7,7 @@
 
     <!--Основная и обязательная информация о проекте-->
     <groupId>${myapp.groupId}</groupId>
-    <artifactId>TestMavenPrj-1</artifactId>
+    <artifactId>JavaProjectLab</artifactId>
     <version>${myapp.version}</version>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
