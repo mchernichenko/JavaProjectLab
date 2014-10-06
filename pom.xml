@@ -198,7 +198,7 @@
                     <archive>
 
                         <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
-                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
 
                         <manifest>
                             <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
