@@ -41,8 +41,10 @@
     <properties>
         <myapp.groupId>ru.billing.app</myapp.groupId>
         <myapp.version>1.0-SNAPSHOT</myapp.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-jar-plugin.customClasspathLayout>WEB-INF/lib/bla/bla/bla</maven-jar-plugin.customClasspathLayout>
+        <skipTests>true</skipTests>
+
+    <!--    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-jar-plugin.customClasspathLayout>WEB-INF/lib/bla/bla/bla</maven-jar-plugin.customClasspathLayout>-->
     </properties>
 
     <!--при необходимости можно указать ссылки на прочие репозитории, про который maven не знает. Например, на репозиторий Nexus
@@ -136,7 +138,6 @@
                 <configuration>
                     <!--docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника-->
                     <encoding>UTF-8</encoding>
-                    <!--<charset>UTF-8</charset>-->
                     <docencoding>UTF-8</docencoding>
                     <!--включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources-->
                     <docfilessubdirs>true</docfilessubdirs>
@@ -167,11 +168,32 @@
 
             </plugin>
 
+            <!--Настройка копирования зависимостей от которых зависит проект в папку /lib, которая прописана в манифесте ниже. ЖЦ install -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!--includeScope задаёт фильтр для dependencies, которые попадут в lib. Это позволяет, к примеру, не включать junit (у которого scope test).-->
+                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!--Настройка упаковки в JAR. Настройка генерации MANIFEST.MF в ЖЦ packаge -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
+                <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
                 <configuration>
                     <archive>
 
@@ -198,24 +220,16 @@
                 </configuration>
             </plugin>
 
-            <!--Настройка копирования зависимостей от которых зависит проект в папку /lib, которая прописана в манифесте выше. ЖЦ install -->
+
+            <!--Skipping test by default
+                Плагин используется на фазе run tests, тесты компилируются, но не запускаются-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <!--includeScope задаёт фильтр для dependencies, которые попадут в lib. Это позволяет, к примеру, не включать junit (у которого scope test).-->
-                            <includeScope>compile</includeScope>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                </configuration>
             </plugin>
 
             <!--Создание Uber jar-файл - это один огромный jar-файл, содержащий и код нашего приложения и все нужные для его работы библиотеки
