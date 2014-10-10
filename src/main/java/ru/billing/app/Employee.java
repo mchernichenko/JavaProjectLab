@@ -25,8 +25,12 @@ import java.util.*;
  * @see "Не гиппертекстовая ссылка "
  */
 public class Employee extends Person {
+    private double salary;  // ЗП
+    private Date hireDay;   // дата приема на работу
+    int id;
+
     /* Глобальная переменная для всех объектов Employee.
-    * Может служить глобальным счетчиком созданный объектов
+    * Может служить глобальным счетчиком созданных объектов
     */
     private static int nextID;
 
@@ -39,14 +43,11 @@ public class Employee extends Person {
         int nextInt = random.nextInt(1000);
     }
 
-    private double salary;  // ЗП
-    private Date hireDay;   // дата приема на работу
-    int id;
-
     /** Блок инициализации объекта
      * Выполняется первым, вслед за ним - тело конструктора
      * Этот механизм необязателен, и применяется не так часто
-     */ {
+     */
+    {
         id = nextID;
         nextID++;
     }
@@ -57,6 +58,7 @@ public class Employee extends Person {
     public Employee() {
         // name инициализируется "???" в абстрактном классе Person
         // this.salary не устанавливается явно => инициализируется по умолчанию 0
+        // this.hireDay не устанавливается явно => инициализируется по умолчанию null
         // this.id инициализируется в блоке инициализации
     }
 
@@ -162,9 +164,35 @@ public class Employee extends Person {
         staff[2] = new Employee();
 
         for (Employee e : staff) {
+            System.out.println(e);
             //System.out.println("Name=" + e.getName() + "\tid=" + e.getId() + "\tSalary=" + e.getSalary() + "\thireDay=" + e.getHireDay());
             e.raiseSalary(10);
             System.out.printf("Name=%1$s; id=%2$d; Salary=%3$.2f; hireDay = %4$tB %4$te, %4$tY \n", e.getName(), e.getId(), e.getSalary(), e.getHireDay());
+            System.out.println("=====================================================================");
+        }
+
+        // Используем коллекции
+        Collection<Employee> collection = new ArrayList<>();
+        collection.add(new Employee("Mike", 15000, 1975, 12, 3));
+        collection.add(new Employee(6000));
+        collection.add(new Employee());
+        collection.add(new Employee("Mike_1", 77000, 1975, 12, 3));
+
+        List<Employee> list = new ArrayList<>();
+        boolean b = list.addAll(0, collection);
+        list.add(0, new Employee("Mike_first", 15000, 1975, 12, 3));
+
+        ListIterator<Employee> iter = list.listIterator();
+        while (iter.hasNext()) {
+            Employee e = iter.next();
+            System.out.println("employeeList = " +e);
+        }
+        System.out.println("=====================================================================");
+
+        // Работаем с коллекциями как с массивом
+        Employee[] staff_out = collection.toArray(new Employee[0]);
+        for (Employee employee : staff_out) {
+            System.out.println("employee = " + employee);
         }
     }
 }

@@ -4,6 +4,9 @@ package ru.billing.app;
  * Описание к public классу<br />
  */
 public class Manager extends Employee {
+    /**
+     * @param bonus   Бонус к ЗП для менеджера
+     */
     private double bonus;
 
     public Manager(String name, double salary, int year, int month, int day) {
