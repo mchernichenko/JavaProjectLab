@@ -1,7 +1,7 @@
 package ru.billing.app;
 
+import java.io.*;
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Рассматривается работа с коллекциями
@@ -9,8 +9,10 @@ import java.util.concurrent.SynchronousQueue;
 
 public class TestCollection {
 
-    public static void main( String[] args ) {
-        testLinkedList();
+    public static void main( String[] args ) throws IOException {
+        //testLinkedList();
+        testHashSet("data/Война_и_мир.txt");
+
     }
 
     /**
@@ -78,26 +80,46 @@ public class TestCollection {
     }
 
     /**
-     *  Подсчет уникальных слов
+     * Подсчет уникальных слов
      */
-    public static void testHashSet() {
+    public static void testHashSet(String fileName) throws IOException {
+
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader reader = new BufferedReader(fileReader);
+
         Set<String> words = new HashSet<>();
         long totalTime = 0;
+        long beginTime = System.currentTimeMillis();
+        long cnt = 0;
 
-        Scanner in = new Scanner(System.in);
+        // используем сканер, т.к. по словам можно читать только им. Разделитель по умолчанию "пробел".
+        // можно читаль построчно и затем использовать метод split, но в этом нет необходимости.
+        Scanner in = new Scanner(reader);
+//        Scanner in = new Scanner(System.in); // если требуется принимать входной поток из коммандной строки архив.jar < file
+
         while (in.hasNext()) {
             String word = in.next();
             long callTime = System.currentTimeMillis();
             words.add(word);
+            //System.out.println("word = " + word);
             callTime = System.currentTimeMillis() - callTime;
             totalTime += callTime;
+            cnt++;
         }
 
+        // Выводим первые уникальные слова HashSet. Можно убедиться, что данные в множестве расположены не в том порядке в котором были записаны!
         Iterator<String> iterator = words.iterator();
         for (int i = 1; i <= 20 && iterator.hasNext(); i++) {
             System.out.println(iterator.next());
         }
         System.out.println("........");
-        System.out.println("Уникальных слов: " + words.size() + " Время: " + totalTime);
+
+     //   double t = Double(89)/ 100 + 1);
+       // String st = String.format("%.9f", t);
+       // System.out.println("st = " + st);
+
+        System.out.println("Всего слов: " + cnt + " Уникальных слов: " + words.size() + " Время (милисек.): " + totalTime);
+        System.out.println("TotalTime = " + (System.currentTimeMillis() - beginTime));
     }
 }
