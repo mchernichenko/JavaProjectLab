@@ -1,7 +1,7 @@
 package ru.billing.app;
 
+import java.io.*;
 import java.util.*;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * Рассматривается работа с коллекциями
@@ -9,8 +9,10 @@ import java.util.concurrent.SynchronousQueue;
 
 public class TestCollection {
 
-    public static void main( String[] args ) {
-        testLinkedList();
+    public static void main( String[] args ) throws IOException {
+        //testLinkedList();
+        testHashSet("data/Война_и_мир.txt");
+
     }
 
     /**
@@ -78,26 +80,63 @@ public class TestCollection {
     }
 
     /**
-     *  Подсчет уникальных слов
+     * Множества на основе хеш-таблиц. Используются для поиска конкретного элемента не зная его позиции в коллекции. В массивах и списках (ArrayList/LinkedList) для этого придётся перебирать все элементы,
+     * пока не будет найдено совпадение. Это не эффективно. Ддя этих целей придуманы хеш-таблицы, в которой м.б. сохранён широкий диапазон возможных значений в малом объеме памяти и позволяющий
+     * произвести быстрый доступ к объекту. Хэш-таблица это ассоциативный массив H, где каждая ячейка массива является указателем на связный список (цепочку) пар ключ-значение. Индексом ключа в таблице H(key)
+     * является результат хеш-функции h, применённой к ключу.
+     * Например: для помешения объекта в хэш-таблицу размером n
+     * 1. вычисляется его хеш-код
+     * 2. вычисляется индекс таблицы как остаток от деления hashCode/n
+     * 3. создается LinkedList куда помещается hashCode объекта
+     * 4. ссылка на начало LinkedList помещается в массив на позицию H[остаток от hashCode/n]
+     * Итого: При добавлении элементов в хеш-таблицу выделяются куски динамической памяти, которые организуются в виде связанных списков, каждый из которых соответствует входу хеш-таблицы. Этот метод называется связыванием.
+     * ОСНОВНОЕ св-во хеш-таблиц: поиск, вставка, удаление элементов в среднем выполняются за константное время O(1)
+     *
+     * Прим.: HashSet самостоятельно используется не так часто, т.к. зачастую поиск объекта производится по некоторое его ключевой информации.
+     * Для этого пользуется HashMap, который в свою очередь пользует HashSet для хранения ключей и для быстрого поиска объекта по ключу.
+     *
+     * Подсчет уникальных слов
      */
-    public static void testHashSet() {
+    public static void testHashSet(String fileName) throws IOException {
+
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader reader = new BufferedReader(fileReader);
+
         Set<String> words = new HashSet<>();
         long totalTime = 0;
+        long beginTime = System.currentTimeMillis();
+        int cnt = 0;
 
-        Scanner in = new Scanner(System.in);
+        // используем сканер, т.к. по словам можно читать только им. Разделитель по умолчанию "пробел".
+        // можно читаль построчно и затем использовать метод split, но в этом нет необходимости.
+        Scanner in = new Scanner(reader);
+//        Scanner in = new Scanner(System.in); // если требуется принимать входной поток из коммандной строки архив.jar < file
+
         while (in.hasNext()) {
             String word = in.next();
             long callTime = System.currentTimeMillis();
             words.add(word);
+            //System.out.println("word = " + word);
             callTime = System.currentTimeMillis() - callTime;
             totalTime += callTime;
+            cnt++;
         }
 
+        // Выводим первые уникальные слова HashSet. Можно убедиться, что данные в множестве расположены не в том порядке в котором были записаны!
         Iterator<String> iterator = words.iterator();
         for (int i = 1; i <= 20 && iterator.hasNext(); i++) {
             System.out.println(iterator.next());
         }
         System.out.println("........");
-        System.out.println("Уникальных слов: " + words.size() + " Время: " + totalTime);
+
+     //   double t = Double(89)/ 100 + 1);
+       // String st = String.format("%.9f", t);
+       // System.out.println("st = " + st);
+
+        System.out.println("Всего слов: " + String.format("%,d",cnt) + " Уникальных слов: " + words.size() + " Время (сек.): " + totalTime/1000.00);
+        System.out.println("TotalTime (сек.) = " + (System.currentTimeMillis() - beginTime)/1000.00);
+
+        TreeMap
     }
 }
