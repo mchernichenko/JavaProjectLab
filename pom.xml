@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
 
     <!--Дополнительная необязательная информация о проекте-->
-    <name>Fill name project (проект)</name>
+    <name>Fill name project</name>
     <description>Description project</description>
     <url>http://billing.ru</url>
 
@@ -111,6 +111,21 @@
         </dependency>
     </dependencies>
 
+    <!--Using Alternative Output Directory для javadoc
+        работает только при запуске при запуске ЖЦ site. Путь автоматичечки берется из ${project.reporting.outputDirectory}  -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <configuration>
+                    <!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
+                    <destDir>myapidocs</destDir>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 
     <!--  Тэг <build> - не обязательный т. к. существуют значения по умолчанию (см. pom-4.0.0.xml системной библиотеки maven-model-builder).
           Этот раздел содержит информацию по самой сборке: где находятся исходные файлы, где ресурсы, какие плагины используются.
@@ -118,17 +133,18 @@
     <build>
         <!--
                  Общие настройки сборки. Дефолтные значения maven приведены, их можно все посмотреть в pom-4.0.0.xml библиотеки maven-model-builder-3.2.1.jar
-                 Это системная библиотека, версия задается в <modelVersion>4.0.0</modelVersion> и радительские настройки по умолчению в pom-4.0.0.xml
+                 Это системная библиотека, версия задается в <modelVersion>4.0.0</modelVersion> и родительские настройки по умолчанию в pom-4.0.0.xml
                   и при необходимости изменить
                             <sourceDirectory>src/main/java</sourceDirectory>
                             <resources>src/main/resources</resources>
                             <outputDirectory>target/classes</outputDirectory>
                             <finalName>${artifactId}-${version}-xxx</finalName>
+                            <directory>D:\!Files\Git_Repositories\JavaProjectLab\target</directory>
         -->
         <plugins>
             <!--Настройка генерации javadoc
-            По умолчанию javadoc помещается в ${project.build.directory}/site/apidocs и может быть переопределён только относительно его!
-            т.е. произвольный каталог не указать, есль только не  менять системную переменную ${project.build.directory}
+            По умолчанию javadoc помещается в ${project.reporting.outputDirectory}/apidocs и может быть переопределён
+            Этот дефолтный путь определяется в maven-site-plugin, который успользует maven-javadoc-plugin
             создание javadoc в формате указаном в теге <goal> можно привязать к ЖЦ, и тогда javadoc будет формироваться автоматом на указанной фазе в <phase>
             -->
             <plugin>
@@ -136,13 +152,20 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9.1</version>
                 <configuration>
+                    <!--Переопределяем путь формирования javadoc в destDir относительно reportOutputDirectory-->
+                    <!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
+                    <!--<destDir>myapidocs</destDir>-->
+
+                    <!-- тот тег нифига не переопределяется и чем от отличается от reportOutputDirectory не ясно-->
+                    <!--<outputDirectory>${project.reporting.outputDirectory}/qqq</outputDirectory>-->
+
                     <!--docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника-->
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
+
                     <!--включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources-->
                     <docfilessubdirs>true</docfilessubdirs>
-                    <!--<outputDirectory>${project.basedir}/target/qqq</outputDirectory>-->
-                    <!--<destDir>subDir</destDir>-->
+
                 </configuration>
                 <!--При создании jar всегда создавать и  jar-архив javadoc-->
                 <executions>
@@ -188,7 +211,8 @@
                 </executions>
             </plugin>
 
-            <!--Настройка упаковки в JAR. Настройка генерации MANIFEST.MF в ЖЦ packаge -->
+            <!--Настройка упаковки в JAR. По дефолту привязан к циклу package. см. http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html
+                Настройка генерации MANIFEST.MF в ЖЦ packаge -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -263,4 +287,6 @@
 
         </plugins>
     </build>
+
+
 </project>

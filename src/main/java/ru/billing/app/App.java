@@ -43,6 +43,7 @@ public class App
         while (scanner.hasNextLine()) {
             stroka = scanner.nextLine();
             System.out.println("stroka = " + stroka);
+
         }
         scanner.close();
 
