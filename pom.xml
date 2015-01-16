@@ -5,7 +5,7 @@
        (пути к исходным, откомпилированным файлам, правило именования jar файла и пр.) приведены в pom-4.0.0.xml-->
     <modelVersion>4.0.0</modelVersion>
 
-    <!--ссылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
+    <!--сccсылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
     <!--<parent>
         <artifactId>TestMavenPrj-1</artifactId>
         <groupId>${groupId}</groupId>
