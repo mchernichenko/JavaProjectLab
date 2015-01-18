@@ -4,11 +4,12 @@ import java.util.*;
 
 /**
  * Класс Date устарел
+ * http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone
  */
 public class CalendarTest {
     public static void main(String[] args) {
         Date currentTime = new Date(); // Класс Date устарел
-        GregorianCalendar localCurrentTime = new GregorianCalendar(); // дата и момент времени создания объекта
+        GregorianCalendar localCurrentTime = new GregorianCalendar(); // дата и момент времени создания объекта (Локальная таймзона)
         Calendar dateTimeZone = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow")); // время по определённой таймзоне
         GregorianCalendar date = new GregorianCalendar(2015, Calendar.JANUARY, 1); // произвольная дата
         GregorianCalendar dateTime = new GregorianCalendar(2015, Calendar.JANUARY, 1, 23, 59, 59); // произвольная дата и время
@@ -23,7 +24,7 @@ public class CalendarTest {
         System.out.println("DST_OFFSET: " + localCurrentTime.get(Calendar.DST_OFFSET));
         System.out.printf("Время по выбранной таймзоне: %04d-%02d-%02d %02d:%02d:%02d\n",
                 dateTimeZone.get(Calendar.YEAR),
-                dateTimeZone.get(Calendar.MONTH),
+                dateTimeZone.get(Calendar.MONTH), //0..11
                 dateTimeZone.get(Calendar.DAY_OF_MONTH),
                 dateTimeZone.get(Calendar.HOUR_OF_DAY),
                 dateTimeZone.get(Calendar.MINUTE),
@@ -34,7 +35,14 @@ public class CalendarTest {
         date.set(Calendar.YEAR, 2014);
         date.set(Calendar.DAY_OF_WEEK, 15);
         date.set(2015, Calendar.APRIL, 15); // либо можно изменить сразу несколько атрибутов
-        System.out.println("Изменили год: " + date.get(Calendar.YEAR));
+        System.out.printf("Изменили дату: %04d-%02d-%02d %02d:%02d:%02d\n ",
+                date.get(Calendar.YEAR),
+                date.get(Calendar.MONTH)+1, //0..11
+                date.get(Calendar.DAY_OF_MONTH),
+                date.get(Calendar.HOUR_OF_DAY),
+                date.get(Calendar.MINUTE),
+                date.get(Calendar.SECOND)
+        );
 
 //      Смещение даты
         date.add(Calendar.MONTH, 3); // месяц для даты "date" сдвинуть на 3
