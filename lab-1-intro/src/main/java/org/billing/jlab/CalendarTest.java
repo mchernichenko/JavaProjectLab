@@ -37,7 +37,7 @@ public class CalendarTest {
         date.set(2015, Calendar.APRIL, 15); // либо можно изменить сразу несколько атрибутов
         System.out.printf("Изменили дату: %04d-%02d-%02d %02d:%02d:%02d\n ",
                 date.get(Calendar.YEAR),
-                date.get(Calendar.MONTH)+1, //0..11
+                date.get(Calendar.MONTH) + 1, //0..11
                 date.get(Calendar.DAY_OF_MONTH),
                 date.get(Calendar.HOUR_OF_DAY),
                 date.get(Calendar.MINUTE),
@@ -59,22 +59,41 @@ public class CalendarTest {
 
 //      проверка таймзон
         Calendar cal = new GregorianCalendar();
-        System.out.printf("Local time: %04d-%02d-%02d %02d:%02d:%02d\n", cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE),cal.get(Calendar.SECOND));
+        System.out.println("\n-----Проверк тайм-зон------");
+        System.out.println("Текущая тайм-зона: " + cal.getTimeZone().getDisplayName());
+        System.out.printf("Local time: %04d-%02d-%02d %02d:%02d:%02d\n", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
         cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         System.out.printf("Moscow time: %04d-%02d-%02d %02d:%02d:%02d\n", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
         cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+        System.out.println("Текущая тайм-зона: " + cal.getTimeZone().getDisplayName());
         System.out.printf("UTC time: %04d-%02d-%02d %02d:%02d:%02d\n", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
-//        -----
-        String[] ids = TimeZone.getAvailableIDs(2*60*60*1000);
-        SimpleTimeZone simpleTimeZone = new SimpleTimeZone(2 * 60 * 60 * 1000, ids[0]);
-        Calendar date1 = new GregorianCalendar(simpleTimeZone);
-        System.out.println("ids: " + date1.getTime());
-        Date trialTime1 = new Date();
-        date1.setTime(trialTime1);
-        System.out.println("ids: " + date1.getTime());
+
+//      Конвертация времени между тайм-зонами
+        Calendar localTime = Calendar.getInstance();
+        localTime.set(Calendar.HOUR, 17);
+        localTime.set(Calendar.MINUTE, 15);
+        localTime.set(Calendar.SECOND, 20);
+        System.out.println("\n-----Конвертация времени между тайм-зонами------");
+        System.out.printf("Какое-то локальное время:  %04d-%02d-%02d %02d:%02d:%02d\n", localTime.get(Calendar.YEAR), localTime.get(Calendar.MONTH) + 1, //0..11
+                localTime.get(Calendar.DAY_OF_MONTH), localTime.get(Calendar.HOUR), localTime.get(Calendar.MINUTE), localTime.get(Calendar.SECOND));
+        Calendar germanyTime = new GregorianCalendar(TimeZone.getTimeZone("Germany"));
+        System.out.printf("Текущее Germany time: %02d:%02d:%02d\n", germanyTime.get(Calendar.HOUR), germanyTime.get(Calendar.MINUTE), germanyTime.get(Calendar.SECOND));
+        germanyTime.setTimeInMillis(localTime.getTimeInMillis());
+        System.out.printf("Время относительно тайм-зоны 'Germany': %02d:%02d:%02d\n", germanyTime.get(Calendar.HOUR), germanyTime.get(Calendar.MINUTE), germanyTime.get(Calendar.SECOND));
+
+//        Получение всех идентификаторов тайм-зон
+        String[] ids = TimeZone.getAvailableIDs();
+        cal = Calendar.getInstance(); // берём локальное время
+        System.out.println("\n--- Ид. тайм-зоны и её смещение ---");
+        for (String id : ids) {
+            cal.setTimeZone(TimeZone.getTimeZone(id)); // меняем TZ, где id =, например, "Europe/Moscow"
+            if ((cal.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000)) == 3){  // выводим не всё, а только 3-й часовой пояс
+                System.out.printf("%s   UTC%s :\n", id, cal.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000));
+            }
+        }
 
     }
 }
