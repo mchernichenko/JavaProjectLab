@@ -3,12 +3,14 @@ package org.billing.jlab;
 import java.util.*;
 
 /**
- * Класс Date устарел
  * http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone
  */
 public class CalendarTest {
     public static void main(String[] args) {
         Date currentTime = new Date(); // Класс Date устарел
+        System.out.printf("Format1 = %1$tc, \nFormat2 = %1$tT", currentTime);
+        System.out.println();
+
         GregorianCalendar localCurrentTime = new GregorianCalendar(); // дата и момент времени создания объекта (Локальная таймзона)
         Calendar dateTimeZone = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow")); // время по определённой таймзоне
         GregorianCalendar date = new GregorianCalendar(2015, Calendar.JANUARY, 1); // произвольная дата
@@ -84,7 +86,7 @@ public class CalendarTest {
         germanyTime.setTimeInMillis(localTime.getTimeInMillis());
         System.out.printf("Время относительно тайм-зоны 'Germany': %02d:%02d:%02d\n", germanyTime.get(Calendar.HOUR), germanyTime.get(Calendar.MINUTE), germanyTime.get(Calendar.SECOND));
 
-//        Получение всех идентификаторов тайм-зон
+//      Получение всех идентификаторов тайм-зон
         String[] ids = TimeZone.getAvailableIDs();
         cal = Calendar.getInstance(); // берём локальное время
         System.out.println("\n--- Ид. тайм-зоны и её смещение ---");
@@ -95,5 +97,7 @@ public class CalendarTest {
             }
         }
 
+//      Пример вывода календарика на текущий месяц
+        MyCalendar.my_calendarik();
     }
 }
