@@ -60,7 +60,7 @@ public class CalendarTest {
         Date time = date.getTime();
         System.out.println("Преобразовали GregorianCalendar в Date: " + time);
         calendar.setTime(time);
-        System.out.println("Преобразовали Date в GregorianCalendar: " + calendar);
+        System.out.println("Преобразовали Date в GregorianCalendar: " + StringToDate.convertCalendarToString(calendar));
 
         TimeZone timeZone = TimeZone.getDefault(); //TimeZone абстрактный, через new не создать. Настройки беруться из текущих настроек ОС
         System.out.println("Смещение которое д.б. добавлено к GMT для получения локального времени: " +
@@ -125,6 +125,7 @@ public class CalendarTest {
     }
 
     /*
+    UTIL:
     Вывод строки фиксированной длины. Остальное заполняется пробелами.
     Удобно для вывода столбцов
      */
@@ -137,5 +138,7 @@ public class CalendarTest {
             return str.substring(0,len);
         }
     }
+
+
 
 }

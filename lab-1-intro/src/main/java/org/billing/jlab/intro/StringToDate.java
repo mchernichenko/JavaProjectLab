@@ -3,6 +3,7 @@ package org.billing.jlab.intro;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,7 +22,7 @@ import java.util.Date;
  */
 public class StringToDate {
 
-    public static Date getDate(String strDate) {
+    public static Date convertStringToDate(String strDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         String dateInString = "7-Jun-2013"; // = strDate
 
@@ -41,4 +42,10 @@ public class StringToDate {
             return null;
         }
     }
+
+    public static String convertCalendarToString(Calendar calendar) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return formatter.format(calendar.getTime());
+    }
+
 }
