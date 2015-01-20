@@ -7,7 +7,12 @@ import java.util.*;
  */
 public class CalendarTest {
     public static void main(String[] args) {
-        Date currentTime = new Date(); // Класс Date устарел
+        String months[] = {"Январь", "Февраль", "Март", "Апрель",
+                            "Май", "Июнь", "Июль", "Август",
+                            "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"};
+
+// Класс Date устарел и не позволяет получать индивидуальные компоненты даты и времени. Нужно использовать Calendar
+        Date currentTime = new Date();
         System.out.printf("Format1 = %1$tc, \nFormat2 = %1$tT", currentTime);
         System.out.println();
 
@@ -18,11 +23,11 @@ public class CalendarTest {
 
 //      Получение отдельных атрибутов даты из объекта GregorianCalendar
         System.out.println("Текущая дата объекта Date: " + currentTime);
-        System.out.println("Месяц: " + localCurrentTime.get(Calendar.MONTH));
+        System.out.println("Месяц: " + months[localCurrentTime.get(Calendar.MONTH)]);
         System.out.println("День недели: " + localCurrentTime.get(Calendar.DAY_OF_WEEK));
         System.out.println("Номер недели в году: " + localCurrentTime.get(Calendar.WEEK_OF_YEAR));
         System.out.println("Кол-во часов: " + localCurrentTime.get(Calendar.HOUR_OF_DAY));
-        System.out.println("Смещение таймзоны: " + localCurrentTime.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000));
+        System.out.println("Смещение локальной таймзоны: " + localCurrentTime.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000));
         System.out.println("DST_OFFSET: " + localCurrentTime.get(Calendar.DST_OFFSET));
         System.out.printf("Время по выбранной таймзоне: %04d-%02d-%02d %02d:%02d:%02d\n",
                 dateTimeZone.get(Calendar.YEAR),
@@ -50,19 +55,27 @@ public class CalendarTest {
         date.add(Calendar.MONTH, 3); // месяц для даты "date" сдвинуть на 3
         System.out.println("Сдвинули месяц на 3: " + date.get(Calendar.MONTH));
 
-//      Преобразование объектов GregorianCalendar в Date и обратно.
+
+// Преобразование объектов GregorianCalendar в Date и обратно.
         Date time = date.getTime();
         System.out.println("Преобразовали GregorianCalendar в Date: " + time);
         dateTime.setTime(time);
         System.out.println("Преобразовали Date в GregorianCalendar: " + dateTime);
 
-        TimeZone timeZone = TimeZone.getDefault();
-        System.out.println("getRawOffset: " + timeZone.getRawOffset() / (60 * 60 * 1000));
+        TimeZone timeZone = TimeZone.getDefault(); //TimeZone абстрактный, через new не создать. Настройки беруться из текущих настроек ОС
+        System.out.println("Смещение которое д.б. добавлено к GMT для получения локального времени: " +
+                timeZone.getRawOffset() / (60 * 60 * 1000));
+
+// Сравнение дат
+        System.out.println("\n --- Сравнение дат --- ");
+        if (localCurrentTime.after(date))   // или before
+            System.out.println(localCurrentTime.getTime() + "<" + date.getTime());
+        else System.out.println(localCurrentTime.getTime() + " >= " + date.getTime());
 
 //      проверка таймзон
         Calendar cal = new GregorianCalendar();
-        System.out.println("\n-----Проверк тайм-зон------");
-        System.out.println("Текущая тайм-зона: " + cal.getTimeZone().getDisplayName());
+        System.out.println("\n-----Проверка тайм-зон------");
+        System.out.println("Текущая тайм-зона: " + cal.getTimeZone().getDisplayName() +": " + cal.getTimeZone().getID());
         System.out.printf("Local time: %04d-%02d-%02d %02d:%02d:%02d\n", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
         cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow"));
@@ -92,12 +105,37 @@ public class CalendarTest {
         System.out.println("\n--- Ид. тайм-зоны и её смещение ---");
         for (String id : ids) {
             cal.setTimeZone(TimeZone.getTimeZone(id)); // меняем TZ, где id =, например, "Europe/Moscow"
-            if ((cal.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000)) == 3){  // выводим не всё, а только 3-й часовой пояс
-                System.out.printf("%s   UTC%s :\n", id, cal.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000));
+            // выводим смещение "Europe/Moscow"
+            if (id.equals("Europe/Moscow")) {
+                System.out.println(padr(id, 30) + "  UTC:" + cal.get(Calendar.ZONE_OFFSET) / (60 * 60 * 1000));
             }
+        }
+
+        // возвращаем массив тайм-зон со смещением +4 относительно GMT
+        ids = TimeZone.getAvailableIDs(4 * 60 * 60 * 1000);
+        cal = Calendar.getInstance(); // берём локальное время
+        System.out.println("\n---Все тайм-зоны со смещением +4 ---");
+        for (String id : ids) {
+            TimeZone tz = TimeZone.getTimeZone(id);
+            System.out.println(padr(id, 15) + "  UTC:" + tz.getRawOffset() / (60 * 60 * 1000));
         }
 
 //      Пример вывода календарика на текущий месяц
         MyCalendar.my_calendarik();
     }
+
+    /*
+    Вывод строки фиксированной длины. Остальное заполняется пробелами.
+    Удобно для вывода столбцов
+     */
+    public static String padr(String str,int len){
+        if(len - str.length() > 0){
+            char[] buf = new char[len - str.length()];
+            Arrays.fill(buf,' ');
+            return str + new String(buf);
+        }else{
+            return str.substring(0,len);
+        }
+    }
+
 }

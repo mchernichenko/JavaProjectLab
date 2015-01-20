@@ -61,9 +61,6 @@ public class App
             System.out.println(list);
         }
 
-        System.out.println("======workWithCalendar===========");
-        MyCalendar.my_calendarik();
-
         System.out.println("======testEmployee===========");
         //testEmployee();
         testPerson();
