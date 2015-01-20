@@ -1,4 +1,4 @@
-package org.billing.jlab;
+package org.billing.jlab.intro;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

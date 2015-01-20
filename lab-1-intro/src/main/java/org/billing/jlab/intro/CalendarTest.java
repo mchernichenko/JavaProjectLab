@@ -1,4 +1,4 @@
-package org.billing.jlab;
+package org.billing.jlab.intro;
 
 import java.util.*;
 
@@ -19,7 +19,7 @@ public class CalendarTest {
         GregorianCalendar localCurrentTime = new GregorianCalendar(); // дата и момент времени создания объекта (Локальная таймзона)
         Calendar dateTimeZone = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow")); // время по определённой таймзоне
         GregorianCalendar date = new GregorianCalendar(2015, Calendar.JANUARY, 1); // произвольная дата
-        GregorianCalendar dateTime = new GregorianCalendar(2015, Calendar.JANUARY, 1, 23, 59, 59); // произвольная дата и время
+        GregorianCalendar calendar = new GregorianCalendar(2015, Calendar.JANUARY, 1, 23, 59, 59); // произвольная дата и время
 
 //      Получение отдельных атрибутов даты из объекта GregorianCalendar
         System.out.println("Текущая дата объекта Date: " + currentTime);
@@ -59,8 +59,8 @@ public class CalendarTest {
 // Преобразование объектов GregorianCalendar в Date и обратно.
         Date time = date.getTime();
         System.out.println("Преобразовали GregorianCalendar в Date: " + time);
-        dateTime.setTime(time);
-        System.out.println("Преобразовали Date в GregorianCalendar: " + dateTime);
+        calendar.setTime(time);
+        System.out.println("Преобразовали Date в GregorianCalendar: " + calendar);
 
         TimeZone timeZone = TimeZone.getDefault(); //TimeZone абстрактный, через new не создать. Настройки беруться из текущих настроек ОС
         System.out.println("Смещение которое д.б. добавлено к GMT для получения локального времени: " +

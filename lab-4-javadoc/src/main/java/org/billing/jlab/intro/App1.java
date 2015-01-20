@@ -1,10 +1,10 @@
-package org.billing.jlab;
+package org.billing.jlab.intro;
 
 /**
  * Hello world!
  *
  */
-public class App 
+public class App1
 {
     public static void main( String[] args )
     {

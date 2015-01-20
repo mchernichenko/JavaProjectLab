@@ -48,7 +48,7 @@
                             Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.billing.jlab.CalendarTest</mainClass>
+                            <mainClass>org.billing.jlab.intro.CalendarTest</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

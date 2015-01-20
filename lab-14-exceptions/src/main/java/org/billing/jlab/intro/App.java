@@ -1,4 +1,4 @@
-package org.billing.jlab;
+package org.billing.jlab.intro;
 
 /**
  * Hello world!

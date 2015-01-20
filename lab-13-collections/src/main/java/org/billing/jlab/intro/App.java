@@ -1,4 +1,4 @@
-package org.billing.jlab;
+package org.billing.jlab.intro;
 
 import java.io.*;
 import java.nio.charset.Charset;
