@@ -16,5 +16,6 @@ public class App
         System.out.println("Hello World!");
 
         System.out.println(staff[2].getFinalName());
+        System.out.println(staff[2].getId());
     }
 }
