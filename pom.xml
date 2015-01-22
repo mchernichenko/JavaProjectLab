@@ -25,6 +25,7 @@
         <module>lab-4-javadoc</module>
         <module>lab-1-intro</module>
         <module>lab-14-exceptions</module>
+        <module>lab-4-objects</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
