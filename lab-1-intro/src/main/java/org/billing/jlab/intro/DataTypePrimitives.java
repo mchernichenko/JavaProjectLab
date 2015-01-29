@@ -32,46 +32,74 @@ public class DataTypePrimitives {
         /* char - 2-х байтовый (от 0 до 65536) тип для хранения кода любого одного отдельного символа в стандарте UNICODE - унифицированный набор символов.
         Формально тип char целочисленный => можно выполнять арифметические операции.
 
-        Каждому символу (который вообще может быть, хоть китайский иероглиф) в Unicode присвоено волшебное число (цифровое представление) - КОДОВАЯ ТОЧКА
+        КОДОВАЯ ТОЧКА - Каждому символу (который вообще может быть, хоть китайский иероглиф) в Unicode присвоено волшебное число (цифровое представление)
         Все пространство кодовых точек это диапазон чисел: 0x000000-0x10FFFF, таким образом в переменной char можно хранить
         только символы ОСНОВНОЙ ЯЗЫКОВОЙ ПЛОСКОСТИ, т.е. с 0000 по FFFF. Какой-нибудь китайские иероглиф в char не сохранить,
-        только в String или в двух char.
-
+        только в String или в двух char или двух КОДОВЫХ ЕДИНИЦАХ
+        Здесь толковая статья про кодировки и кодовые точки: http://strongexperts.narod.ru/ru/articles/archive/java2/2006/nov2006-001/nov2006-001.htm
         */
+
         char ch = 'A';  // 2 байта, не путать с "A", в ch хранится код символа 'A' в unicode
-        ch = '\u0410'; // тоже самое что и 'A', "u" - это признак того что это 16-тиричный код символа unicode
+        ch = '\u0410'; // тоже самое что и 'A', префикс "u" - кредваряет кодовую единицу (16-тиричный код символа unicode)
         ch = 1040; // 10-тичное представление 'A' 4*16^2+1*16
         System.out.println("ch=" + ch);
 
+//      класс Character - оболочка для удобной работы с символами.
+//      Как правило используются только его статические методы. Пример определения категории символа
+        Character chCh = 'A'; // автоматичиская упаковка в Character
+        getCategoryChar();
 
-        charDemo();
 
-        String str = "A"+ "\uD835\uDD0A" + "A𤴊Hello World"; //
+//      Управляющие последовательности
+//      Преназначены для удобства, чтобы не помнить значения в unicode. Могут использоваться в символьных константах и строках
+//      Например, символа перехода на новую строку на клавиатуре нет, но как символ в unicode он есть и можно указать \n, вместо \u000a
+        System.out.println("Пример \"использоваиния\" управляющих последовательностей\n");
+
+        // конвертация char <-> int в зависимости от основания числа (м.б. 2,8,10,16- ричное число)
+        System.out.println("Представление числа 14 в виде символа в 10-ной системе: " + Character.forDigit(14, 10));
+        System.out.println("Представление числа 14  в виде символа в 16-ной системе: " + Character.forDigit(14, 16));
+        int xx = Character.digit('A', 16);  // будет 10, char -> int, где 'A' символ в виде цифры, 16 - основание
+
+// пример записи кодовой точки 0x1D546 (мат. символ обозначающий множество октионов) в виде двух кодовых единиц
+        String str = "\uD835\uDD46";
+        int cp = str.codePointAt(0); // чтение первой буквы, а не символа!!! 1-й символ это первая кодовая единица - D832
+        System.out.println(Integer.toHexString(cp)); // в unicode это код 0x1D546
+        char[] chars = Character.toChars(cp); // преобразуем кодовую точку обратно в массив кодовых единиц
+        for (char ch1 : chars) {
+              System.out.println(Character.getNumericValue('\u0410'));
+            System.out.println((Integer.toHexString(ch1)));
+        }
+
+//      Пример использование 32-х битных кодовых точек, на примере подсчета символов в строке.
         String str1 = getSpellingString(str);
-        System.out.println(str);
         System.out.println(str1);
+
         //str = "𤴊";
-        int codePointAt = str.codePointAt(1);
+/*        int codePointAt = str.codePointAt(1);
         System.out.println(codePointAt);
         System.out.println(Integer.toHexString(str.codePointAt(0))+ " " + Integer.toHexString(str.codePointAt(1)));
 
-        System.out.println(String.valueOf(150794));
+        System.out.println(String.valueOf(150794));*/
+        System.out.println("Конец");
+
     }
 
+
     /**
-     * Пример использования оболочки Character для char для определения типа символа.
-     * Есть перегруженные методы для работы с числовым представлением символа.
+     * Пример использования оболочки Character для char для определения категории символа
+     * (например, является ли символ числом или буквой и в каком регистре и т.д.).
+     * Есть перегруженные методы для работы с числовым представлением символа. (см. Шилдт стр. 432)
      */
-    public static void charDemo() {
+    public static void getCategoryChar() {
         char a[] = {'a', 'b', '5', '?', 'A', ' '};
         for (int i = 0; i < a.length; i++) {
             if (Character.isDigit(a[i]))
                 System.out.println(a[i] + " - Десятичное число.");
             if (Character.isLetter(a[i]))
                 System.out.println(a[i] + " - буква.");
-            if (Character.isWhitespace())
+            if (Character.isWhitespace(a[i]))
                 System.out.println(a[i] + " - пробел.");
-            if (Character.isUpperCase())
+            if (Character.isUpperCase(a[i]))
                 System.out.println(a[i] + " - символ верхнего регистра.");
             if (Character.isLowerCase(a[i]))
                 System.out.println(a[i] + " - символ нижнего региcтра.");
@@ -79,16 +107,22 @@ public class DataTypePrimitives {
     }
 
     /**
-     * Демонстрация чем charAt(0) отличается от charPointAt(0) на примере перебора строки по буквам.
+     * Демонстрация чем charAt(0) отличается от charPointAt(0) на примере перебора строки по буквам.<br/>
+     charAt(0) - первый символ строки, <br/> charPointAt(0) - первая буква (кодовая точка) указанной строки.
+     <p/>
+     <a href="http://www.it-rem.ru/char-with-codepoint.html">Пример взят отсюда</a> <br />
+     <p/>
      */
     private static String getSpellingString(String strIn)
     {
         String str = "A" + "\uD835\uDD0A"+ "B" + "C"; // A@BC
+        String strSpell = "";
         //str = strIn;
 
         // A@BC:  length- 5, codePointCount- 4.
         // В Unicode некоторые символы могут занимать 4 байта, и в кодировке UTF-16 состоят из 2-х символов (как букава "Й" состоит из 2-х символов: И, ~)
-        // Для работы с ними нужно использовать методы работающие с codePoint
+        // Для программа должна работать с кодировкий UTF-16 нужно использовать методы работающие с codePoint !!!!
+        // иначе, можно использовать обычные методы для работы с char
         System.out.print(str);
         System.out.print(" - length: "+str.length());
         System.out.print(" - codePointCount: "+str.codePointCount(0, str.length()));
@@ -98,12 +132,12 @@ public class DataTypePrimitives {
             // если кодовое зачение Unicode из дополнительного диапазона, то он представляется двумя кодовыми точками
             if (Character.isSupplementaryCodePoint(cp)) {
                 /* выводим сурогантую пару, т.к. символьного представления кодовой точки из зарезервированного диапазова нет, выдаст "?" */
-                str = str + "\"" + str.substring(j, j + 2) + "\" ";
+                strSpell = strSpell + "\"" + str.substring(j, j + 2) + "\" ";
                 j += 1;
             } else {
-                str = str + "\"" + str.substring(j, j + 1) + "\" ";
+                strSpell = strSpell + "\"" + str.substring(j, j + 1) + "\" ";
             }
         }
-        return str;
+        return strSpell;
     }
 }

@@ -1,4 +1,7 @@
-﻿Про русские буквы в Java: http://www.getinfo.ru/article296.html
+﻿Кодовые точки Unicode и русские символы в исходных кодах и программах Java.
+Здесь толковая статья: http://strongexperts.narod.ru/ru/articles/archive/java2/2006/nov2006-001/nov2006-001.htm
+
+Про русские буквы в Java: http://www.getinfo.ru/article296.html
 					      http://www.javaportal.ru/java/articles/UnicodeJDK1_6.html
 						  http://study-and-dev.com/blog/java_ru_1/
 =========================================================================
