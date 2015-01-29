@@ -41,7 +41,10 @@ public class DataTypePrimitives {
         ch = 1040; // 10-тичное представление 'A' 4*16^2+1*16
         System.out.println("ch=" + ch);
 
-        String str = "A"+ "\uDBFF\uDD0A" + "A𤴊Hello World";
+
+        charDemo();
+
+        String str = "A"+ "\uD835\uDD0A" + "A𤴊Hello World"; //
         String str1 = getSpellingString(str);
         System.out.println(str);
         System.out.println(str1);
@@ -54,22 +57,51 @@ public class DataTypePrimitives {
     }
 
     /**
-     * Перебор строки по буквам
+     * Пример использования оболочки Character для char для определения типа символа.
+     * Есть перегруженные методы для работы с числовым представлением символа.
      */
-    private static String getSpellingString(String str)
+    public static void charDemo() {
+        char a[] = {'a', 'b', '5', '?', 'A', ' '};
+        for (int i = 0; i < a.length; i++) {
+            if (Character.isDigit(a[i]))
+                System.out.println(a[i] + " - Десятичное число.");
+            if (Character.isLetter(a[i]))
+                System.out.println(a[i] + " - буква.");
+            if (Character.isWhitespace())
+                System.out.println(a[i] + " - пробел.");
+            if (Character.isUpperCase())
+                System.out.println(a[i] + " - символ верхнего регистра.");
+            if (Character.isLowerCase(a[i]))
+                System.out.println(a[i] + " - символ нижнего региcтра.");
+        }
+    }
+
+    /**
+     * Демонстрация чем charAt(0) отличается от charPointAt(0) на примере перебора строки по буквам.
+     */
+    private static String getSpellingString(String strIn)
     {
-        String str1 = "";
+        String str = "A" + "\uD835\uDD0A"+ "B" + "C"; // A@BC
+        //str = strIn;
+
+        // A@BC:  length- 5, codePointCount- 4.
+        // В Unicode некоторые символы могут занимать 4 байта, и в кодировке UTF-16 состоят из 2-х символов (как букава "Й" состоит из 2-х символов: И, ~)
+        // Для работы с ними нужно использовать методы работающие с codePoint
+        System.out.print(str);
+        System.out.print(" - length: "+str.length());
+        System.out.print(" - codePointCount: "+str.codePointCount(0, str.length()));
+
         for (int j = 0; j < str.length(); j++) {
             int cp = str.codePointAt(j);
             // если кодовое зачение Unicode из дополнительного диапазона, то он представляется двумя кодовыми точками
             if (Character.isSupplementaryCodePoint(cp)) {
                 /* выводим сурогантую пару, т.к. символьного представления кодовой точки из зарезервированного диапазова нет, выдаст "?" */
-                str1 = str1 + "\"" + str.substring(j, j + 2) + "\" ";
+                str = str + "\"" + str.substring(j, j + 2) + "\" ";
                 j += 1;
             } else {
-                str1 = str1 + "\"" + str.substring(j, j + 1) + "\" ";
+                str = str + "\"" + str.substring(j, j + 1) + "\" ";
             }
         }
-        return str1;
+        return str;
     }
 }
