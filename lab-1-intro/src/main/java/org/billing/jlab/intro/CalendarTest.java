@@ -3,7 +3,23 @@ package org.billing.jlab.intro;
 import java.util.*;
 
 /**
- * http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone
+ Работа с датами.
+ Рассматривается:
+  - представление даты: класс Calendar/Date
+  - изменение/смещение даты: изменение состояния объекта GregorianCalendar
+  - Конвертация  GregorianCalendar <-> Date.
+  - сравнение дат
+  - тайм-заны: проверка TZ, конвертация между TZ
+  - Конвертация и форматирование даты Date в String (см. применение SimpleDateFormat в StringToDate )
+
+  В Java время и его представление разнесены по разным классам.
+  Класс Date() отражает только конкретный момент времени sysdate, но для работы с датами он не используется!
+  Необходимо использовать абстрактный класс Calendar, описывающий свойства календаря в целом.
+
+  Рассматриваются: <br />
+
+
+  http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone
  */
 public class CalendarTest {
     public static void main(String[] args) {
@@ -18,8 +34,8 @@ public class CalendarTest {
 
         GregorianCalendar localCurrentTime = new GregorianCalendar(); // дата и момент времени создания объекта (Локальная таймзона)
         Calendar dateTimeZone = new GregorianCalendar(TimeZone.getTimeZone("Europe/Moscow")); // время по определённой таймзоне
-        GregorianCalendar date = new GregorianCalendar(2015, Calendar.JANUARY, 1); // произвольная дата
-        GregorianCalendar calendar = new GregorianCalendar(2015, Calendar.JANUARY, 1, 23, 59, 59); // произвольная дата и время
+        GregorianCalendar date = new GregorianCalendar(2015, Calendar.JANUARY, 1); // произвольная дата 01.01.2015
+        GregorianCalendar calendar = new GregorianCalendar(2015, Calendar.JANUARY, 1, 23, 59, 59); // произвольная дата и время, 01.01.2015 23:59:59
 
 //      Получение отдельных атрибутов даты из объекта GregorianCalendar
         System.out.println("Текущая дата объекта Date: " + currentTime);
@@ -57,9 +73,9 @@ public class CalendarTest {
 
 
 // Преобразование объектов GregorianCalendar в Date и обратно.
-        Date time = date.getTime();
+        Date time = date.getTime(); // GregorianCalendar -> Date
         System.out.println("Преобразовали GregorianCalendar в Date: " + time);
-        calendar.setTime(time);
+        calendar.setTime(time); // Date -> GregorianCalendar
         System.out.println("Преобразовали Date в GregorianCalendar: " + StringToDate.convertCalendarToString(calendar));
 
         TimeZone timeZone = TimeZone.getDefault(); //TimeZone абстрактный, через new не создать. Настройки беруться из текущих настроек ОС

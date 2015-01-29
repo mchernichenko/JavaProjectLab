@@ -4,6 +4,8 @@ import java.util.Random;
 
 /** Нужно иметь ввиду, что в заголовоках только первое предложение.<br />
 
+ Подробрное описание утилиты javadoc см. Шилдт стр. 1085
+
  Утилита javadoc извлекает комментарии из следующих компонент:<br />
  - overview.html - обзорные комментарии к исходным файлам (располагается в папке javadoc/ относительно корневого каталога пакета) <br />
  - package-info.java (или package.html) - Комментарии к пакетам <br />
@@ -43,7 +45,6 @@ import java.util.Random;
 
  <br/>Для извлечения комметнариев мспользуется либо утилита javadoc, либо плагин maven<br/>
  <strong>javadoc -d docDirectory имя_пакета</strong>
-
 
  */
 public class JavaDocClass {
