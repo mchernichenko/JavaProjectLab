@@ -108,7 +108,7 @@ public class DataTypePrimitives {
      <a href="http://www.it-rem.ru/char-with-codepoint.html">Пример взят отсюда</a> <br />
      <p/>
      */
-    private static String getSpellingString(String strIn)
+    public static String getSpellingString(String strIn)
     {
         String str = "A" + "\uD835\uDD0A"+ "B" + "C"; // A@BC
         String strSpell = "";
