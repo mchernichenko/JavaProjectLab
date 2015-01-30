@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * Рассматриваются типы данных
+ * Рассматриваются типы данных: byte, short, int, long, float, double, boolean, char
  */
 public class DataTypePrimitives {
     public static void main(String[] args) {
@@ -19,6 +19,8 @@ public class DataTypePrimitives {
 
         float f = 3.14F; // 4 байта, 6-7 значащих десятичных цифр
         double d = 3.14; // 8 байт, 15 значащих дечятичных цифр
+
+        boolean bl = false; // true/false - преобразовать в целочисленног и наоборот нельзя!
 
         /* Для финансовых рассчетов, для избежания ошибок округлание нужно использовать класс BigDecimal
         *  Над большими числами нельзя выполнять обычные мат. операции, нудно применять сообтествующие методы
@@ -63,25 +65,18 @@ public class DataTypePrimitives {
 // пример записи кодовой точки 0x1D546 (мат. символ обозначающий множество октионов) в виде двух кодовых единиц
         String str = "\uD835\uDD46";
         int cp = str.codePointAt(0); // чтение первой буквы, а не символа!!! 1-й символ это первая кодовая единица - D832
-        System.out.println(Integer.toHexString(cp)); // в unicode это код 0x1D546
+        System.out.println("\\uD835\\uDD46 в unicode: " + Integer.toHexString(cp)); // в unicode это код 0x1D546
         char[] chars = Character.toChars(cp); // преобразуем кодовую точку обратно в массив кодовых единиц
         for (char ch1 : chars) {
-              System.out.println(Character.getNumericValue('\u0410'));
-            System.out.println((Integer.toHexString(ch1)));
+            System.out.println("Кодовые единицы 0x1D546: \\u" + (Integer.toHexString(ch1)));
         }
 
 //      Пример использование 32-х битных кодовых точек, на примере подсчета символов в строке.
         String str1 = getSpellingString(str);
-        System.out.println(str1);
+        System.out.println("Разбили слово на буковки: " + str1);
 
         //str = "𤴊";
-/*        int codePointAt = str.codePointAt(1);
-        System.out.println(codePointAt);
-        System.out.println(Integer.toHexString(str.codePointAt(0))+ " " + Integer.toHexString(str.codePointAt(1)));
-
-        System.out.println(String.valueOf(150794));*/
         System.out.println("Конец");
-
     }
 
 
@@ -125,7 +120,7 @@ public class DataTypePrimitives {
         // иначе, можно использовать обычные методы для работы с char
         System.out.print(str);
         System.out.print(" - length: "+str.length());
-        System.out.print(" - codePointCount: "+str.codePointCount(0, str.length()));
+        System.out.println(" - codePointCount: "+str.codePointCount(0, str.length()));
 
         for (int j = 0; j < str.length(); j++) {
             int cp = str.codePointAt(j);
