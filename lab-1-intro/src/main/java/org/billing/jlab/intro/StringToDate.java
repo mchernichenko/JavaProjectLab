@@ -47,6 +47,14 @@ public class StringToDate {
         }
     }
 
+
+    /**
+     * Пример форматирования даты в String c помощью SimpleDateFormat
+     * <blockquote><pre>
+     *      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+     *      String str = formatter.format(calendar.getTime())
+     * </pre></blockquote>
+     */
     public static String convertCalendarToString(Calendar calendar) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");  // Формат для TimeStamp
 
