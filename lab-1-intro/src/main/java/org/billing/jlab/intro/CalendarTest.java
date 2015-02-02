@@ -3,23 +3,20 @@ package org.billing.jlab.intro;
 import java.util.*;
 
 /**
- Работа с датами.
- Рассматривается:
-  - представление даты: класс Calendar/Date
-  - изменение/смещение даты: изменение состояния объекта GregorianCalendar
-  - Конвертация  GregorianCalendar <-> Date.
-  - сравнение дат
-  - тайм-заны: проверка TZ, конвертация между TZ
-  - Конвертация и форматирование даты Date в String (см. применение SimpleDateFormat в StringToDate )
-
+ <p>
+ Рассматривается работа с датами :<br/>
+  - представление даты: класс Calendar/Date<br/>
+  - изменение/смещение даты: изменение состояния объекта GregorianCalendar<br/>
+  - Конвертация  GregorianCalendar <-> Date<br/>
+  - сравнение дат<br/>
+  - тайм-заны: проверка TZ, конвертация между TZ<br/>
+  - Конвертация и форматирование даты Date в String (см применение SimpleDateFormat в StringToDate ).<br/>
+ </p>
   В Java время и его представление разнесены по разным классам.
   Класс Date() отражает только конкретный момент времени sysdate, но для работы с датами он не используется!
   Необходимо использовать абстрактный класс Calendar, описывающий свойства календаря в целом.
-
-  Рассматриваются: <br />
-
-
-  http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone
+ <br/>
+  <a href="http://jexp.ru/index.php/Java_Tutorial/Development/TimeZone"> Тайм зоны</a>
  */
 public class CalendarTest {
     public static void main(String[] args) {

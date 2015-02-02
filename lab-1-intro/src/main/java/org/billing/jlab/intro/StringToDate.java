@@ -10,19 +10,19 @@ import java.util.Locale;
 
 /**
  * Преобразование текстовой даты (например, Timestamp) в объект Date и далее в Calendar
- * и наоборот преобразование даты в String нужного формата.
+ * и наоборот преобразование даты в String нужного формата
+ *<p>
+ * Для форматирования даты и времени используется DateFormat и SimpledateFormat (подробнее см. Хорстмана стр.934)<br/>
  *
- * Для форматирования даты и времени используется DateFormat и SimpledateFormat (подробнее см. Хорстмана стр.934)
- *
- * http://www.mkyong.com/java/how-to-convert-string-to-date-java/
- * http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html
- *
- * Примеры форматов дат в виде строки:
- * "dd/MM/yyyy" - 07/06/2013
- * "MMM dd, yyyy" - Jun 07, 2013
- * "E, MMM dd yyyy" - Fri, Jun 07 2013
- * "EEEE, MMM dd, yyyy HH:mm:ss a" - Friday, Jun 07, 2013 12:10:56 PM
- * "yyyy-MM-dd'T'HH:mm:ss.SSSXXX" - 2001-07-04T12:08:56.235-07:00   -- Timestamp
+ * <a href="http://www.mkyong.com/java/how-to-convert-string-to-date-java/"> Конвертация строки в дату</a><br/>
+ * <a href="http://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html">SimpleDateFormat</a>
+ *</p>
+ * Примеры форматов дат в виде строки:<br/>
+ * <code>"dd/MM/yyyy" - 07/06/2013</code><br/>
+ * <code>"MMM dd, yyyy" - Jun 07, 2013</code><br/>
+ * <code>"E, MMM dd yyyy" - Fri, Jun 07 2013</code><br/>
+ * <code>"EEEE, MMM dd, yyyy HH:mm:ss a" - Friday, Jun 07, 2013 12:10:56 PM</code><br/>
+ * <code>"yyyy-MM-dd'T'HH:mm:ss.SSSXXX" - 2001-07-04T12:08:56.235-07:00   -- Timestamp</code><br/>
  */
 public class StringToDate {
 

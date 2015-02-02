@@ -7,12 +7,11 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
- * Рассматриваются строки - неизменяемые объекты.
- * - Базовое API для работы со строками
- * - StringBuilder - построение символьных строк
- * - printf - форматирование строк
- * - базовый файловый ввод/вывод, чтение вводимых даных (Scanner)
- *
+ * Рассматриваются строки - неизменяемые объекты<br/>
+ * - Базовое API для работы со строками<br/>
+ * - StringBuilder - построение символьных строк<br/>
+ * - printf - форматирование строк<br/>
+ * - базовый файловый ввод/вывод, чтение вводимых даных (Scanner)<br/>
  */
 public class StringType {
     public static void main(String[] args) throws IOException {
@@ -30,7 +29,7 @@ public class StringType {
     /**
      * Чтение вводимых данных с использованием Scanner/Console
      */
-    private static void useScanner() throws IOException {
+    public static void useScanner() throws IOException {
         Scanner in = new Scanner(System.in); // чтение из консольного потока ввода
         System.out.println("Ввыдите Ваше имя?");
       //  String name = in.nextLine(); // чтение целой строки, т.к. имя м.б. из пробелов. Для чтения слова используется next()
@@ -74,7 +73,7 @@ public class StringType {
      * сцеплеении создаётся новый объект типа String.
      * Есть ещё StringBuffer, но он менее эффективен и исползуется при многопоточности.
      */
-    private static void useStringBuilder() {
+    public static void useStringBuilder() {
         StringBuilder builder = new StringBuilder();
 
         builder.append('A'); // добавить единственный символ
@@ -89,7 +88,7 @@ public class StringType {
     /**
      * Пример использования базового API для работы со строками
      */
-    private static void useBaseStringApi() {
+    public static void useBaseStringApi() {
         String str = "Hello";
 
         "Hello".equalsIgnoreCase("hello"); // сравнение без учета регистра
