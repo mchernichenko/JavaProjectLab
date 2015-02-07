@@ -7,18 +7,19 @@ import java.util.Date;
 /**
  * Класс - сотрудник
  */
-public class Employee {
-    private String name;
+public class Employee extends Person {
+    //private String name;
     private double salary;
     private Date hireDay;
 
     /**
-     * @param name   Имя сотрудника
+     * @param name   Имя сотрудника, определено в Person
      * @param salary Зарплата
      * @param hireDay Дата приёма на работу
      */
     public Employee(String name, double salary, String hireDay) {
-        this.name = name;
+        super(name);
+        //this.name = name;
         this.salary = salary;
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
@@ -36,7 +37,7 @@ public class Employee {
     }
 
     public String getName() {
-        return name;
+        return super.getName();
     }
 
     public double getSalary() {
@@ -54,5 +55,12 @@ public class Employee {
         salary += raise;
     }
 
-
+    /**
+     * Требуется определеить т.к. определён в контракте класса Person
+     * @return Описание объекта
+     */
+    @Override
+    public String getDescriber() {
+        return "Сотрудничек \"" + super.getName() + "\" имеет з.п. " + getSalary();
+    }
 }

@@ -49,4 +49,9 @@ public class Manager extends Employee {
         long temp = Double.doubleToLongBits(bonus);
         return (int) (temp ^ (temp >>> 32));
     }
+
+    @Override
+    public String getDescriber() {
+        return "Манагер \"" +super.getName() + "\" c з.п. " + super.getSalary() + " и бонусом " + this.bonus;
+    }
 }

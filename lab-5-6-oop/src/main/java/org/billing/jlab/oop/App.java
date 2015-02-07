@@ -4,19 +4,20 @@ package org.billing.jlab.oop;
  * Рассматривается:
  * - полиморфизм
  * - особенности работы с массивами объектов
- * - преведение типов
+ * - приведение типов
+ * - абстрактные классы
  *
  */
 public class App 
 {
     public static void main( String[] args )
     {
-        Employee[] staff = new Employee[3];
+        Employee[] staff = new Employee[3]; // массив созданный с помощью new может содержать только объекты типа Employee или его потомков
         Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
         Manager manager = new Manager("Имя манагера", 15000, "15.11.1987");
 
         staff[0] = employee;
-        staff[1] = manager; // объявленный тип Employee, но фактическим типом может быть как Employee так и Manager.
+        staff[1] = manager; // объявленный тип массива Employee, но может сожержать всех его потомков, т.е. фактическим типом может быть как Employee так и Manager.
         staff[2] = new Employee("Имя Чувака_2", 99000, "15.12.1987");
 
         manager.setBonus(5000);
@@ -39,5 +40,18 @@ public class App
         if (staff[1] instanceof Manager) {
             Manager boss = (Manager) staff[1]; // явное приведение типов
         }
+
+        // Абстрактные классы
+        Person[] persons = new Person[3];
+        persons[0] = new Employee("Имя сотрудничка", 75000, "15.12.1987");
+        persons[1] = new Manager("Имя манагера", 15000, "15.11.1987");
+        persons[2] = new Student("Студент", "Физика");
+
+        ((Manager) persons[1]).setBonus(1000);
+
+        for (Person person : persons) {
+            System.out.println(person.getDescriber());
+        }
+
     }
 }
