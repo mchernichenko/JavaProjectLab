@@ -4,7 +4,7 @@ package org.billing.jlab.oop;
  * Класс - менеджер
  */
 public class Manager extends Employee {
-    private double bonus;
+    private double bonus; //
 
     /**
      * @param name   Имя сотрудника
@@ -12,7 +12,8 @@ public class Manager extends Employee {
      * @param hireDay Дата приёма на работу
      */
     public Manager(String name, double salary, String hireDay) {
-        super(name, salary, hireDay);
+        // эта строка должна быть первой в конструкторе. По дефолту вызывается пустой конструктор super() и он д.б. в этом случае.
+        super(name, salary, hireDay); // private поля Employee не доступны, для инициализации требуется вызов конструктова суперкласа.
         bonus = 0;
     }
 
@@ -21,13 +22,13 @@ public class Manager extends Employee {
     }
 
     /**
-     * возвращает ЗП менеджера
+     * Возвращает ЗП менеджера.
      *
      * @return Величина ЗП + бонус
      */
     @Override
     public double getSalary() {
-        double baseSalary = super.getSalary();
+        double baseSalary = super.getSalary(); // обратиться к private полю salary суперкласса Employee нельзя, только через getter.
         return baseSalary + this.bonus;
     }
 

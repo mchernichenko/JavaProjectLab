@@ -54,28 +54,5 @@ public class Employee {
         salary += raise;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        Employee employee = (Employee) o;
-
-        if (Double.compare(employee.salary, salary) != 0) return false;
-        if (hireDay != null ? !hireDay.equals(employee.hireDay) : employee.hireDay != null) return false;
-        if (!name.equals(employee.name)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = name.hashCode();
-        temp = Double.doubleToLongBits(salary);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (hireDay != null ? hireDay.hashCode() : 0);
-        return result;
-    }
 }
