@@ -5,6 +5,7 @@ package org.billing.jlab.oop;
  */
 public class Manager extends Employee {
     private double bonus; //
+//    private String strProtected = "qq";
 
     /**
      * @param name   Имя сотрудника
@@ -32,17 +33,25 @@ public class Manager extends Employee {
         return baseSalary + this.bonus;
     }
 
-    @Override
+    /**
+     * Данный пример закомментирован, т.к. мы сделали так, что перопределять его мы не можем.
+     * equals в суперклассе сделан финальным, но если потребуется сравнивать объекты только одинаковых типов, то
+     * сначала вызываем equals из суперкласса, и затем сравниваем поля, относящиеся только к классу Managers/
+     * В данном случае считаем, что два менеджара равнозначны, если, кроме name/salary/hireDay их бонусы тоже равны.
+     */
+/*    @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        / определяя метод для подкласса, сначала следует вызвать одноимённый метод из суперкласса, если он конечно есть.
+        / Если поля суперкласса совпадают, можно перейтик сравнению полей подкласа
+        if (!super.equals(o)) return false;
 
+        / при вызове super.equals(o) мы уже проверили, что объекты принадлежат одному классу, поэтому спокойно приводим тип
         Manager manager = (Manager) o;
 
         if (Double.compare(manager.bonus, bonus) != 0) return false;
 
         return true;
-    }
+    }*/
 
     @Override
     public int hashCode() {

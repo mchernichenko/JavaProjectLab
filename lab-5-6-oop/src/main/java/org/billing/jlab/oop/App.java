@@ -1,5 +1,8 @@
 package org.billing.jlab.oop;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 /**
  * Рассматривается:
  * - полиморфизм
@@ -16,6 +19,7 @@ public class App
         Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
         Manager manager = new Manager("Имя манагера", 15000, "15.11.1987");
 
+
         staff[0] = employee;
         staff[1] = manager; // объявленный тип массива Employee, но может сожержать всех его потомков, т.е. фактическим типом может быть как Employee так и Manager.
         staff[2] = new Employee("Имя Чувака_2", 99000, "15.12.1987");
@@ -29,7 +33,7 @@ public class App
         Manager[] managers = new Manager[3]; // массив созданный с помощью new может содержать только объекты типа Managers или его потомков
         Employee[] employees = managers; // такое возможно
 
-       // employees[0] = employee; // но здесь ошибка!! т.к. пытаемся пихнуть в массив Managers (а JVM знает с каким типом массив создавался) объект супертипа
+        // employees[0] = employee; // но здесь ошибка!! т.к. пытаемся пихнуть в массив Managers (а JVM знает с каким типом массив создавался) объект супертипа
 
         /* При извлечении даных из массива, для того чтобы использовать все функциональные возможности объекта необходимо
            принудительно привести его к фактическому типу.
@@ -52,6 +56,20 @@ public class App
         for (Person person : persons) {
             System.out.println(person.getDescriber());
         }
+
+        // сравнение объектов
+        Employee[] e1 = new Employee[2];
+        Person[] p1 = new Person[2];
+        e1[0] = new Employee("Имя1", 75000, "15.12.1990");
+        e1[1] = new Manager("Имя2", 75000, "15.12.1987");
+
+        p1[0] = new Manager("Имя1", 75000, "15.12.1990");
+        p1[1] = new Manager("Имя2", 75000, "15.12.1987");
+
+        // попарно сравнить объекты двух массивов
+        if (Arrays.equals(e1, p1)) {
+            System.out.println("Объекты в массивах равны");
+        } else System.out.println("Объекты в массивах не равны");
 
     }
 }

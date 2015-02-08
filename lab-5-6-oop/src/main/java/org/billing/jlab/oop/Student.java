@@ -8,7 +8,7 @@ public class Student extends Person {
 
     /**
      * @param name  Имя сотрудника, определяется в Person
-     * @param major Профильная дисциплина
+     * @param major Специализация студента
      *
      */
     public Student(String name, String major) {
