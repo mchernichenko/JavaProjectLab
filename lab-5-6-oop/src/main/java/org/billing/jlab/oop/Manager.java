@@ -63,4 +63,11 @@ public class Manager extends Employee {
     public String getDescriber() {
         return "Манагер \"" +super.getName() + "\" c з.п. " + super.getSalary() + " и бонусом " + this.bonus;
     }
+
+    @Override
+    public String toString() {
+        return super.toString()
+                + getClass().getName() + "{" + "bonus=" + bonus + '}';
+    }
+
 }

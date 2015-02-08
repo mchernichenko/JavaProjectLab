@@ -27,7 +27,7 @@ public class App
         manager.setBonus(5000);
         for (Employee e : staff) {
             // JVM знает фактический тип e, поэтому с вызовом e.getSalary проблем не будет.
-            System.out.println("Name: " + e.getName()+" Salary: " +e.getSalary());
+            System.out.println(e.toString());
         }
 
         Manager[] managers = new Manager[3]; // массив созданный с помощью new может содержать только объекты типа Managers или его потомков

@@ -22,4 +22,11 @@ public abstract class Person {
 
     //
     public abstract String getDescriber();
+
+    @Override
+    public String toString() {
+        return getClass().getName()+"{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

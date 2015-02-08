@@ -104,7 +104,24 @@ public class Employee extends Person {
 
     @Override
     public int hashCode() {
-        long temp = Double.doubleToLongBits(salary);
-        return (int) (temp ^ (temp >>> 32));
+        int result;
+
+        result = 7 * Objects.hashCode(super.getName())
+                + 11 * new Double(salary).hashCode()
+                + 13 * Objects.hashCode(getHireDay());
+
+        // можно объединить несколько хэш-значений
+        result = Objects.hash(super.getName(), this.salary, this.hireDay);
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString()
+                + getClass().getName() + "{" +
+                "hireDay=" + hireDay +
+                ", salary=" + salary +
+                '}';
     }
 }
