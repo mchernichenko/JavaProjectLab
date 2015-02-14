@@ -8,15 +8,16 @@ import java.util.Objects;
 /**
  * Класс - сотрудник
  */
-public class Employee extends Person {
+public class Employee extends Person implements Comparable<Employee> {
+
     //private String name;
     private double salary;
     private Date hireDay;
     protected String strProtect = "Protected string";
 
     /**
-     * @param name   Имя сотрудника, определено в Person
-     * @param salary Зарплата
+     * @param name    Имя сотрудника, определено в Person
+     * @param salary  Зарплата
      * @param hireDay Дата приёма на работу
      */
     public Employee(String name, double salary, String hireDay) {
@@ -59,6 +60,7 @@ public class Employee extends Person {
 
     /**
      * Требуется определеить т.к. определён в контракте класса Person
+     *
      * @return Описание объекта
      */
     @Override
@@ -123,5 +125,27 @@ public class Employee extends Person {
                 "hireDay=" + hireDay +
                 ", salary=" + salary +
                 '}';
+    }
+
+    /**
+     * Для упорядочивания сотрудников по зарплате в массиве с помощью Arrays.sort необходимо реализовать метод интерфейса Comparable
+     * т.к. это обязательное условие метода sort
+     * Т.к. Java - строго типизированный язык, то при вызове какого-нибудь метода компилятор должен убедиться, что этот метод действительно
+     * существует. И этот способ есть - это интерфейсы, реализация которых гарантирует наличие нужных методов.
+     * Это к тому, что нельзя просто реализовать в классе метод compareTo, т.к. метод sort должен гарантированно знать что он есть
+     * у вызываемых объектов массива. Кроме интерфейса эту гарантию не может доть никто.
+     *
+     * Кроме того, стандартное требование compareTo: должна быть гарантия, что sign(x.compareTo(y))=-sign(y.compareTo(x))
+     * @param other
+     * @return -1 если текущий объект < other, 0 - если равны, 1 - если текущий объект > other
+     */
+    @Override
+    public int compareTo(Employee other) {
+        return Double.compare(this.salary, other.salary);
+    }
+
+    public Employee clone() throws CloneNotSupportedException {
+        Employee cloned = (Employee) super.clone();
+        return cloned;
     }
 }

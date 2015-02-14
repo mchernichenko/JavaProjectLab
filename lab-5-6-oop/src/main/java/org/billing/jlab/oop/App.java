@@ -60,7 +60,7 @@ public class App
         // сравнение объектов
         Employee[] e1 = new Employee[2];
         Person[] p1 = new Person[2];
-        e1[0] = new Employee("Имя1", 75000, "15.12.1990");
+        e1[0] = new Employee("Имя1", 76000, "15.12.1990");
         e1[1] = new Manager("Имя2", 75000, "15.12.1987");
 
         p1[0] = new Manager("Имя1", 75000, "15.12.1990");
@@ -70,6 +70,13 @@ public class App
         if (Arrays.equals(e1, p1)) {
             System.out.println("Объекты в массивах равны");
         } else System.out.println("Объекты в массивах не равны");
+
+        // сортировка объектов
+        System.out.println("\nСортировка Employee по salary:");
+        Arrays.sort(e1);
+        for (Employee employee1 : e1) {
+            System.out.println(employee1.getSalary());
+        }
 
     }
 }
