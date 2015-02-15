@@ -69,5 +69,5 @@ public class Manager extends Employee {
         return super.toString()
                 + getClass().getName() + "{" + "bonus=" + bonus + '}';
     }
-
 }
+

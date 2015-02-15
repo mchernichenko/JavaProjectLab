@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Класс - сотрудник
  */
-public class Employee extends Person implements Comparable<Employee> {
+public class Employee extends Person implements Comparable<Employee>, Cloneable {
 
     //private String name;
     private double salary;
@@ -133,16 +133,28 @@ public class Employee extends Person implements Comparable<Employee> {
      * Т.к. Java - строго типизированный язык, то при вызове какого-нибудь метода компилятор должен убедиться, что этот метод действительно
      * существует. И этот способ есть - это интерфейсы, реализация которых гарантирует наличие нужных методов.
      * Это к тому, что нельзя просто реализовать в классе метод compareTo, т.к. метод sort должен гарантированно знать что он есть
-     * у вызываемых объектов массива. Кроме интерфейса эту гарантию не может доть никто.
+     * у вызываемых объектов массива. Кроме интерфейса эту гарантию не может дать никто.
      *
      * Кроме того, стандартное требование compareTo: должна быть гарантия, что sign(x.compareTo(y))=-sign(y.compareTo(x))
+     * Чтобы его соблюсти есть 2 стратегии, как и у equals:
+     * 1. Если подкласс и суперклас не сравнимы в принципе, то необходимо выбросить исключение ClassCastException
+     *  т.к. входной параметр у нас имеет тип Employee и если мы его наследуем в Manager, то преобразовать тип объекта нельзя: (Manager) other
+     *  чтобы иметь доступ к полям объекта Manager для сравнения.
+     *  В этом этом случае в подклассе реализуется свой ненаследуемый, например, compareTo(Manager o) метод
+     *  т.е. реализует интерфейс Comparable<Manager>, а не Comparable<Employee>
+     * 2. Если сравнимы, т.е. есть общий алгоритм сравнения объектов подклассов, то compareTo нужно реализовать в
+     *      суперклассе и сделать финальным
+     *
      * @param other
      * @return -1 если текущий объект < other, 0 - если равны, 1 - если текущий объект > other
      */
     @Override
-    public int compareTo(Employee other) {
+     final public int compareTo(Employee other) {
+       // этот вариант пишем, если в подклассе реализуется свой алгоритм сравнения.
+       // if (getClass() != other.getClass()) throw new ClassCastException();
         return Double.compare(this.salary, other.salary);
     }
+
 
     public Employee clone() throws CloneNotSupportedException {
         Employee cloned = (Employee) super.clone();

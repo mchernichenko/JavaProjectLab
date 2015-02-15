@@ -1,5 +1,8 @@
 package org.billing.jlab.oop;
 
+import org.billing.jlab.oop.pak1.A;
+import org.billing.jlab.oop.pak2.B;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
@@ -9,12 +12,13 @@ import java.util.Arrays;
  * - особенности работы с массивами объектов
  * - приведение типов
  * - абстрактные классы
- *
+ * - интерфейс Comparable - для сравнения объектов
+ * - Пример работы c protected методами и модификаторами по-умолчанию
+ * - Интерфейс Cloneable - для клонирование объектов
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) throws CloneNotSupportedException {
         Employee[] staff = new Employee[3]; // массив созданный с помощью new может содержать только объекты типа Employee или его потомков
         Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
         Manager manager = new Manager("Имя манагера", 15000, "15.11.1987");
@@ -78,5 +82,26 @@ public class App
             System.out.println(employee1.getSalary());
         }
 
+        // Пример работы c protected методами и модификаторами по-умолчанию
+        testProtectMethod();
+
+        // клонирование объектов
+        Employee ee = new Employee("Имя1", 76000, "15.12.1990");
+        Employee ee1 = ee.clone();
+        System.out.println("Клон:" + ee1);
+
+    }
+
+    /**
+     * Пример работы c protected методами и модификаторами по-умолчанию
+     */
+    public static void testProtectMethod() {
+        B b = new B();
+       //
+       b.packagePrivateMethod(2, 3);
+
+        // вызов данного метода приведёт к зацикливанию, т.к. b.protectedMethod вызывает runProtectedMethod из класса A,
+        // который в свою очередь вызывает опять protectedMethod из класса B, т.к. вызывающий класс это класс В, а он переопределён в классе B.
+        //b.protectedMethod(2,3);
     }
 }
