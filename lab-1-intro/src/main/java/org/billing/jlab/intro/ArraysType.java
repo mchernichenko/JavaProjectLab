@@ -7,10 +7,11 @@ import java.util.Arrays;
  * - Объявление, инициализация <br/>
  * - перебор <br/>
  * - использвание API над массивами. <br/>
+ * - методы с переменным числом параметров <br/>
  * <img src="../../../../resources/Arrays.png" alt="API работы с массивами" />
  */
 public class ArraysType {
-    public static void main(String[] args) {
+    public static void main(String... args) {
 
         // объявление массивов. При создании инициализируются 0,false,null
         int[] a = new int[100]; // более правильный способ.
@@ -50,5 +51,18 @@ public class ArraysType {
 
     }
 
+    /**
+     * Метод с переменым количеством параметров.
+     * Компилятор передаёт методу параметры в виде массива, например, new double[] {1.0,2.0,3.0,4.0 ....}
+     * параметр values может быть только последеним
+     * @param values - наибольшее из переданных параметров.
+     */
+    public static double methodWithManyParameters(double... values) {
+        double largest = Double.MAX_VALUE;
+        for (double v : values) {
+            if (v > largest) largest = v;
+        }
+        return largest;
+    }
 
 }

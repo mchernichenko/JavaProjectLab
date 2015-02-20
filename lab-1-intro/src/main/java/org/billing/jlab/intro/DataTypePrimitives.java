@@ -2,9 +2,15 @@ package org.billing.jlab.intro;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * Рассматриваются типы данных: byte, short, int, long, float, double, boolean, char
+ * Объектные оболочки и автоупаковка: Integer, Long, Float, Double, Short, Byte - общий суперкласс Number;
+ *                                    Character, Void, Boolean.
+ *   Классы объектных оболочек не изменяемы.
+ *   Широко применяются при преобразовании String -> DataType
+ *   <img src="../../../../resources/IntegerEnvelope.png" alt="API работы с объектными оболочками" />
  */
 public class DataTypePrimitives {
     public static void main(String[] args) {
@@ -134,5 +140,35 @@ public class DataTypePrimitives {
             }
         }
         return strSpell;
+    }
+
+    /**
+     * Объектные оболочки:
+     * - автоупаковка/ автораспаковка. Отвечает компилятор, а не JVM
+     * - сравнение
+     * - преобразование из строки в число
+     */
+    public static void dataTypeEnvelope() {
+        // списочный массив может содержать только объекты, поэтому объекты простых типов упаковываются в объект
+        ArrayList<Integer> list = new ArrayList<>();
+
+        list.add(3); // здесь происходит автоматическая автоупаковка
+        list.add(new Integer(3)); // можно и так
+
+        int i = list.get(1); // автоматическая распаковка
+        i = list.get(2).intValue(); // это тоже самое что и строчка выше
+
+        Integer n = 3;
+        n++;  // здесь происходит автоматическая распаковка, увеличение на единицу и автоматическая запаковка.
+
+        // при сравнении объектов оболочек нужно использовать equals()
+        Integer n1 = 3;
+        if (n.equals(n1)) {
+            System.out.println("3=3");
+        }
+
+        // преобазование из строки в число
+        String str = "3";
+        n = Integer.parseInt(str);
     }
 }
