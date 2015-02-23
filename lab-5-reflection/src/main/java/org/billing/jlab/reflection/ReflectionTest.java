@@ -8,7 +8,11 @@ import java.util.Scanner;
 
 /**
  * Примерение рефлексии для вывода всех компонентов класса.
+ *
  *  <img src="../../../../resources/java.lang.Class и прочие.png" alt="API по анализу классов" />
+ *
+ * <a href="http://www.javable.com/tutorials/fesunov/lesson22/">Еще примеры</a>
+ * <a href="http://www.quizful.net/post/java-reflection-api">Введение в Java Reflection API</a>
  *
  */
 public class ReflectionTest
