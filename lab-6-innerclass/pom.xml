@@ -1,16 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>JavaProjectLab</artifactId>
         <groupId>${myapp.groupId}</groupId>
         <version>${myapp.version}</version>
     </parent>
 
-    <artifactId>lab-5-innerclass</artifactId>
+
+    <artifactId>innerclass</artifactId>
     <packaging>jar</packaging>
 
-    <name>lab-6-innerclass</name>
+    <name>innerclass</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -26,8 +28,6 @@
         </dependency>
     </dependencies>
 
-    <!--Настройка упаковки в JAR. По дефолту привязан к циклу package. см. http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html
-            Настройка генерации MANIFEST.MF в ЖЦ packаge -->
     <build>
         <plugins>
             <plugin>
@@ -47,11 +47,12 @@
                             Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.billing.jlab.innerclass</mainClass>
+                            <mainClass>org.billing.jlab.inner.ProxyTest</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>

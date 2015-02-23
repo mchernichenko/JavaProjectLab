@@ -1,4 +1,4 @@
-package org.billing.jlab.innerclass;
+package org.billing.jlab.inner;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;

@@ -7,10 +7,10 @@
         <version>${myapp.version}</version>
     </parent>
 
-    <artifactId>lab-5-6-oop</artifactId>
+    <artifactId>oop</artifactId>
     <packaging>jar</packaging>
 
-    <name>lab-5-6-oop</name>
+    <name>oop</name>
     <url>http://maven.apache.org</url>
 
     <properties>
