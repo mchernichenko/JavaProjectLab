@@ -3,6 +3,8 @@ package org.billing.jlab.intro;
 /**
  * Рассматривается использование перечислений. На самом деле перечисления это класс.
  * где вместо ключевого слова class используется ключевое слово enum
+ *
+ * http://www.quizful.net/post/java_enums
  */
 public class EnumType {
 
