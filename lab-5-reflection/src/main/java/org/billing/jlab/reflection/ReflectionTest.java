@@ -7,7 +7,7 @@ import java.lang.reflect.Modifier;
 import java.util.Scanner;
 
 /**
- * Примерение рефлексии для вывода всех компонентов класса.
+ * Применение рефлексии для вывода всех компонентов класса.
  *
  *  <img src="../../../../resources/java.lang.Class и прочие.png" alt="API по анализу классов" />
  *
@@ -47,20 +47,28 @@ public class ReflectionTest
             System.out.println("==== Полное имя класса и его суперкласс ====");
             System.out.println(" ");
 
-            Class<?> superclass = aClass.getSuperclass();
-            String modifiers = Modifier.toString(aClass.getModifiers());
+            Class<?> superclass = aClass.getSuperclass(); // нахождение суперкласса, он возможет только один, т.к. множественного наследования нет! Остальные суперклассы можно получить только рекурсивно вызывать метод getSuperclass().
+            String modifiers = Modifier.toString(aClass.getModifiers()); // определение модификаторов класса, например public final synchronized strictfp. getModifiers возвращает int, биты которого представляют модификаторы класса
             if (modifiers.length() > 0) System.out.print(modifiers + " ");
             System.out.print("class " + name);
             if (superclass != null && superclass != Object.class) {
-                System.out.println(" extents " + superclass.getName());
+                System.out.print(" extents " + superclass.getName());
             }
+
+            Class<?>[] interfaces = aClass.getInterfaces();  // интерфейсы реализованные в заданном классе
+            if (interfaces.length > 0) System.out.print(" implements");
+            for (int i = 0; i < interfaces.length; i++) {
+                if (i > 0) System.out.print(", ");
+                System.out.print(interfaces[i].getName());
+            }
+            System.out.println(";");
 
             System.out.println("{");
             printConstructors(aClass);
             System.out.println();
-            printMethods(aClass);
-            System.out.println();
             printFields(aClass);
+            System.out.println();
+            printMethods(aClass);
             System.out.println("}");
 
         } catch (ClassNotFoundException e) {
@@ -129,8 +137,8 @@ public class ReflectionTest
      */
     public static void printFields(Class cl) {
 
-        System.out.println("===== Поля класса =====");
-        Field[] fields = cl.getFields();
+        System.out.println("===== Поля определённые в классе, включая суперклассы и интерфейсы этого класса =====");
+        Field[] fields = cl.getDeclaredFields(); // получить все поля, даже private
 
         for (Field field : fields) {
             Class<?> type = field.getType();
@@ -140,5 +148,6 @@ public class ReflectionTest
             if (modifiers.length() > 0) System.out.print(modifiers + " ");
             System.out.print(type.getName() + " " + name + ";");
         }
+        System.out.println();
     }
 }
