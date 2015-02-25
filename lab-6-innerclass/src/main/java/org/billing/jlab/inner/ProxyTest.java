@@ -7,7 +7,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * Демонстрация применения прокси-объектов
+ * Демонстрация применения прокси-классов, реализующие произвольные интерфейсы
+ *
  * <a href="http://www.ibm.com/developerworks/ru/library/j-jtp08305/">Декорирование при помощи динамического прокси</a>
  * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">Dynamic Proxy Classes</a>
  *
@@ -24,6 +25,7 @@ public class ProxyTest {
         // заполнить массив прокси-объектами целых чисел от 1 до 1000
         for (int i = 0; i < elements.length; i++) {
             Integer value = i + 1;
+
             TraceHandler handler = new TraceHandler(value); // заключаем объекты в некоторую оболочку TraceHandler реализующую интерфейс InvocationHandler
 
             // 1. proxy-объекты реализуют все методы указанных в параметре интерфейсов. В данном случае в нём реализуется метод CompаreTo интерфейса Comparable.class.
