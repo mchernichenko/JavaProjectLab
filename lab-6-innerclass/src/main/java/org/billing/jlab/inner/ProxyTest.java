@@ -9,6 +9,7 @@ import java.util.Random;
 /**
  * Демонстрация применения прокси-объектов
  * <a href="http://www.ibm.com/developerworks/ru/library/j-jtp08305/">Декорирование при помощи динамического прокси</a>
+ * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">Dynamic Proxy Classes</a>
  *
  * Используется для:
  * - Переадресация вызовов методов на удалённый сервер.
@@ -39,7 +40,7 @@ public class ProxyTest {
         // поиск по критерию key
         /* стек вызова следующий:
             1. метод Arrays.binarySearch вызывает elements[i].compаreTo(key), где  elements[i] объект класса Proxy
-            2. объект класса Proxy также реализует интерфейс Comparable, т.к. он передан при создании прокси-объекта
+            2. объект динамически созданного класса $Proxy0 также реализует интерфейс Comparable, т.к. он передан при создании прокси-объекта
             3. В методе compаreTo класса Proxy вызывается метод handler.invoke(elements[i], java.lang.Comparable, key)
             4. handler.invoke вызывает compаreTo для параметра TraceHandler.target, т.е. по сути с value, который был передан в TraceHandler
 
