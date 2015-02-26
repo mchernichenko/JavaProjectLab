@@ -156,6 +156,13 @@ public class Employee extends Person implements Comparable<Employee>, Cloneable 
     }
 
 
+    /**
+     * Клонирование объекта.
+     * Метод clone() является protected в классе Object, т.е. его нельзя вызвать непосредственно.
+     *
+     * @return
+     * @throws CloneNotSupportedException
+     */
     public Employee clone() throws CloneNotSupportedException {
         Employee cloned = (Employee) super.clone();
         return cloned;

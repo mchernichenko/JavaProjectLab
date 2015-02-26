@@ -1,9 +1,7 @@
 package org.billing.jlab.oop;
 
-import org.billing.jlab.oop.pak1.A;
 import org.billing.jlab.oop.pak2.B;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
