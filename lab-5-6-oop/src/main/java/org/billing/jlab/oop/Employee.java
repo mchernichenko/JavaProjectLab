@@ -147,6 +147,7 @@ public class Employee extends Person implements Comparable<Employee>, Cloneable 
      *
      * @param other
      * @return -1 если текущий объект < other, 0 - если равны, 1 - если текущий объект > other
+     * Кстати, вместо -1 или 1 можно вернуть любое отрицательное или полодительное значение, главное помнить что оно должно быть int
      */
     @Override
      final public int compareTo(Employee other) {
@@ -158,13 +159,19 @@ public class Employee extends Person implements Comparable<Employee>, Cloneable 
 
     /**
      * Клонирование объекта.
-     * Метод clone() является protected в классе Object, т.е. его нельзя вызвать непосредственно.
+     * Метод clone() является protected в классе Object, т.е. не доступен никому, кроме как в своем и в НАСЛЕДУЮЩЕМ классе.
+     * Только класс Employee может клонировать объекты (поля) своего класса
+     * Object.clone() ничего не знает об объекте и может клонировать только поля основных типов. Если объект содержит другой объект, то Object.clone() его не скопирует
+     *
      *
      * @return
      * @throws CloneNotSupportedException
      */
+
+    @Override
     public Employee clone() throws CloneNotSupportedException {
-        Employee cloned = (Employee) super.clone();
+        Employee cloned = (Employee) super.clone();  // здесь происходит частичное клонирование
+        cloned.hireDay = (Date) hireDay.clone();
         return cloned;
     }
 }
