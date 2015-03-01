@@ -35,6 +35,7 @@ public class App
         Manager[] managers = new Manager[3]; // массив созданный с помощью new может содержать только объекты типа Managers или его потомков
         Employee[] employees = managers; // такое возможно
 
+
         // employees[0] = employee; // но здесь ошибка!! т.к. пытаемся пихнуть в массив Managers (а JVM знает с каким типом массив создавался) объект супертипа
 
         /* При извлечении даных из массива, для того чтобы использовать все функциональные возможности объекта необходимо
@@ -88,6 +89,8 @@ public class App
         Employee ee1 = ee.clone();
         System.out.println("Клон:" + ee1);
 
+        Manager manager1= new Manager("Имя2_1", 75000, "15.12.1987");
+        Manager clone = (Manager) manager1.clone();
     }
 
     /**
