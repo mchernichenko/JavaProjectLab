@@ -14,6 +14,9 @@ import java.util.Scanner;
  * <a href="http://www.javable.com/tutorials/fesunov/lesson22/">Еще примеры</a>
  * <a href="http://www.quizful.net/post/java-reflection-api">Введение в Java Reflection API</a>
  *
+ * Полное имя класса указываем во входном параметре, но можно нарваться на ошибку, что класс не найден, хотя classpath указан верно
+ * Это происходит из-за того, что динамический загрузчик этот класс не загружает. Нужно положить временно jar в "c:\Program Files\Java\jdk1.7.0_72\jre\lib\ext\"
+ * См. о динамической загрузке классов: http://media.techtarget.com/tss/static/articles/content/dm_classForname/DynLoad.pdf
  */
 public class ReflectionTest
 {
