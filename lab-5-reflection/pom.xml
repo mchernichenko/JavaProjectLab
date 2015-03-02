@@ -4,13 +4,12 @@
 
     <parent>
         <artifactId>JavaProjectLab</artifactId>
-        <groupId>${myapp.groupId}</groupId>
-        <version>${myapp.version}</version>
+        <groupId>org.billing.jlab</groupId>
+        <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <artifactId>reflection</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <name>reflection</name>
     <url>http://maven.apache.org</url>
@@ -49,9 +48,10 @@
                 <version>2.4</version>
                 <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
                 <configuration>
+                   <!-- <useDefaultManifestFile>true</useDefaultManifestFile>-->
                     <archive>
                         <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
-                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
+<!--                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
                         <manifest>
                             <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
                             Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)

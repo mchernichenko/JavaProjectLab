@@ -29,6 +29,7 @@ public class ReflectionTest
         }
 
         // Вывести описание класса name
+        name = "org.billing.jlab.inner.TalkingClock$TimePrinter";
         printClass(name);
 
     }

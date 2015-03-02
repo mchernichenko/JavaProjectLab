@@ -6,16 +6,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--сccсылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
-    <!--<parent>
-        <artifactId>TestMavenPrj-1</artifactId>
-        <groupId>${groupId}</groupId>
-        <version>1.0-SNAPSHOT</version>
+<!--    <parent>
+        <groupId>org.billing.jlab</groupId>
+        <artifactId>MegaLab</artifactId>
+        <version>1.0</version>
     </parent>-->
 
     <!--Основная и обязательная информация о проекте-->
-    <groupId>${myapp.groupId}</groupId>
+    <!--<groupId>${myapp.groupId}</groupId>
+    <artifactId>${myapp.artifactId}</artifactId>
+    <version>${myapp.version}</version>-->
+
+    <groupId>org.billing.jlab</groupId>
     <artifactId>JavaProjectLab</artifactId>
-    <version>${myapp.version}</version>
+    <version>1.0-SNAPSHOT</version>
 
     <!-- Перечисление списка модулей, которые образуют проект (представляет собой набор каталогов). Порядок не важен.
          Например: проект может состоять из  busines-logic, web-interface. Можно сделать отдельные независимые проекты, т.е. разные п/с,
@@ -44,9 +48,10 @@
         По Ctrl+Alt+V можно выделить любую переменную в properties автоматически
     -->
     <properties>
-        <myapp.groupId>org.billing.jlab</myapp.groupId>
+ <!--       <myapp.groupId>org.billing.jlab</myapp.groupId>
+        <myapp.artifactId>JavaProjectLab</myapp.artifactId>
         <myapp.version>1.0-SNAPSHOT</myapp.version>
-        <myapp.fillname>${artifactId}-${myapp.version}</myapp.fillname>
+        <myapp.fillname>${myapp.artifactId}-${myapp.version}</myapp.fillname>-->
         <skipTests>true</skipTests>
     </properties>
 
@@ -216,36 +221,36 @@
 
             <!--Настройка упаковки в JAR. По дефолту привязан к циклу package. см. http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html
                 Настройка генерации MANIFEST.MF в ЖЦ packаge -->
-            <plugin>
+          <!--  <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
-                <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
+                &lt;!&ndash; В конфигурации jar плагина определяем правила формирования MANIFEST.MF&ndash;&gt;
                 <configuration>
                     <archive>
 
-                        <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
-                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
+                        &lt;!&ndash;Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста&ndash;&gt;
+                        &lt;!&ndash;<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>&ndash;&gt;
 
                         <manifest>
-                            <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
+                            &lt;!&ndash; Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
                             Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
                             Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
                             т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
-                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
+                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass&ndash;&gt;
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
 
-                            <!--Если ClassPath нужно определить вручную -->
-                            <!--<classpathLayoutType>custom</classpathLayoutType>
+                            &lt;!&ndash;Если ClassPath нужно определить вручную &ndash;&gt;
+                            &lt;!&ndash;<classpathLayoutType>custom</classpathLayoutType>
                             <customClasspathLayout>
                                 ${maven-jar-plugin.customClasspathLayout}
-                            </customClasspathLayout>-->
+                            </customClasspathLayout>&ndash;&gt;
                             <mainClass>App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
-            </plugin>
+            </plugin>-->
 
 
             <!--Skipping test by default

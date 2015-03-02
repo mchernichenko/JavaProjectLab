@@ -56,7 +56,7 @@ public class Employee extends Person implements Comparable<Employee>, Cloneable 
      * Увеличивает ЗП сотрудников на %
      *
      * @param byPercent % увеличения ЗП (например, 10 = 10%)
-     * @return Величина, на которую повышается ЗП
+     * return Величина, на которую повышается ЗП
      */
     public void raiseSalary(double byPercent) {
         double raise = salary * byPercent / 100;

@@ -35,7 +35,7 @@ public class ClassTest {
         System.out.println("Полное имя класса включая пакет: " + employee.getClass().getName());
 
         // 2. Получить Class по текстовому имени, например, если конкретного экземпляра нет
-        String className = "org.billing.jlab.oop.Employee";
+        String className = "org.billing.jlab.oop.Employee"; //org.billing.jlab.inner.TalkingClock
         Class aClass1 = Class.forName(className);
 
         // 3.  Если у нас есть класс, для которого в момент компиляции известен тип, то получить экземпляр класса ещё проще.
