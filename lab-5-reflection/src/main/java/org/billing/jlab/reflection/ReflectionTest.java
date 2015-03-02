@@ -46,7 +46,11 @@ public class ReflectionTest
         // вывести имя класса и суперкласс, кроме Object
         try {
             // объект типа Class можно получить по его строковому предствлению, включая имя пакета!
-            Class<?> aClass = Class.forName(name);
+            //Class<?> aClass = Class.forName(name);
+
+            Thread thread = Thread.currentThread();
+            ClassLoader cl = thread.getContextClassLoader();
+            Class<?> aClass = cl.loadClass(name);
 
             System.out.println("==== Полное имя класса и его суперкласс ====");
             System.out.println(" ");
