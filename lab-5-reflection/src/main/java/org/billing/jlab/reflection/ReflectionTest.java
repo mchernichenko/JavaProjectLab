@@ -1,5 +1,7 @@
 package org.billing.jlab.reflection;
 
+import org.billing.jlab.oop.Employee;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -20,7 +22,7 @@ import java.util.Scanner;
  */
 public class ReflectionTest
 {
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws ClassNotFoundException {
 
         // извлекаем имя класса из аргументов командной строки или введённых пользователем данных
         String name;
@@ -42,46 +44,46 @@ public class ReflectionTest
      * Выводит полное имя класса, его суперкласс, кроме Object, а также все его конструкторы, поля и методы.
      * @param name - полное имя класса, например, java.util.Date
      */
-    public static void printClass(String name) {
+    public static void printClass(String name) throws ClassNotFoundException {
         // вывести имя класса и суперкласс, кроме Object
-        try {
-            // объект типа Class можно получить по его строковому предствлению, включая имя пакета!
-            //Class<?> aClass = Class.forName(name);
+        // объект типа Class можно получить по его строковому предствлению, включая имя пакета!
+        //Class<?> aClass = Class.forName(name);
+        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
+        System.out.println("+++++++++++++++" +employee);
 
-            Thread thread = Thread.currentThread();
-            ClassLoader cl = thread.getContextClassLoader();
-            Class<?> aClass = cl.loadClass(name);
+        Thread thread = Thread.currentThread();
+        ClassLoader cl = thread.getContextClassLoader();
+        //Class<?> aClass = cl.loadClass(name);
+        Class aClass = employee.getClass();
 
-            System.out.println("==== Полное имя класса и его суперкласс ====");
-            System.out.println(" ");
 
-            Class<?> superclass = aClass.getSuperclass(); // нахождение суперкласса, он возможет только один, т.к. множественного наследования нет! Остальные суперклассы можно получить только рекурсивно вызывать метод getSuperclass().
-            String modifiers = Modifier.toString(aClass.getModifiers()); // определение модификаторов класса, например public final synchronized strictfp. getModifiers возвращает int, биты которого представляют модификаторы класса
-            if (modifiers.length() > 0) System.out.print(modifiers + " ");
-            System.out.print("class " + name);
-            if (superclass != null && superclass != Object.class) {
-                System.out.print(" extents " + superclass.getName());
-            }
+        System.out.println("==== Полное имя класса и его суперкласс ====");
+        System.out.println(" ");
 
-            Class<?>[] interfaces = aClass.getInterfaces();  // интерфейсы реализованные в заданном классе
-            if (interfaces.length > 0) System.out.print(" implements");
-            for (int i = 0; i < interfaces.length; i++) {
-                if (i > 0) System.out.print(", ");
-                System.out.print(interfaces[i].getName());
-            }
-            System.out.println(";");
-
-            System.out.println("{");
-            printConstructors(aClass);
-            System.out.println();
-            printFields(aClass);
-            System.out.println();
-            printMethods(aClass);
-            System.out.println("}");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        Class<?> superclass = aClass.getSuperclass(); // нахождение суперкласса, он возможет только один, т.к. множественного наследования нет! Остальные суперклассы можно получить только рекурсивно вызывать метод getSuperclass().
+        String modifiers = Modifier.toString(aClass.getModifiers()); // определение модификаторов класса, например public final synchronized strictfp. getModifiers возвращает int, биты которого представляют модификаторы класса
+        if (modifiers.length() > 0) System.out.print(modifiers + " ");
+        System.out.print("class " + name);
+        if (superclass != null && superclass != Object.class) {
+            System.out.print(" extents " + superclass.getName());
         }
+
+        Class<?>[] interfaces = aClass.getInterfaces();  // интерфейсы реализованные в заданном классе
+        if (interfaces.length > 0) System.out.print(" implements");
+        for (int i = 0; i < interfaces.length; i++) {
+            if (i > 0) System.out.print(", ");
+            System.out.print(interfaces[i].getName());
+        }
+        System.out.println(";");
+
+        System.out.println("{");
+        printConstructors(aClass);
+        System.out.println();
+        printFields(aClass);
+        System.out.println();
+        printMethods(aClass);
+        System.out.println("}");
+
     }
 
     /**

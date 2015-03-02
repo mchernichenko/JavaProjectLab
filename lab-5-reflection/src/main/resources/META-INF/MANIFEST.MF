@@ -3,5 +3,5 @@ Built-By: Mikhail.Chernichenko
 Class-Path: lib/*
 Created-By: IntelliJ IDEA
 Build-Jdk: 1.7.0_72
-Main-Class: org.billing.jlab.reflection.ReflectionTest
+Main-Class: org.billing.jlab.reflection.Test
 

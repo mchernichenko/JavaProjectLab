@@ -30,7 +30,7 @@ public class ClassTest {
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         // 1. Получить Class по его экземпляру. Полезно, когда не известно какого класса этот экземпляр
-        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");;
+        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
         Class aClass = employee.getClass();
         System.out.println("Полное имя класса включая пакет: " + employee.getClass().getName());
 
