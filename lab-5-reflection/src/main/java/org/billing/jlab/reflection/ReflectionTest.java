@@ -30,7 +30,7 @@ public class ReflectionTest
         if (args.length > 0) name = args[0];
         else {
             Scanner in = new Scanner(System.in);
-            System.out.println("\n (!!!) ВНИМАНИЕ: в случае ClassNotFoundException требуется указать путь к Extension ClassLoader и скопировать туды jar с требуемым классом:\n java -Djava.ext.dirs=jre\\lib\\ext;c:\\tmp2 -jar ReflectionTest.jar org.billing.jlab.inner.TalkingClock$TimePrinter\n");
+            System.out.println("\n (!!!) ВНИМАНИЕ: в случае ClassNotFoundException требуется указать путь к Extension ClassLoader и скопировать туды jar с требуемым классом:\n java -Djava.ext.dirs=%JRE_HOME%\\lib\\ext;c:\\tmp2 -jar ReflectionTest.jar org.billing.jlab.inner.TalkingClock$TimePrinter\n");
             System.out.println("Введите имя класса (например: java.util.Date): ");
             System.out.println("или 'def' для класса по умолчанию (org.billing.jlab.inner.TalkingClock$TimePrinter)");
             name = in.next();
