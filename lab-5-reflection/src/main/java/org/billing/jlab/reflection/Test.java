@@ -3,7 +3,7 @@ package org.billing.jlab.reflection;
 import org.billing.jlab.oop.Employee;
 
 /**
- * Created by Миша on 03.03.2015.
+ * Для тестирования MANIFEST.MF
  */
 public class Test {
     public static void main(String[] args) {

@@ -18,6 +18,7 @@ import java.util.Scanner;
  *
  * Полное имя класса указываем во входном параметре, но можно нарваться на ошибку, что класс не найден, хотя classpath указан верно
  * Это происходит из-за того, что динамический загрузчик этот класс не загружает. Нужно положить временно jar в "c:\Program Files\Java\jdk1.7.0_72\jre\lib\ext\"
+ * или указать путь для Extension ClassLoader: java -Djava.ext.dirs=c:\tmp2 -jar prog.jar
  * См. о динамической загрузке классов: http://media.techtarget.com/tss/static/articles/content/dm_classForname/DynLoad.pdf
  */
 public class ReflectionTest
@@ -29,12 +30,14 @@ public class ReflectionTest
         if (args.length > 0) name = args[0];
         else {
             Scanner in = new Scanner(System.in);
+            System.out.println("\n (!!!) ВНИМАНИЕ: в случае ClassNotFoundException требуется указать путь к Extension ClassLoader и скопировать туды jar с требуемым классом:\n java -Djava.ext.dirs=jre\\lib\\ext;c:\\tmp2 -jar ReflectionTest.jar org.billing.jlab.inner.TalkingClock$TimePrinter\n");
             System.out.println("Введите имя класса (например: java.util.Date): ");
+            System.out.println("или 'def' для класса по умолчанию (org.billing.jlab.inner.TalkingClock$TimePrinter)");
             name = in.next();
         }
 
-        // Вывести описание класса name
-        name = "org.billing.jlab.inner.TalkingClock$TimePrinter";
+        // Вывести описание класса
+        if (name.equals("def")) name = "org.billing.jlab.inner.TalkingClock$TimePrinter";
         printClass(name);
 
     }
@@ -48,14 +51,10 @@ public class ReflectionTest
         // вывести имя класса и суперкласс, кроме Object
         // объект типа Class можно получить по его строковому предствлению, включая имя пакета!
         //Class<?> aClass = Class.forName(name);
-        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
-        System.out.println("+++++++++++++++" +employee);
 
         Thread thread = Thread.currentThread();
         ClassLoader cl = thread.getContextClassLoader();
-        //Class<?> aClass = cl.loadClass(name);
-        Class aClass = employee.getClass();
-
+        Class<?> aClass = cl.loadClass(name);
 
         System.out.println("==== Полное имя класса и его суперкласс ====");
         System.out.println(" ");
