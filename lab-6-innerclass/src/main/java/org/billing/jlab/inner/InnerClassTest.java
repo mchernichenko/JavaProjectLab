@@ -27,7 +27,8 @@ public class InnerClassTest
 {
     public static void main(String[] args) {
         TalkingClock talkingClock = new TalkingClock(1000, true);
-        talkingClock.start();
+        //talkingClock.start();
+        talkingClock.start1(1000, true);
 
         JOptionPane.showMessageDialog(null, "Выход?");
         System.exit(0);
@@ -52,9 +53,44 @@ class TalkingClock {
     }
 
     /**
-     * Запуск часов
+     * Запуск часов с помощью локального класса.
+     * При создании локального классы, компилятор отслеживает использование всех локальных переменных и
+     * во все его конструкторы неявным образом передаётся ссылка на внешний класс и используемые локальные переменные,
+     * которые копируются в финальные переменные локального класса, синтезируемые компилятором.
+     * Скомпилированный локальный класс имеет вид:
+     *
+     *
+     * Методы локального класса могут ссылаться только на локальные переменные, объявленные как final !
+     * Этим гарантируется, что локальная переменная и её копия, созданная в локальном классе, всегда имеют одно и тоже значение.
+     *
+     */
+    public void start1(int interval, final boolean beep) {
+
+        class TimerPrinterLocal implements ActionListener
+        {
+            /**
+             * Локальные классы всегда объявляются без модификатора доступа. Их область действия всегда ограничена блоком, в котором он объявлен
+             * Они польностью скрыты от внешнего мира и даже от класса TalkingClock. О классе знает только метод start()
+             * @param e
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Date now = new Date();
+                System.out.println("(use local inner class) The time is " + now);
+                if (beep) Toolkit.getDefaultToolkit().beep();
+            }
+        }
+
+        ActionListener listener = new TimerPrinterLocal(); // создание экземпляра внутреннего локального класса
+        Timer timer = new Timer(interval,listener);
+        timer.start();
+    }
+
+    /**
+     * Запуск часов c помощью внутреннего класса
      */
     public void start() {
+
         ActionListener listener = new TimePrinter(); // создание экземпляра внутреннего класса
         Timer timer = new Timer(interval,listener);
         timer.start();
