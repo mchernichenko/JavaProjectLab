@@ -31,7 +31,7 @@ public class StringType {
      */
     public static void useScanner() throws IOException {
         Scanner in = new Scanner(System.in); // чтение из консольного потока ввода
-        System.out.println("Ввыдите Ваше имя?");
+        System.out.println("Введите Ваше имя?");
       //  String name = in.nextLine(); // чтение целой строки, т.к. имя м.б. из пробелов. Для чтения слова используется next()
         System.out.println("Введите количество лет?");
       //  int age = in.nextInt(); // чтение целочисленног значения
