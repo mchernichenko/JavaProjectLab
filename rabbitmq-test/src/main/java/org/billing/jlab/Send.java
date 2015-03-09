@@ -67,7 +67,7 @@ public class Send {
         */
 
         // связывание AMQP default с очередью QUEUE_NAME и публикация  сообщения в эту очередь через AMQP default
-        //channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
 
         // публикация сообщения через exchange в очередь, определяемую воркером. Здесь очередь не указана => биндинга с очередью здесь нет.
         // Если воркер не работает или он создаёт очереди не связанные с указанным exchange, то сообщение будет отброшено.
