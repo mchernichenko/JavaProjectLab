@@ -12,15 +12,17 @@ import java.util.Scanner;
  * Герерация сообщений и отправка их в rabbitMQ.
  * Рассматриваются:
  * 1. подключение к rabbitMQ
- * 2. создание exchange
+ * 2. создание exchange,
  * 3. создание очереди
- * 4. Публикация сообщений (в дефолтный exchange). Включение поддержки Message durability (сохранения сообщений на диск - messages as persistent)
+ * 4. Публикация сообщений (сосбености  публикации в AMQP default). Включение поддержки Message durability (сохранения сообщений на диск - messages as persistent)
  * 5.
  */
 public class Send {
 
     private static final String EXCHANGE_NAME = "X_HELLO";
-    private final static String QUEUE_NAME = "Q_HELLO";
+    private static final String QUEUE_NAME = "Q_HELLO";
+    private static final String ROUTING_KEY = "ps.pay";
+
 
     public static void main(String[] args) throws IOException {
 
@@ -33,10 +35,7 @@ public class Send {
             Sender(message);
         }*/
         String message = "msg";
-        for (int i = 0; i < 10000; i++) {
-            Sender(message + i);
-        }
-
+        Sender(message);
     }
 
     private static void Sender(String message) throws IOException
@@ -50,7 +49,7 @@ public class Send {
 
         // 2. Создание exchange с указанием типа точки входа (direct, topic, headers, fanout)
         //    по дефолту используется AMQP default -  direct exchange
-        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        channel.exchangeDeclare(EXCHANGE_NAME, "direct");
 
         // 3. Создание очереди. Этот шаг для отправителья не обязателен. Создание очередей и их Bindings забота получателя сообщений
         // Для отсылки сообщения необходимо создать очередь, чтобы посылать в неё. Очередь создаётся если её нет.
@@ -66,12 +65,31 @@ public class Send {
          Для гарантированного приема сообщений существует механим подтверждения publisher confirms: aka Publisher Acknowledgements
         */
 
-        // связывание AMQP default с очередью QUEUE_NAME и публикация  сообщения в эту очередь через AMQP default
-        channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
+        /* публикация в AMQP default. Он имеет следующую особенность, с помощью него можно сразу публиковать сообщение в очередь.
+           "AMQP default" имеет тип direct и для него всегда ROUTING_KEY=QUEUE_NAME. Если есть очередь QUEUE_NAME, то сообщение придёт в неё
+           никакого специального биндинга не требуется! Поэтому в параметре для routing_key достаточно указать имя QUEUE_NAME, а EXCHANGE_NAME = ""
+        */
+        //channel.basicPublish("", QUEUE_NAME, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());
 
-        // публикация сообщения через exchange в очередь, определяемую воркером. Здесь очередь не указана => биндинга с очередью здесь нет.
-        // Если воркер не работает или он создаёт очереди не связанные с указанным exchange, то сообщение будет отброшено.
-        channel.basicPublish(EXCHANGE_NAME, "", null, message.getBytes()); //
+        /* публикация сообщения через exchange в очередь, определяемую воркером. Здесь очередь не указана => биндинга с очередью здесь нет.
+           Если воркер не работает или он создаёт очереди не связанные с указанным exchange, то сообщение будет отброшено.
+           Если EXCHANGE_NAME - fanout, то ROUTING_KEY не нужен, можно указать ""
+        */
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
+
+        long time1 = System.currentTimeMillis();
+        String str = message;
+        System.out.println("Поехали...." + time1);
+        for (int i = 0; i < 1000000; i++) {
+            str = message + i;
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, str.getBytes());
+            //  channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, msg.append(i).toString().getBytes());
+            //Sender(message + i);
+        }
+        long time2 = System.currentTimeMillis();
+        System.out.println("Приехали... за " + (time2 - time1) / 1000 + "сек");
+
+
 
        // System.out.println(" [x] Sent '" + message + "'");
 

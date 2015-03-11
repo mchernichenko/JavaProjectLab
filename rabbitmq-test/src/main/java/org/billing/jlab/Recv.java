@@ -24,7 +24,8 @@ import com.rabbitmq.client.QueueingConsumer; // для буфферизации 
 public class Recv {
 
     private static final String EXCHANGE_NAME = "X_HELLO";
-    private final static String QUEUE_NAME = "Q_HELLO";
+    private static final String QUEUE_NAME = "Q_HELLO";
+    private static final String ROUTING_KEY = "ps.pay";
 
     public static void main(String[] arg) throws java.io.IOException, java.lang.InterruptedException {
 
@@ -51,7 +52,7 @@ public class Recv {
 
         // создание exchange. Должен создаваться сендером, но если его нет, то создаём, т.к. без него не сделать биндинг
         channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
-        // 3. связываем очередь и exchange. т.к. exchange fanout, то routing_key не указываем.
+        // 3. связываем очередь и exchange. т.к. exchange fanout, то routing_key не указываем "".
         channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "");
 
         /* 4. балансировка. Отправке сообщений из очереди на обработку нескольким воркерам (worker) происходит равномерно, даже если
