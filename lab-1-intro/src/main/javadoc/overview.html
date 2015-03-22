@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+Заметки для OCA/OCP.
+
+1. Допустимые имена идентификаторов:
+    - начинаться могуть только с буквы, $, _
+    - с цифры начинатьсы не могут
+    - ограничении на длину нет
+    - нельзя использовать ключевые слова
+    - идентификаторы регистрозависимые
+
+int _a;
+int $c;
+int ______2_w;
+int _$;
+int this_is_a_very_detailed_name_for_an_identifier;
+
+The following are illegal (it's your job to recognize why):
+int :b;
+int -d;
+int e#;
+int .f;
+int 7g;
+
+2. Java Code Conventions (все объкты в CamelCase)
+    - Классы (обысно имя существительное) и интерфейсы (прилагательное) с большой буквы: Account, Runnable
+    - Методы с маленькой verb-noun: getBalance
+    - Переменые c мальенькой
+    - Константы большими c разлелителями _: MIN_HEIGHT
+
+</body>
+</html>
+
