@@ -19,10 +19,15 @@ import java.util.Scanner;
  */
 public class Send {
 
+ /*   private static final String EXCHANGE_NAME = "ps.vin_test_send";
+    private static final String QUEUE_NAME = "Q_YURIY";
+    private static final String ROUTING_KEY = "test_send";
+    private static final String RABBIT_HOST = "172.20.112.141";*/
+
     private static final String EXCHANGE_NAME = "X_HELLO";
     private static final String QUEUE_NAME = "Q_HELLO";
     private static final String ROUTING_KEY = "ps.pay";
-
+    private static final String RABBIT_HOST = "172.20.112.157";
 
     public static void main(String[] args) throws IOException {
 
@@ -43,7 +48,12 @@ public class Send {
         // 1. установка соединения с сервером. Соединение с брокером находящимся на локальной машине.
         //    можно указать IP кролика вместо localhost, если брокер работает на другой машине.
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(RABBIT_HOST);
+        factory.setUsername("test");
+        factory.setPassword("test");
+        factory.setVirtualHost("/");
+        factory.setPort(5672);
+
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
@@ -80,7 +90,7 @@ public class Send {
         long time1 = System.currentTimeMillis();
         String str = message;
         System.out.println("Поехали...." + time1);
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 10; i++) {
             str = message + i;
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, str.getBytes());
             //  channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, msg.append(i).toString().getBytes());
