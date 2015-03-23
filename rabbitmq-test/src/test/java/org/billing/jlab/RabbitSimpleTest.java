@@ -19,6 +19,8 @@ public class RabbitSimpleTest {
     private static String QUEUE_NAME;
     private static String EXCHANGE_NAME;
     private static String ROUTING_KEY;
+    private static String RABBIT_HOST;
+
     private static byte[] body = (" ^ Message Body ^ " + Calendar.getInstance().getTime()).getBytes();
     private static int BATCH_SIZE;
 
@@ -27,75 +29,89 @@ public class RabbitSimpleTest {
 
     private static Logger logger = getLogger(RabbitSimpleTest.class);
 
+    // Выполняется в начале всех тестов
     @BeforeClass
     public static void setUp() throws IOException {
-        QUEUE_NAME = "ps.demo.queue";
-        EXCHANGE_NAME = "ps.demo.exchange";
-        ROUTING_KEY = "ps.mbus.demo_event";
-        BATCH_SIZE = 10000;
+        // 1. установка соединения с сервером. Соединение с брокером находящимся на локальной машине.
+        //    можно указать IP кролика вместо localhost, если брокер работает на другой машине.
 
-        final ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("SRV2-DRCS-TRC15");
-        factory.setUsername("guest");
-        factory.setPassword("guest");
+        RABBIT_HOST = "172.20.112.157"; //"172.20.112.141" - Юрин кроль
+        EXCHANGE_NAME = "ps.demo.exchange";
+        ROUTING_KEY = "ps.pay";
+        QUEUE_NAME = "ps.demo.queue";
+
+        BATCH_SIZE = 10_000;
+
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost(RABBIT_HOST);
+        factory.setUsername("test");
+        factory.setPassword("test");
         factory.setVirtualHost("/");
         factory.setPort(5672);
 
         connection = factory.newConnection();
-    }
+      //  channel = connection.createChannel();
+     }
 
     //Выполняется перед каждым тестом
     @Before
     public void createChannelAndDeclareExchangeQueueBind() throws IOException {
+        // создание канала - т.е. настройка трубы (создание очереди, связывание её с exchange) на которую затем вешается подписчик
+        // для вычитки сообщений из очереди
+
         channel = connection.createChannel();
-        //callback для сообщения о закрытии каналаы
+        // callback для сообщения о закрытии канала
         channel.addShutdownListener(new ShutdownListener() {
             @Override
             public void shutdownCompleted(ShutdownSignalException cause) {
                 //logger.info(cause.getReason().toString());
             }
         });
-        //Объявить exchange, queue, binding
-        channel.exchangeDeclare(EXCHANGE_NAME, "direct", true);
-        channel.queueDeclare(QUEUE_NAME, true, false, false, null);
+        // Объявить exchange, queue, binding
+        boolean durable = true;  // durable - признак того, что очередь физически сохраняется на диске и при падении rabbit все сообщения не пропадут
+        boolean exclusive = false;
+        boolean autodelete = false;
+
+        channel.exchangeDeclare(EXCHANGE_NAME, "direct", durable); // a durable, non-autodelete exchange of "direct" type
+        channel.queueDeclare(QUEUE_NAME, durable, exclusive, autodelete, null); // a durable, non-exclusive, non-autodelete queue
         channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
     }
 
-    /*
-        Соединиться с rabbitmq
+    /*  Соединиться с rabbitmq
         Опубликовать сообщение
         Получить данные об очереди
         Удалить очередь и exchange
     */
-
     @Test
     public void testPublishDemo() throws IOException, InterruptedException {
         logger.info(" ~~~ testPublishDemo begin ~~~");
 
         //Опубликовать сообщение
+        // вместо null м.б. указан MessageProperties.PERSISTENT_TEXT_PLAIN - т.е. сохранять сообщения на диске
         channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
 
-        //Получить данные об очереди
+        // Создаём очередь, а т.к. она создана, возвращается ссылка на объект типа DeclareOk с данными об очереди.
         Thread.sleep(1000); //засыпаем на 1 секунду, чтобы данные об очереди успели обновиться
         AMQP.Queue.DeclareOk queueDeclareResult = channel.queueDeclare(QUEUE_NAME, true, false, false, null);
 
-        logger.info("Queue name:        " + queueDeclareResult.getQueue());
+        // Получить данные об очереди: Имя и кол-во сообщений в очереди.
+        logger.info("Имя очереди: " + queueDeclareResult.getQueue());
         int count = queueDeclareResult.getMessageCount();
-        logger.info("message count :    " + count);
+        logger.info("Количество сообщений в очереди: " + count);
 
-        //Проверяем что очередь содержит 2 сообщения
+        // Проверяем что очередь содержит 2 сообщения
         assertEquals(2, count);
-
-
-
         logger.info(" ~~~ testPublishDemo end ~~~");
     }
 
     /*
         Сравнить производительность публикации 10000 сообщений
          (1) без подтверждения
-		 (2) транзакция на каждое сообщение
+		 (2) транзакция на каждое сообщение, т.е. если мы не хотим потерять сообщение при публикации (persistent message) в случае падения кролика,
+		     и гарантированно доставить его до кролика, то мы должны получить подтверждение, что сообщение записалось на диск
+		     Самое простое решение - делать commit на каждое сообщение.
+		     Как работают подтверждения см.: http://www.rabbitmq.com/blog/2011/02/10/introducing-publisher-confirms/
          (3) в одной большой транзакции
          (4) confirmSelect
     */
@@ -329,8 +345,8 @@ public class RabbitSimpleTest {
     @After
     public void deleteExchangeQueueAndCloseChannel() throws IOException {
         //Удалить очередь и exchange
-        channel.queueDelete(QUEUE_NAME);
-        channel.exchangeDelete(EXCHANGE_NAME);
+    //    channel.queueDelete(QUEUE_NAME);
+     //   channel.exchangeDelete(EXCHANGE_NAME);
         channel.close();
     }
 
