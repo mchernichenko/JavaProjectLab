@@ -91,8 +91,8 @@ public class RabbitSimpleTest {
     public void testPublishDemo() throws IOException, InterruptedException {
         logger.info(" ~~~ testPublishDemo begin ~~~");
 
-        // генерилка тело сообщения
-        byte[] msgBody = msgRabbitBodyCreate(450).getBytes();
+        // генерилка тела сообщения из платежей
+        byte[] msgBody = msgRabbitBodyCreate(450,0).getBytes();
 
         //Опубликовать сообщение
         // вместо null м.б. указан MessageProperties.PERSISTENT_TEXT_PLAIN - т.е. сохранять сообщения на диске
@@ -216,52 +216,58 @@ public class RabbitSimpleTest {
 
     /*
         Сравнить производительность получения 10000 сообщений
-         (1) nextDelivery автоматическое подтверждение
-         (2) nextDelivery явное подтверждение
-         (3) влияние prefetchCount
+         (1) nextDelivery автоматическое подтверждение (320ms)
+         (2) nextDelivery явное подтверждение          (540ms)
+         (3) влияние prefetchCount                     (10 увеличивает време чтения (900ms). По дефолту 100, т.е. сколько сообщений worker сразу забирает из очереди на чтение.)
          (4) с использование handleDelivery
     */
     @Test
     public void testConsumeDemoAutoAck() throws IOException, InterruptedException {
-        logger.info(" ~~~ testConsumeDemoAutoAck begin ~~~");
+        logger.info(" ~~~ Чтение сообщений с автоматическим подтверждением: Begin testConsumeDemoAutoAck ~~~");
         //(1) nextDelivery автоматическое подтверждение
 
+        // предварительное наполнение очереди. Закомментить, если очередь заполнена
         for (int i = 0; i < BATCH_SIZE; i++ ) {
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         }
-
         Thread.sleep(1000);
 
         channel.close();
         channel = connection.createChannel();
 
+
         long time1 = System.currentTimeMillis();
         final CountDownLatch receivedMessageCount = new CountDownLatch(BATCH_SIZE);
 
+        // создаём подписчика
         QueueingConsumer consumerGet = new QueueingConsumer(channel);
-        //Автоматическое подтверждение
+        // Автоматическое подтверждение, т.е. удачение сообщения после чтения сообщения
         boolean autoAck = true;
+        // непосредственный запуск подписчика
         channel.basicConsume(QUEUE_NAME, autoAck, consumerGet);
 
         while (receivedMessageCount.getCount() > 0) {
             receivedMessageCount.countDown();
+            // чтение сообщения
             QueueingConsumer.Delivery delivery = consumerGet.nextDelivery();
+            String message = new String(delivery.getBody());
+       //     System.out.println(" [x] Received '" + message + "'");
 
         }
         logger.info("(1) Получено " + BATCH_SIZE + " сообщений c автоматическим подтверждением за " + (System.currentTimeMillis() - time1) + " ms");
 
-        logger.info(" ~~~ testConsumeDemoAutoAck end ~~~");
+        logger.info(" ~~~ Чтение сообщений с автоматическим подтверждением. End testConsumeDemoAutoAck ~~~");
     }
 
     @Test
     public void testConsumeDemoExplicitAck() throws IOException, InterruptedException {
-        logger.info(" ~~~ testConsumeDemoExplicitAck begin ~~~");
+        logger.info(" ~~~ Чтение сообщений c явным подтверждением: Begin testConsumeDemoExplicitAck  ~~~");
         //(2) nextDelivery явное подтверждение
 
+        // предварительное наполнение очереди. Закомментить, если очередь заполнена
         for (int i = 0; i < BATCH_SIZE; i++ ) {
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         }
-
         Thread.sleep(1000);
 
         channel.close();
@@ -270,9 +276,11 @@ public class RabbitSimpleTest {
         long time1 = System.currentTimeMillis();
         final CountDownLatch receivedMessageCount = new CountDownLatch(BATCH_SIZE);
 
+        // создаём подписчика
         QueueingConsumer consumerGet = new QueueingConsumer(channel);
         //Выключение автоподтверждения
         boolean autoAck = false;
+        // непосредственный запуск подписчика
         channel.basicConsume(QUEUE_NAME, autoAck, consumerGet);
 
         while (receivedMessageCount.getCount() > 0) {
@@ -280,25 +288,38 @@ public class RabbitSimpleTest {
             QueueingConsumer.Delivery delivery = consumerGet.nextDelivery();
             //Явное подтверждение
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+
+            String message = new String(delivery.getBody());
+            // System.out.println(" [x] Received '" + message + "'");
         }
         logger.info("(2) Получено " + BATCH_SIZE + " сообщений c явным подтверждением за " + (System.currentTimeMillis() - time1) + " ms");
 
-        logger.info(" ~~~ testConsumeDemoExplicitAck end ~~~");
+        logger.info(" ~~~ Чтение сообщений c явным подтверждением: End testConsumeDemoExplicitAck ~~~");
     }
 
+    /*
+        prefetchSize по дефолту 100.
+     */
     @Test
     public void testConsumeDemoPrefetchSize() throws IOException, InterruptedException {
-        logger.info(" ~~~ testConsumeDemoPrefetchSize begin ~~~");
+        logger.info(" ~~~ Чтение сообщений c использованием prefetchCount и явным подтверждением: testConsumeDemoPrefetchSize begin ~~~");
         //(3) влияние prefetchCount
+
+        // предварительное наполнение очереди. Закомментить, если очередь заполнена
         for (int i = 0; i < BATCH_SIZE; i++ ) {
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         }
-
         Thread.sleep(1000);
-
-        final int prefetchSize = 10;
         channel.close();
         channel = connection.createChannel();
+
+        /* балансировка. Отправке сообщений из очереди на обработку нескольким воркерам (worker) происходит равномерно, даже если
+          один работает больше другого, т.е. обрабатывает более "тяжелые" сообщения. Это не справедливо.
+          Можно запретить посылать сообщение worker`у, если он занят и не обработат текущее сообщение. Сообщение пошлётся менее занятому worker`у
+          Иначе каждой N-ое сообщение посылается N-му подписчику.
+          prefetchCount = 1 говорит rabbit не давать больше чем одно сообщение worker`у на время, т.е. пока worker не обработает сообщение и не подтвердит его
+          новое сообщение он не получит. сообщение получит свободный worker */
+        final int prefetchSize = 10;
         channel.basicQos(prefetchSize);
 
         long time1 = System.currentTimeMillis();
@@ -311,59 +332,85 @@ public class RabbitSimpleTest {
             receivedMessageCount.countDown();
             QueueingConsumer.Delivery delivery = consumerGet.nextDelivery();
             channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);
+
+            String message = new String(delivery.getBody());
+            // System.out.println(" [x] Received '" + message + "'");
         }
 
         logger.info("(3) Получено " + BATCH_SIZE + " сообщений с использованием prefetchCount за " + (System.currentTimeMillis() - time1) + " ms");
         logger.info(" ~~~ testConsumeDemoPrefetchSize end ~~~");
     }
 
+    /*
+        Чтение сообщений c явным подтверждением с использованием callback при доставке сообщений.
+     */
     @Test
     public void testConsumeDemoHandleDelivery() throws IOException, InterruptedException {
-        logger.info(" ~~~ testConsumeDemoHandleDelivery begin ~~~");
+        logger.info(" ~~~ Чтение сообщений c явным подтверждением с . testConsumeDemoHandleDelivery begin ~~~");
         //(4) с использование handleDelivery
+
         for (int i = 0; i < BATCH_SIZE; i++ ) {
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         }
-
         Thread.sleep(1000);
-
         channel.close();
         channel = connection.createChannel();
 
         long time1 = System.currentTimeMillis();
         final CountDownLatch receivedMessageCount = new CountDownLatch(BATCH_SIZE);
 
-
+        // Создание подписчика с обратным вызовом (call-back)
+        // анонимный класс наследуемый от DefaultConsumer и переопределяющий handleDelivery
+        // handleDelivery является пустышкой (No-op implementation), декларируется в интерфейсе Consumer
+        // анонимный класс не имеет конструктора, все необходимые параметры передаются в конструктор суперкласса
         DefaultConsumer consumer = new DefaultConsumer(channel) {
             int msgCount = 0;
             @Override
-            public void handleDelivery(String consumerTag,
-                                       Envelope envelope,
+            public void handleDelivery(String consumerTag, // customerTag: amq.ctag-PR7tol5OVYFKhGj0_a9fOA - уникальный идентификатор подписчика для канала
+                                       Envelope envelope, // Envelope(deliveryTag=1, redeliver=false, exchange=ps.demo.exchange, routingKey=ps.pay)
                                        AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
 
                 receivedMessageCount.countDown();
                 String routingKey = envelope.getRoutingKey();
                 String contentType = properties.getContentType();
-                long deliveryTag = envelope.getDeliveryTag();
+                long deliveryTag = envelope.getDeliveryTag(); // deliveryTag - некий идентификатор сообщения
                 msgCount++;
                 this.getChannel().basicAck(deliveryTag, false);
 
-
+                String message = new String(body);
+               // System.out.println(" [x] Received '" + message + "'");
             }
         };
 
         boolean autoAck = false;
-
+        // непосредственный запуск подписчика
         channel.basicConsume(QUEUE_NAME, autoAck, consumer);
-
-        receivedMessageCount.await(60000, TimeUnit.MILLISECONDS);
-
+        receivedMessageCount.await(2000, TimeUnit.MILLISECONDS); // нужно подождать, пока не считаем все сообщения, иначе сработает @After и закроет канал
 
         logger.info("(4) Получено " + BATCH_SIZE + " сообщений с использованием handleDelivery за " + (System.currentTimeMillis() - time1) + " ms");
         logger.info(" ~~~ testConsumeDemoHandleDelivery end ~~~");
     }
 
+    /*  Заливка в RabbitMQ платежей пачками
+     */
+    @Test
+    public void myTestPublishPayments() throws IOException {
+        logger.info(" ~~~ Заливка платежей. Begin myTestPublishPayments ~~~");
+
+        int BATCH_MSG = 1;  // кол-во платежей в сообщении
+        int BATCH_SIZE = 100_000; // кол-во сообщений
+
+        //(1) публикация без подтверждения
+        long time1 = System.currentTimeMillis();
+        for (int i = 0; i < BATCH_SIZE; i++) {
+            // генерилка тела сообщения состоящей из пачки платежей с уникальным номером чека
+            byte[] msgBody = msgRabbitBodyCreate(BATCH_MSG, i * BATCH_MSG).getBytes();
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_BASIC, msgBody);
+        }
+        logger.info("(1) Отправлено " + BATCH_SIZE + " сообщений без транзакций за :" + (System.currentTimeMillis() - time1) + " ms");
+        logger.info(" ~~~ Заливка платежей. End myTestPublishPayments ~~~");
+    }
 
     @After
     public void deleteExchangeQueueAndCloseChannel() throws IOException {

@@ -151,6 +151,7 @@ public class StringType {
     /**
      * Формирование пачки платежей в JSON для отправки в RabbitMQ
      * @param cntPay - количество сообщений в пачке
+     * @param offset - смещение для формирования уникального номера чека
      * @return - возвращает тело сообщения в JSON для отправки в RabbitMQ  <br />
      * Пример:<code><br />
      * [{<br />
@@ -176,7 +177,7 @@ public class StringType {
             "operationDate": "20140812T201148"<br />
         }]</code>
      */
-    public static String msgRabbitBodyCreate(int cntPay) {
+    public static String msgRabbitBodyCreate(int cntPay, int offset) {
 
         String msg="";
         StringBuilder messageBuilder = new StringBuilder();
@@ -194,8 +195,10 @@ public class StringType {
 
         messageBuilder.append("[");
         for (int i = 0; i < cntPay; i++) {
-            messageBuilder.append(templateMsg.replace("%1", Integer.toString(i+1)));
-            if (i != cntPay-1) { messageBuilder.append(",\n"); }
+            messageBuilder.append(templateMsg.replace("%1", Integer.toString(i + 1 + offset)));
+            if (i != cntPay - 1) {
+                messageBuilder.append(",\n");
+            }
         }
 
         messageBuilder.append("]");
