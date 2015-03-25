@@ -148,6 +148,34 @@ public class StringType {
         System.out.println("Убираем начальные и конечные пробелы: " + replace.trim());
     }
 
+    /**
+     * Формирование пачки платежей в JSON для отправки в RabbitMQ
+     * @param cntPay - количество сообщений в пачке
+     * @return - возвращает тело сообщения в JSON для отправки в RabbitMQ  <br />
+     * Пример:<code><br />
+     * [{<br />
+            "receiptNumber": "12",<br />
+            "paymentId": 777,<br />
+            "cashRegistryId": 20,<br />
+            "customerId": 777,<br />
+            "phoneNumber": "79112422116",<br />
+            "accountNumber": "777",<br />
+            "paymentCategory": 1,<br />
+            "amount": 777.77,<br />
+            "operationDate": "20140812T201148"<br />
+        },<br />
+        {<br />
+            "receiptNumber": "14",<br />
+            "paymentId": 777,<br />
+            "cashRegistryId": 20,<br />
+            "customerId": 777,<br />
+            "phoneNumber": "79112422116",<br />
+            "accountNumber": "777",<br />
+            "paymentCategory": 1,<br />
+            "amount": 777.78,<br />
+            "operationDate": "20140812T201148"<br />
+        }]</code>
+     */
     public static String msgRabbitBodyCreate(int cntPay) {
 
         String msg="";

@@ -9,11 +9,15 @@ import static org.billing.jlab.intro.StringType.msgRabbitBodyCreate;
  */
 public class IntroTest {
 
+    /*
+        Генерилка тела сообщений для кролика
+     */
     @Test
     public void testName() throws Exception {
 
-        String msgBody = msgRabbitBodyCreate(450);
+        String msgBody = msgRabbitBodyCreate(4);
         byte[] body = msgBody.getBytes();
         System.out.println("Длина (Кб):" + body.length/1024.00);
+        System.out.println("\nmsgBody=" + msgBody);
     }
 }

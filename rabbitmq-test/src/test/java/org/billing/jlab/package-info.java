@@ -4,6 +4,8 @@
  * <a href="http://devcolibri.com/864">настройка в Intellij IDEA</a>
  * <a href="http://habrahabr.ru/post/120101/">Статья на хабре</a>
  *
+ * <a href="http://logback.qos.ch/manual/architecture.html>Описание фреймворка для логирования Logback</a>
+ *
  Доступные аннотации JUnit
  В следующей таблице приведен обзор имеющихся в аннотации JUnit 4.x.
 
