@@ -12,8 +12,11 @@ import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.billing.jlab.Util.msgRabbitBodyCreate;
 import static org.junit.Assert.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
+
+import org.billing.jlab.Util;
 
 public class RabbitSimpleTest {
     private static String QUEUE_NAME;
@@ -22,6 +25,8 @@ public class RabbitSimpleTest {
     private static String RABBIT_HOST;
 
     private static byte[] body = (" ^ Message Body ^ " + Calendar.getInstance().getTime()).getBytes();
+    private static byte[] body1 = ("Message Body").getBytes();
+
     private static int BATCH_SIZE;
 
     private static Connection connection;
@@ -86,10 +91,13 @@ public class RabbitSimpleTest {
     public void testPublishDemo() throws IOException, InterruptedException {
         logger.info(" ~~~ testPublishDemo begin ~~~");
 
+        // генерилка тело сообщения
+        byte[] msgBody = msgRabbitBodyCreate(450).getBytes();
+
         //Опубликовать сообщение
         // вместо null м.б. указан MessageProperties.PERSISTENT_TEXT_PLAIN - т.е. сохранять сообщения на диске
-        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
-        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
+        channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, msgBody);
+      //  channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
 
         // Создаём очередь, а т.к. она создана, возвращается ссылка на объект типа DeclareOk с данными об очереди.
         Thread.sleep(1000); //засыпаем на 1 секунду, чтобы данные об очереди успели обновиться
@@ -99,9 +107,11 @@ public class RabbitSimpleTest {
         logger.info("Имя очереди: " + queueDeclareResult.getQueue());
         int count = queueDeclareResult.getMessageCount();
         logger.info("Количество сообщений в очереди: " + count);
+        logger.info("Длина одного сообщения: " + msgBody.length);
+
 
         // Проверяем что очередь содержит 2 сообщения
-        assertEquals(2, count);
+        assertEquals(4, count);
         logger.info(" ~~~ testPublishDemo end ~~~");
     }
 
@@ -110,27 +120,27 @@ public class RabbitSimpleTest {
          (1) без подтверждения
 		 (2) транзакция на каждое сообщение, т.е. если мы не хотим потерять сообщение при публикации (persistent message) в случае падения кролика,
 		     и гарантированно доставить его до кролика, то мы должны получить подтверждение, что сообщение записалось на диск
-		     Самое простое решение - делать commit на каждое сообщение.
+		     Самое простое решение - делать commit на каждое сообщение. Здесь проблемы с производительностью из=за блокировок. Publisher должен ждать ответа от брокера на каждое сообщение.
 		     Как работают подтверждения см.: http://www.rabbitmq.com/blog/2011/02/10/introducing-publisher-confirms/
          (3) в одной большой транзакции
-         (4) confirmSelect
+         (4) confirmSelect - легковесная публикация сообщений с подтверждением
     */
 
     @Test
     public void testPublishTransactionProductivity() throws IOException {
-        logger.info(" ~~~ testPublishTransactionProductivity begin ~~~");
+        logger.info(" ~~~ Пример гарантированной доставки. Begin testPublishTransactionProductivity ~~~");
 
         //(1) без подтверждения
         long time1 = System.currentTimeMillis();
         for (int i = 0; i < BATCH_SIZE; i++ ) {
-            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY,  MessageProperties.PERSISTENT_BASIC, body);
         }
         logger.info("(1) Отправлено " + BATCH_SIZE + " сообщений без транзакций за :" + (System.currentTimeMillis() - time1) + " ms");
 
         //(2) транзакция на каждое сообщение
         long time2 = System.currentTimeMillis();
         for (int i = 0; i < BATCH_SIZE; i++ ) {
-            channel.txSelect();
+            channel.txSelect(); // перевод канала в транзакционный режим
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
             channel.txCommit();
         }
@@ -139,25 +149,33 @@ public class RabbitSimpleTest {
 
         //(3) в одной большой транзакции
         long time3 = System.currentTimeMillis();
-        channel.txSelect();
+        
+        // перевод канала в транзакционный режим
+        AMQP.Tx.SelectOk selectOk = channel.txSelect(); // #method<tx.select-ok>()
+        logger.info("selectOk = " + selectOk);
+
         for (int i = 0; i < BATCH_SIZE; i++ ) {
-            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY,  MessageProperties.PERSISTENT_BASIC, body);
         }
         channel.txCommit();
         logger.info("(3) Отправлено " + BATCH_SIZE + " сообщений в одной транзакции :" +
                 (System.currentTimeMillis() - time3) + " ms");
 
-        logger.info(" ~~~ testPublishTransactionProductivity end ~~~");
+        logger.info(" ~~~ Пример гарантированной доставки. End testPublishTransactionProductivity~~~");
     }
 
+    /*
+        (4) confirmSelect - Пример более производительной публикации сообщений с подтверждением (более в 100 раз)
+     */
     @Test
     public void testPublishTransactionProductivityConfirmSelect() throws IOException, InterruptedException {
-        logger.info(" ~~~ testPublishTransactionProductivityConfirmSelect begin ~~~");
-        //(4) confirmSelect
+        logger.info(" ~~~ Пример асинхронной гарантированной доставки. testPublishTransactionProductivityConfirmSelect begin ~~~");
+
+        // определяем множество для хранения id неподтверждённых сообщений
         final SortedSet<Long> unconfirmedSet =
                 Collections.synchronizedSortedSet(new TreeSet());
 
-        //callback для подтверждения сообщений
+        // вешаем callback на канал при подтверждении сообщений для удаления подтверждённых сообщений из множества unconfirmedSet
         channel.addConfirmListener(new ConfirmListener() {
             public void handleAck(long deliveryTag, boolean multiple) throws IOException {
                 if (multiple) {
@@ -172,14 +190,19 @@ public class RabbitSimpleTest {
             }
         });
 
-        channel.confirmSelect();
+        // перевод канала в режим подтверждения (acknowledgements)
+        AMQP.Confirm.SelectOk selectOk = channel.confirmSelect();
+        logger.info("selectOk = " + selectOk); // #method<confirm.select-ok>(); protocolMethodName = confirm.select-ok
 
+        // суём пачку сообщений в очередь
         long time1 = System.currentTimeMillis();
-        for (int i = 0; i < BATCH_SIZE; i++ ) {
+        for (int i = 0; i < BATCH_SIZE; i++) {
+            // в режиме подтверждения getNextPublishSeqNo возвращает номер (deliveryTag) следующего публикуемого сообщения (что-то типа sequence.NEXTVAL в Oracle)
             unconfirmedSet.add(channel.getNextPublishSeqNo());
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
         }
 
+        // Переводим канал в режм ожидения до тех пор пока по всём сообещиям от брокера не будет получен ответ, либо ack, либо nack .
         channel.waitForConfirms();
         while (unconfirmedSet.size() > 0){
             Thread.sleep(10);
@@ -188,11 +211,11 @@ public class RabbitSimpleTest {
         logger.info("(4) Отправлено " + BATCH_SIZE + " сообщений c использованием confirmSelect :" +
                 (System.currentTimeMillis() - time1) + " ms");
 
-        logger.info(" ~~~ testPublishTransactionProductivityConfirmSelect end ~~~");
+        logger.info(" ~~~ Пример асинхронной гарантированной доставки. testPublishTransactionProductivityConfirmSelect end ~~~");
     }
 
     /*
-        Сравнить производительность получения 10000  сообщений
+        Сравнить производительность получения 10000 сообщений
          (1) nextDelivery автоматическое подтверждение
          (2) nextDelivery явное подтверждение
          (3) влияние prefetchCount
