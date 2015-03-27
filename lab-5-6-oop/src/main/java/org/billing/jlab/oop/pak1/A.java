@@ -46,3 +46,8 @@ public class A {
         packagePrivateMethod(dx, dy);
     }
 }
+
+class X {
+    public int x, y;
+}
+
