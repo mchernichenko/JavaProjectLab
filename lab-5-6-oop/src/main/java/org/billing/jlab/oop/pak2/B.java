@@ -12,6 +12,10 @@ public class B extends A {
     public void protectedMethod(int dx, int dy) {
         runProtectedMethod(dx, dy);
         System.out.println("Вызов protectedMethod из класса B.");
+
+        // В данном случае недоступен потому, что мы обращаемся к классу A как к экземпляру класса, а не как к родителю текущего экземпляра.
+        // При обращении "снаружи" (к экземпляру класса) мы имеем доступ только к public (ну либо к default внутри пакета).
+        //   new A().runProtectedMethod(); так нельзя
     }
 
     /**
@@ -25,5 +29,10 @@ public class B extends A {
     public void packagePrivateMethod(int dx, int dy) {
         runPrivateMethod(dx, dy);
         System.out.println("Вызов packagePrivateMethod из класса B.");
+    }
+
+    public void func() {
+        System.out.println(xxx);
+        protectMethod1();
     }
 }

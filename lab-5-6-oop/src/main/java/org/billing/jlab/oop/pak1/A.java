@@ -6,6 +6,9 @@ package org.billing.jlab.oop.pak1;
  */
 public class A {
     public int x, y;
+    private int z;
+    protected String xxx = "Protect String";
+
 
     /**
      *  protected: члены класса доступны внутри пакета и в наследниках;
@@ -27,8 +30,8 @@ public class A {
     void packagePrivateMethod(int dx, int dy) {
         x += dx;
         y += dy;
-        System.out.println(("Вызов packagePrivateMethod из класса A пакета pak1, т.к. + " +
-                "определённый packagePrivateMethod в классе B пакета pak2 на самом деле не переопределяет packagePrivateMethod из класса A +" +
+        System.out.println(("Вызов packagePrivateMethod из класса A пакета pak1, т.к. \n" +
+                "определённый packagePrivateMethod в классе B пакета pak2 на самом деле не переопределяет packagePrivateMethod из класса A \n" +
                 "т.к. он не доступен в другом пакете и => d классе B"));
     }
 
@@ -44,6 +47,10 @@ public class A {
         // данный метод не имеет модификатора, в классе В он не доступен => при вызове runPrivateMethod предком
         // метод packagePrivateMethod будет вызван из класса A, а не его двойник из класса B
         packagePrivateMethod(dx, dy);
+    }
+
+    protected void protectMethod1() {
+        System.out.println(" run A.protectMethod() {\n");
     }
 }
 
