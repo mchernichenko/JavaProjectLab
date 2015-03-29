@@ -10,7 +10,7 @@ import java.util.Objects;
  * рассматривается:
  * - equals/hashCode - равентсвое объектов
  * - Сравнение - интерфейс Comparable
- * - Клониорвание - интерфейс Cloneable
+ * - Клонирование - интерфейс Cloneable
  *
  */
 public class Employee extends Person implements Comparable<Employee>, Cloneable {
