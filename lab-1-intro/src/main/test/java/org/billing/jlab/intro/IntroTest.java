@@ -17,15 +17,29 @@ public class IntroTest {
         Генерилка тела сообщений для кролика
      */
     @Test
-    public void testName() throws Exception {
+    public void testGenerateRabbitMsg() throws Exception {
 
         long time = System.currentTimeMillis();
-        String msgBody = msgRabbitBodyCreate(450); // сгенерить пачку из 4-х платежей
+        String msgBody = msgRabbitBodyCreate(450,0); // сгенерить пачку из 4-х платежей
 //        logger.info("Создана пачка из " + BATCH_SIZE + " платежей за :" + (System.currentTimeMillis() - time) + " ms");
         System.out.println("Создана пачка из " + BATCH_SIZE + " платежей за: " + (System.currentTimeMillis() - time) + " ms");
 
         byte[] body = msgBody.getBytes();
         System.out.println("Длина сообщения(Кб):" + body.length/1024.00);
         System.out.println("\nmsgBody=" + msgBody);
+    }
+
+    @Test
+    public void testEnumType() throws Exception {
+        Size s = Size.MEDIUM;
+        System.out.println(s);
+
+        String str = Size.MEDIUM.toString(); // возвращается символьная строка "MEDIUM"
+        Size small = (Size) Enum.valueOf(Size.class, "SMALL"); // переменной будет присвоено Size.MEDIUM
+        Size[] values = Size.values(); // массив вcех перечисляемых типов
+        int ordinal = Size.MEDIUM.ordinal(); // = 1, возвращает позицию перечисляемой константы
+
+        Size1 s1 = Size1.LARGE;
+        System.out.println(s1.getAbbreviation()); // L
     }
 }

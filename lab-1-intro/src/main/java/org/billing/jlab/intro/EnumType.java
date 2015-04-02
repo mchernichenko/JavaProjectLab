@@ -17,7 +17,7 @@ public class EnumType {
 
         String str = Size.MEDIUM.toString(); // возвращается символьная строка "MEDIUM"
         Size small = (Size) Enum.valueOf(Size.class, "SMALL"); // переменной будет присвоено Size.MEDIUM
-        Size[] values = Size.values(); // массив свех перечисляемых типов
+        Size[] values = Size.values(); // массив вcех перечисляемых типов
         int ordinal = Size.MEDIUM.ordinal(); // = 1, возвращает позицию перечисляемой константы
 
         Size1 s1 = Size1.LARGE;
@@ -35,7 +35,8 @@ enum Size {SMALL, MEDIUM, LARGE, EXTRA_LARGE}
 /**
  Объявляем перечисляемый тип Size. На самом деле это класс.
  Допускаются существование, в данном случае, только четырёх экзампляров класса
- В данном классе требуется конструктор
+ В данном классе требуется конструктор, который вызывается автоматически, когда вызывается , например, Size1.LARGE
+
  */
 enum Size1 {
     SMALL("S"), MEDIUM("M"), LARGE("L"), EXTRA_LARGE("XL");
