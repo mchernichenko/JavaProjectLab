@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Обратные вызовы
  */
-public class CallBackTest {
+public class CallBack {
     public static void main(String[] args) {
         ActionListener listener = new TimePrinter();
 
