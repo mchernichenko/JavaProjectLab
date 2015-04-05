@@ -1,8 +1,7 @@
 package org.billing.jlab.inner;
 
 import org.billing.jlab.reflection.ReflectionTest;
-import org.junit.Test;
-
+import org.junit.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
@@ -14,6 +13,10 @@ import java.awt.event.ActionListener;
  */
 public class InnerClassTest {
 
+    /**
+     *  Тестируем обратный вызов. Используем обычный класс для реализации listener
+     * @throws Exception
+     */
     @Test
     public void testCallBack() throws Exception {
         ActionListener listener = new TimePrinter();
@@ -27,9 +30,13 @@ public class InnerClassTest {
         System.exit(0);
     }
 
+    /**
+     *  Тестируем обратный вызов. Используем внутренний класс для реализации listener
+     * @throws Exception
+     */
     @Test
     public void testInnerClass() throws Exception {
-        TalkingClock talkingClock = new TalkingClock(2000, true);
+        TalkingClockInner talkingClock = new TalkingClockInner(2000, true);
         talkingClock.start();
 
         JOptionPane.showMessageDialog(null, "Выход?");
@@ -37,9 +44,14 @@ public class InnerClassTest {
 
     }
 
+    /**
+     *
+     * @throws Exception
+     */
     @Test
     public void testReflection() throws Exception {
-        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClock$TimePrinter");
+        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner");
+    //    ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner$TimePrinter");
         // ReflectionTest.printClass("java.util.Date");
     }
 }
