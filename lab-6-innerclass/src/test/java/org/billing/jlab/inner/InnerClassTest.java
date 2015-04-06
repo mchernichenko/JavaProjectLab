@@ -1,7 +1,8 @@
 package org.billing.jlab.inner;
 
 import org.billing.jlab.reflection.ReflectionTest;
-import org.junit.*;
+import org.junit.Test;
+
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
@@ -50,8 +51,10 @@ public class InnerClassTest {
      */
     @Test
     public void testReflection() throws Exception {
-        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner");
+    //    ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner");
     //    ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner$TimePrinter");
+        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockLocal$1TimePrinter");
+
         // ReflectionTest.printClass("java.util.Date");
     }
 }

@@ -7,27 +7,25 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 
 /**
- * Рассматривается применение внутренних классов.
- * Самое важное то, что для JVM не существует внутренних классов. Компилятор все внутренние классы преобразует в обычные.
- * Для их обозначения используется разделитель $. Например, TalkingClock$TimePrinter.class
+ * Рассматривается применение локальных классов.
+ *
+ *  Основные причины использования внутреннего класса:
+ *  1. Класс используется лишь однажды и больше он никому не нужен.
  *
  * Основные моменты:
- * - Объект внутреннего класса имеет доступ к данным объекта в котором он определён, включая закрытые.
- *    т.к. компилятор видоизменяет все конструкторы внутренних классов, добавляя параметр для ссылки на внешний класс.
+ * 1. локальные классы никогда не используют модификаторов доступа. Их область действия всегда ограничена блоком, в котором они объявлены.
+ * 2. Они полностью скрыты от внешнего кода и даже от внешнего класса. О его существовании известно только методу где он объявлен.
+ * 3. Локальные классы дополнительно имеют доступ к локальным переменным (объявленным как final)
  *
  *
- * - Внутренний класс можно скрыть от других классов того же пакета
- * <p/>
- * Рассматриваются:
- * -
+ *
  *
  * http://www.quizful.net/post/inner-classes-java
  */
 public class LocalClass
 {
     public static void main(String[] args) {
-        TalkingClock1 talkingClock = new TalkingClock1(1000, true);
-        //talkingClock.start();
+        TalkingClockLocal talkingClock = new TalkingClockLocal(1000, true);
         talkingClock.start(1000, true);
 
         JOptionPane.showMessageDialog(null, "Выход?");
@@ -35,11 +33,10 @@ public class LocalClass
     }
 }
 
-
 /**
  * Часы, выводящие время через регулярные промежутки времени.
  */
-class TalkingClock1 {
+class TalkingClockLocal {
     private int interval;
     private boolean beep;
 
@@ -47,7 +44,7 @@ class TalkingClock1 {
      * @param beep     - признак включения звукового сигнала (true - включить звук)
      * @param interval - интервал между сообщениями (в миллисекундах)
      */
-    public TalkingClock1(int interval, boolean beep) {
+    public TalkingClockLocal(int interval, boolean beep) {
         this.beep = beep;
         this.interval = interval;
     }
@@ -66,7 +63,7 @@ class TalkingClock1 {
      */
     public void start(int interval, final boolean beep) {
 
-        class TimerPrinterLocal implements ActionListener
+        class TimePrinter implements ActionListener
         {
             /**
              * Локальные классы всегда объявляются без модификатора доступа. Их область действия всегда ограничена блоком, в котором он объявлен
@@ -81,7 +78,7 @@ class TalkingClock1 {
             }
         }
 
-        ActionListener listener = new TimerPrinterLocal(); // создание экземпляра внутреннего локального класса
+        ActionListener listener = new TimePrinter(); // создание экземпляра внутреннего локального класса
         Timer timer = new Timer(interval,listener);
         timer.start();
     }
