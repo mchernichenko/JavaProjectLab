@@ -99,7 +99,7 @@ class TalkingClockInner {
         @Override
         public void actionPerformed(ActionEvent e) {
             Date now = new Date();
-            System.out.println("The time is " + now);
+            System.out.println("(use inner class) The time is " + now);
             if (beep) Toolkit.getDefaultToolkit().beep(); // beep поле внешнего класса access$000(outer) к которому имеет доступ внутренний класс
         }
     }

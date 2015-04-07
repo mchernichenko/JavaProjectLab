@@ -15,7 +15,8 @@ import java.awt.event.ActionListener;
 public class InnerClassTest {
 
     /**
-     *  Тестируем обратный вызов. Используем обычный класс для реализации listener
+     * Тестируем обратный вызов. Используем обычный класс для реализации listener
+     *
      * @throws Exception
      */
     @Test
@@ -32,7 +33,8 @@ public class InnerClassTest {
     }
 
     /**
-     *  Тестируем обратный вызов. Используем внутренний класс для реализации listener
+     * Используем внутренний класс для реализации listener (обратного вызова).
+     *
      * @throws Exception
      */
     @Test
@@ -45,15 +47,51 @@ public class InnerClassTest {
 
     }
 
+    @Test
+    public void testLocalClass() throws Exception {
+        TalkingClockLocal talkingClock = new TalkingClockLocal();
+        talkingClock.start(1000, true);
+
+        JOptionPane.showMessageDialog(null, "Выход?");
+        System.exit(0);
+    }
+
+    @Test
+    public void testAnonimousClass() throws Exception {
+        TalkingClockAnonimous talkingClock = new TalkingClockAnonimous();
+        talkingClock.start(1000, true);
+
+        JOptionPane.showMessageDialog(null, "Выход?");
+        System.exit(0);
+    }
+
+    @Test
+    public void testStaticInnerClass() throws Exception {
+        double[] doubles = new double[20];
+        for (int i = 0; i < doubles.length; i++) {
+            doubles[i] = 100 * Math.random();
+        }
+        ArrayAlg.Pair pair = ArrayAlg.minmax(doubles);
+        System.out.println("min=" + pair.getFirst());
+        System.out.println("max=" + pair.getSecond());
+    }
+
     /**
-     *
+     * Анализ классов
      * @throws Exception
      */
     @Test
     public void testReflection() throws Exception {
-    //    ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner");
-    //    ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner$TimePrinter");
-        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockLocal$1TimePrinter");
+
+        // анализ внешнеого класса
+        // ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner");
+
+        // анализ внутреннего класса
+        // ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockInner$TimePrinter");
+
+        // анализ локального класса
+        ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockLocal");
+       // ReflectionTest.printClass("org.billing.jlab.inner.TalkingClockLocal$1TimePrinter");
 
         // ReflectionTest.printClass("java.util.Date");
     }
