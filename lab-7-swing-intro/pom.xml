@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>JavaProjectLab</artifactId>
+        <groupId>org.billing.jlab</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>swing-intro</artifactId>
+    <packaging>jar</packaging>
+
+    <name>swing-intro</name>
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
+                <configuration>
+                    <archive>
+                        <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
+                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
+                        <manifest>
+                            <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
+                            Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
+                            Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
+                            т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
+                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>org.billing.jlab.swingintro.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
