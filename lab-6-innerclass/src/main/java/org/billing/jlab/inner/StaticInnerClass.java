@@ -1,7 +1,7 @@
 package org.billing.jlab.inner;
 
 /**
- * Применение статического внетреннего класса
+ * Применение статического внутреннего класса
  */
 public class StaticInnerClass {
     public static void main(String[] args) {

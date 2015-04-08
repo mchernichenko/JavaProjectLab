@@ -28,7 +28,7 @@ public class ProxyTest {
 
             TraceHandler handler = new TraceHandler(value); // заключаем объекты в некоторую оболочку TraceHandler реализующую интерфейс InvocationHandler
 
-            // 1. proxy-объекты реализуют все методы указанных в параметре интерфейсов. В данном случае в нём реализуется метод CompаreTo интерфейса Comparable.class.
+            // 1. proxy-объекты реализуют все методы интерфейсов указанных в параметре. В данном случае в переметре передаём Comparable.class => в нём реализуется метод CompаreTo интерфейса Comparable.class.
             // 2. Если для прокси-объекта вызывается метод CompаreTo, то он в свою очередь вызывает метод invoke определённого в обработчике, а он там есть всегда, т.к. обработчик handler должен реализовать интерфейс InvocationHandler
             //    передаваемый в явном параметре newProxyInstance создания прокси-объекта
             // 3. В invoke передается вызываемый метод - CompаreTo и его аргументы
@@ -46,7 +46,7 @@ public class ProxyTest {
             3. В методе compаreTo класса Proxy вызывается метод handler.invoke(elements[i], java.lang.Comparable, key)
             4. handler.invoke вызывает compаreTo для параметра TraceHandler.target, т.е. по сути с value, который был передан в TraceHandler
 
-             В конечном счете идёт сравнение объектов Integer и их сортировка в массиве
+             В конечном счете идёт сравнение объектов Integer, переданных в конструктор TraceHandler и их сортировка в массиве.
 
              Arrays.binarySearch(elements, key) -> elements[i].compаreTo(key) -> handler.invoke(elements[i], java.lang.Comparable, key) -> target.compаreTo(key)
           */
