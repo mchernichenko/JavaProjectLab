@@ -10,7 +10,7 @@
 
     <artifactId>oop</artifactId>
     <packaging>jar</packaging>
-    <name>LAB_OOP</name>
+    <name>oop (artifactName)</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -43,7 +43,7 @@
     <packaging>pom</packaging>
 
     <!--Дополнительная необязательная информация о проекте-->
-    <name>Root JavaProjectLab (Fill name project)</name>
+    <name>JavaProjectLab (FullNameProject)</name>
     <description>Description project</description>
     <url>http://billing.ru</url>
 
