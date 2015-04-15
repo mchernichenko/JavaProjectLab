@@ -36,6 +36,7 @@
         <module>rabbitmq-test</module>
         <module>lab-7-swing-intro</module>
         <module>lab-14-threads</module>
+        <module>JMX-test</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
