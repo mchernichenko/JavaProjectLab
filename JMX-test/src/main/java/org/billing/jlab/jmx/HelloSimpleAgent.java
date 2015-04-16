@@ -11,22 +11,23 @@ import java.lang.management.ManagementFactory;
  *     Интерфейс MBeanServer содержит немалое число методов для управления MBean’ами, которые на нем зарегистрированы.
  *  2. Регистрация MBean (экземпляра класса HelloJmx) на платформе MBeanServer: mbs.registerMBean(helloBean, helloName);
  */
-public class SimpleAgent
+public class HelloSimpleAgent
 {
     private MBeanServer mbs = null;
 
-    public SimpleAgent()
+    public HelloSimpleAgent()
     {
         // Получить экземпляр MBeanServer.
         mbs = ManagementFactory.getPlatformMBeanServer();
 
         // Создаем наш MBean
-        HelloJmx helloBean = new HelloJmx();
-        ObjectName helloName = null;
+        //Hello helloBean = new Hello();
+        HelloController helloBean = new HelloController(new Hello());
+       // ObjectName helloName = null;
 
         try {
             // И регистрируем его на платформе MBeanServer
-            helloName = new ObjectName("SimpleAgent:name=hellothere");
+            ObjectName helloName = new ObjectName("org.billing.jlab.jmx:type=SimpleAgent");
             mbs.registerMBean(helloBean, helloName);
         } catch(Exception e) {
             e.printStackTrace();
@@ -46,8 +47,8 @@ public class SimpleAgent
 
     public static void main(String argv[])
     {
-        SimpleAgent agent = new SimpleAgent();
+        HelloSimpleAgent agent = new HelloSimpleAgent();
         System.out.println("SimpleAgent is running...");
-        SimpleAgent.waitForEnterPressed();
+        HelloSimpleAgent.waitForEnterPressed();
     }
 }

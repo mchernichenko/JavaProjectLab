@@ -1,5 +1,8 @@
 package org.billing.jlab.jmx;
 
+
+import javax.management.NotificationBroadcasterSupport;
+
 /**
  * MBeans – это Java-объекты, которые реализуют определенный интерфейс. В данном случае HelloBean.
  * Интерфейс включает:
@@ -11,7 +14,8 @@ package org.billing.jlab.jmx;
  * В методах set/get просто строка, но  может быть реально ценное значение.
  * Например: свободное место на диске, количество подключаемых пользователей, системное время, новый URL к базе данных для статистики и пр.
  */
-public class HelloJmx implements HelloBean
+
+public class HelloJmx extends NotificationBroadcasterSupport implements HelloJmxMBean
 {
     private String message = null;
 
@@ -24,8 +28,9 @@ public class HelloJmx implements HelloBean
     }
 
     @Override
-    public void setMessage(String message) {
+    public synchronized void setMessage(String message) {
         this.message = message;
+        System.out.println("message set now:" + this.message);
     }
 
     @Override
