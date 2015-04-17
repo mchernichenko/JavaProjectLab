@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+--- Средства доступа к JMX ---
+
+Для чтения данных JMX существует как минимум две программы из JDK:
+1. Java Monitoring & Management Console - jconsole.exe
+2. Java VisualVM - jvisualvm.exe
+Для полноценной работы в VisualVM требуется установить плагин VisualVM-MBeans.
+При наличии доступа в интернет нужно открыть Tools - Plugins - Available Plugins , выбрать VisualVM-MBeans и установить.
+Иначе, нужно скачать архив с плагином с http://visualvm.java.net/pluginscenters.html, затем  открыть Tools - Plugins - Downloaded и установить скачанный архив и перезапустить программу.
+
+Подключение к java-приложению осуществляется по сети, как на локальном компьютере , так и на удаленном.
+Для подключения нужно указать адрес:порт, либо полный адрес сервиса service:jmx:rmi:///jndi/rmi://hostName:portNum/jmxrmi .
+Использование формата адрес:порт равнозначно полному адресу сервиса, если последняя часть адреса равна "jmxrmi". Так же для подключения могут потребоваться логин и пароль.
+
+---- Настройка параметров подключения к JMX в приложениях ----
+Полное описание настроек JMX см. http://docs.oracle.com/javase/7/docs/technotes/guides/management/agent.html.
+
+Ниже даны минимально нужные настройки:
+Для работы JMX  в приложении должны быть заданы следующие параметры (либо будет использоваться значения по умолчанию):
+
+- com.sun.management.jmxremote - включен/выключен мониторинг (true/false).
+- com.sun.management.jmxremote.port - порт, на который приходят входящие запросы от клиента.
+- com.sun.management.jmxremote.ssl - включен/выключен ssl (true/false).
+- com.sun.management.jmxremote.authenticate - требуется ли аутентификация (true/false).
+
+Данные параметры могут быть заданы как в скрипте запуска java-приложения как входные параметры, так и через конфигурационные файлы.
+
+Самое главное, что нужно знать - для работы JMX используется два порта.
+ - Порт#1, на который приходят входящие запросы от клиента, задается параметром com.sun.management.jmxremote.port
+ - Порт#2, по которому идет работа после подключения. Выбирается при запуске приложения по умолчанию случайно.
+Некоторые приложения позволяют жестко задать данный порт, а некоторые нет. В случае работы приложения за фаерволом, данная особенность очень важна.
+
+---- Tomcat ---
+В Tomcat параметры JMX задаются в файле bin\setenv.sh, например
+CATALINA_OPTS="$CATALINA_OPTS -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=9004 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+в Tomcat не зафиксирован второй порт (rmiServerPort). Решение проблемы см. http://blog.markshead.com/1129/connecting-visual-vm-to-tomcat-7/
+
+</body>
+</html>
