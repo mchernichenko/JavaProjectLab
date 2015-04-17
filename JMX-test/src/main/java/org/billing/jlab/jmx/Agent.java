@@ -11,9 +11,9 @@ public class Agent {
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 
-        ObjectName name = new ObjectName("com.example.mbeans:type=Hello");
+        ObjectName name = new ObjectName("org.billing.jlab.jmx:type=Hello");
 
-        HelloJmx mbean = new HelloJmx();
+        Hello mbean = new Hello();
 
         mbs.registerMBean(mbean, name);
 

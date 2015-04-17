@@ -23,17 +23,15 @@ public class HelloSimpleAgent
         mbs = ManagementFactory.getPlatformMBeanServer();
 
         // Создаем наш MBean
-        //Hello helloBean = new Hello();
-        HelloController helloBean = new HelloController(new Hello());
-       // ObjectName helloName = null;
+        Hello helloBean = new Hello();
 
         try {
-            // определяем имя объекта для экземпляра MBean.
-            // У каждого JMX MBean должно быть имя объекта соответствующее синтаксису, определенному спецификацией JMX,
-            // а именно, имя должно включать ДОМЕН, и СПИСОК ключевых СВОЙСТВ
+            // определяем имя объекта для экземпляра MBean. ObjectName выбрасывает исключение
+            // У каждого JMX MBean должно быть имя объекта соответствующее синтаксису, определенному спецификацией JMX, а именно
+            // имя должно включать ДОМЕН, и СПИСОК ключевых СВОЙСТВ
             // В нашем случае дамен это пакет, в котором содержится MBean: org.billing.jlab.jmx
             // Ключевое свойство: тип объекта, как правило класс реализующий интерфейс MBean
-            ObjectName helloName = new ObjectName("org.billing.jlab.jmx:type=SimpleAgent");
+            ObjectName helloName = new ObjectName("org.billing.jlab.jmx:type=HelloSimpleAgent");
 
             // регистрируем MBean c предопределённым именем на платформе MBeanServer
             mbs.registerMBean(helloBean, helloName);
@@ -42,7 +40,7 @@ public class HelloSimpleAgent
         }
     }
 
-    // Это вспомогательный метод – он позволяет нашей программе остановиться и ждать
+    // Это вспомогательный метод – он позволяет нашей программе остановиться и ждать нажание кнопки
     private static void waitForEnterPressed()
     {
         try {
@@ -51,6 +49,13 @@ public class HelloSimpleAgent
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    // Это ещё один вспомогательный метод – он позволяет нашей программе остановиться и ждать бесконечно
+    private static void waitForever() throws InterruptedException
+    {
+        System.out.println("Waiting forever...");
+        Thread.sleep(Long.MAX_VALUE);
     }
 
     public static void main(String argv[])

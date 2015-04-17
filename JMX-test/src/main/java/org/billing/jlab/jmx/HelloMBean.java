@@ -9,10 +9,10 @@ package org.billing.jlab.jmx;
  */
 public interface HelloMBean {
 
-    // чтение-запись атрибутов
+    // методы для чтения-записи атрибутов
     public void setMessage(String message);
     public String getMessage();
 
-    // операции
-    public void sayHello();
+    // действия
+    public void sayMessage();
 }
