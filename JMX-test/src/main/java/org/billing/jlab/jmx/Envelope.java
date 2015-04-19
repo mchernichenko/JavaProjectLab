@@ -26,4 +26,19 @@ public class Envelope implements HelloMBean {
     public void sayMessage() {
         server.sayHello();
     }
+
+    @Override
+    public int add(int x, int y) {
+        return x + y;
+    }
+
+    @Override
+    public int getCacheSize() {
+        return 0;
+    }
+
+    @Override
+    public void setCacheSize(int size) {
+
+    }
 }
