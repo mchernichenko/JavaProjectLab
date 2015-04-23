@@ -1,0 +1,26 @@
+Для запуска jar-архивов по DoubleClick
+C:\>assoc .jar=jarfile
+C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
+
+Просмотр JAR в ТotalСommander: На архиве нажать Ctrl-PgDown.
+
+========================
+1. Убрать генерацию стандартный загаловков файлов: 
+	Settings->Editor->File and Code Templates->Includes->File Header
+2. Тамже в закладке Code убрать «throws Exception» в шаблонах для JUnit: 
+	- JUnit4 Test Method
+	- JUnit4 SetUp Method
+3. Автоматический импорт: Settings->Editor->General->Auto Import->указать Optimize imports on the fly
+4. Работа с вкладками (Settings->Editor->General->Editor Tabs):
+	- Tab limit - указать требуемое кол-во
+	- Activate most recently opened tab - чтобы при закрытии Tab переходить на последний испрользуемый
+	- Show directory in editor tabs
+5. Show usages	- показывает все места, где используется данная переменная/метод
+	- назначить удобный шорткат, например, Ctrl+F7 в Settings->Appearance->Keymap на Show usages
+6. Автосохранение через 10 сек: Settings->Appearance->System Settings->«Save files automatically»
+	IDEA автосохраняет при запуске тестов, переключении в другую программу и пр., но при простое тоже неплохо, это гарантирует сохранность.
+	!!! Можно убрать «Are you sure you want to exit IDEA» при выходе !!!
+7. Inspections: Settings->Editor->Inspections
+		- «Missing @ Override annotation» указать галочку и Severity:Error - обязательное требование начичия аннотации @Override при наследовании метода.
+8. Плагин: Key Promoter	- помогает учить шорткаты. Если что-то делать мышкой и на это действие есть шорткат, то плаги сделает подсказку
+9. Export/Import Settings
