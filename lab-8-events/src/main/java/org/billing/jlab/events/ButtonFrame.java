@@ -14,7 +14,7 @@ public class ButtonFrame extends JFrame {
     private static final int DAFAULT_HEIGHT = 500;
     private JPanel buttonPanel;
     private JButton jButton;
-    private JLabel jLabel;
+    public JLabel jLabel;
 
     public ButtonFrame() {
         // присваиваем фрейму размер
@@ -30,6 +30,12 @@ public class ButtonFrame extends JFrame {
         jLabel = new JLabel("Label");
         buttonPanel.add(jLabel);
 
+        // получаем массив объектов, описывающих реализации установленных визуальных стилей
+        UIManager.LookAndFeelInfo[] infos = UIManager.getInstalledLookAndFeels();
+        // на каждый стиль создаём кнопку с именем стиля.
+        for (UIManager.LookAndFeelInfo info : infos) {
+            makeButton(info.getName(), info.getClassName());
+        }
         // добавили панель на фрейм
         add(buttonPanel);
     }
@@ -62,6 +68,30 @@ public class ButtonFrame extends JFrame {
                     jLabel.setText("Label: " + btn.getText());
                 }
                 buttonPanel.setBackground(backgroundColor);
+            }
+        });
+    }
+
+    /**
+     * Создание кнопки изменяющий подключаемфй стиль после нажатия на кнопку
+     * @param name - имя стиля
+     * @param plafName - имя класса реализующего стиль
+     */
+
+    public void makeButton(String name, final String plafName) {
+        jButton = new JButton(name);
+        buttonPanel.add(jButton);
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // Устанавливает текущий стиль, используя заданое имя класса
+                    UIManager.setLookAndFeel(plafName);
+                    SwingUtilities.updateComponentTreeUI(ButtonFrame.this); // ссылка на внешний класс
+                    //pack();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }

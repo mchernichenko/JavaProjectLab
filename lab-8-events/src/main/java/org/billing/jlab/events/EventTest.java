@@ -2,6 +2,9 @@ package org.billing.jlab.events;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+
+import static java.lang.Thread.sleep;
 
 public class EventTest
 {
@@ -23,6 +26,25 @@ public class EventTest
 
                 // по умолчанию фрейм не видим, требуется явно указать его видимость
                 frame.setVisible(true);
+
+                // Чтобы перехватить событие закрытия фрейма приёмник событий должен реализовать интерфейс WindowListener
+                // Здесь опеределяем анонимный класс расширяющий адаптер и переопределяющий метод отвечающий за выход из программы
+                // От адаптера наследуются шесть методов, невыполняющих никаких действий
+                frame.addWindowListener(new WindowAdapter(){
+
+                    // Закрываем фрейм с задержкой в 2 сек.
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                       // frame.jLabel.setText("ПОКА!!!"); // это строка что-то не работает
+                        try {
+                            sleep(2000);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+                        System.exit(0);
+                    }
+                });
+
              }
          });
     }
