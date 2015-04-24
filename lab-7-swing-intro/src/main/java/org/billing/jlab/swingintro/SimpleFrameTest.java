@@ -5,18 +5,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static java.lang.Thread.sleep;
-
 /**
  * JFrame - объект, который представляет собой окно на экране в которое помещаются все остальные элементы GUI
  * JFrame по-разному выглядит в зависимости от платформы
  */
 public class SimpleFrameTest {
 
-    JButton colorButton;
-    SimpleFrame frame;
-    JLabel label;
-    int x, y; // координаты эллипса
+    private JButton colorButton;
+    private SimpleFrame frame;
+    private JLabel label;
+    private int x, y; // координаты эллипса
 
     public static void main(String[] args) {
         SimpleFrameTest simpleFrameTest = new SimpleFrameTest();
