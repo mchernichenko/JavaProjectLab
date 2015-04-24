@@ -13,6 +13,8 @@ public class ButtonFrame extends JFrame {
     private static final int DAFAULT_WIDTH = 800;
     private static final int DAFAULT_HEIGHT = 500;
     private JPanel buttonPanel;
+    private JButton jButton;
+    private JLabel jLabel;
 
     public ButtonFrame() {
         // присваиваем фрейму размер
@@ -21,8 +23,12 @@ public class ButtonFrame extends JFrame {
         // создали панель (контейнер) и кинули в него три кнопки
         buttonPanel = new JPanel();
         makeButton("Yellow", Color.YELLOW);
-        makeButton("Blue", Color.BLUE);
+        makeButton("Green", Color.GREEN);
         makeButton("Red", Color.RED);
+
+        //
+        jLabel = new JLabel("Label");
+        buttonPanel.add(jLabel);
 
         // добавили панель на фрейм
         add(buttonPanel);
@@ -34,11 +40,12 @@ public class ButtonFrame extends JFrame {
      * @param backgroundColor - цвет фона панели, на который меняет обработчик кнопки
      */
     public void makeButton(String name, final Color backgroundColor) {
-        JButton jButton = new JButton(name);
+        jButton = new JButton(name);
         buttonPanel.add(jButton);
+
         ColorAction colorAction = new ColorAction(backgroundColor);
 
-        //jButton.addActionListener(colorAction); // пример без анонимного класса
+       // jButton.addActionListener(colorAction); // пример без анонимного класса
 
         /* класс colorAction требуется всего один раз, только в данном методе => можно сделать его анонимным
            все локальные переменные, используемые в локально классе должны быть финальными. Механизм внутренних классов, автоматически генерирует конструктор,
@@ -47,10 +54,16 @@ public class ButtonFrame extends JFrame {
         jButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                // возвращает ссылку на объект, являющийся источником события
+                Object source = e.getSource();
+                if (source instanceof JButton) {
+                    JButton btn = (JButton) source;
+                    jLabel.setText("Label: " + btn.getText());
+                }
                 buttonPanel.setBackground(backgroundColor);
             }
         });
-
     }
 
     /**
@@ -65,10 +78,18 @@ public class ButtonFrame extends JFrame {
             this.backgroundColor = color;
         }
 
+        public ColorAction() { }
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            buttonPanel.setBackground(backgroundColor);
 
+            // возвращает ссылку на объект, являющийся источником события
+            Object source = e.getSource();
+            if (source instanceof JButton) {
+                JButton btn = (JButton) source;
+                jLabel.setText("Label: " + btn.getText());
+            }
+            buttonPanel.setBackground(backgroundColor);
         }
     }
 }
