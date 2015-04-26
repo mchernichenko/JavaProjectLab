@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
- *
+ * Пример определения и использования Действий для источников событий, а также  привязка горячих кнопок к источникам действий
  */
 public class ActionFrame extends JFrame
 {
@@ -14,6 +14,9 @@ public class ActionFrame extends JFrame
     private static final int DEFAULT_HEIGHT = 500;
     private static final String PATH = "lab-8-events/src/main/";
 
+    /**
+     * Пример определения и использования Действий для источников событий, а также  привязка горячих кнопок к источникам действий
+     */
     public ActionFrame()
     {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
