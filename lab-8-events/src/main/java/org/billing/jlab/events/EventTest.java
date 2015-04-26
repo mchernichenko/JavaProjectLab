@@ -8,7 +8,7 @@ import static java.lang.Thread.sleep;
 
 public class EventTest
 {
-    private ButtonFrame frame;
+    private JFrame frame;
 
     public static void main(String[] args) {
         new EventTest().go();
@@ -19,7 +19,8 @@ public class EventTest
             @Override
             public void run() {
                 // начинается создание GUI с создание фрейма, т.е. с new JFrame() или с класса наследника JFrame
-                frame = new ButtonFrame();
+                //frame = new ButtonFrame();
+                frame = new ActionFrame();
 
                 // завершает работу программыы при закрытии окна, иначе оно будет висеть на экране вечно
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
