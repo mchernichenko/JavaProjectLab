@@ -6,11 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--сccсылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
-<!--    <parent>
-        <groupId>org.billing.jlab</groupId>
-        <artifactId>MegaLab</artifactId>
-        <version>1.0</version>
-    </parent>-->
+    <!--    <parent>
+            <groupId>org.billing.jlab</groupId>
+            <artifactId>MegaLab</artifactId>
+            <version>1.0</version>
+        </parent>-->
 
     <!--Основная и обязательная информация о проекте-->
     <!--<groupId>${myapp.groupId}</groupId>
@@ -38,7 +38,8 @@
         <module>lab-14-threads</module>
         <module>JMX-test</module>
         <module>lab-8-events</module>
-        <module>deploy-application</module>
+        <module>lab-10-deploy-application</module>
+        <module>spring-ch2</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
@@ -54,10 +55,10 @@
         По Ctrl+Alt+V можно выделить любую переменную в properties автоматически
     -->
     <properties>
- <!--       <myapp.groupId>org.billing.jlab</myapp.groupId>
-        <myapp.artifactId>JavaProjectLab</myapp.artifactId>
-        <myapp.version>1.0-SNAPSHOT</myapp.version>
-        <myapp.fillname>${myapp.artifactId}-${myapp.version}</myapp.fillname>-->
+        <!--       <myapp.groupId>org.billing.jlab</myapp.groupId>
+               <myapp.artifactId>JavaProjectLab</myapp.artifactId>
+               <myapp.version>1.0-SNAPSHOT</myapp.version>
+               <myapp.fillname>${myapp.artifactId}-${myapp.version}</myapp.fillname>-->
         <skipTests>true</skipTests>
     </properties>
 
@@ -65,6 +66,7 @@
     Лучше это делать в settings.xml. На "поиграться" можно здесь.
     Из коробки он знает только про центральный http://repo1.maven.org/maven2
     -->
+
     <!--<repositories>
         <repository>
             <id>repository.jboss.com</id>
@@ -95,6 +97,41 @@
         автоматически обновляет список External Libraries (см. св-ва проекта) для успешной компиляции проекта.
     -->
     <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.1.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-oracle</artifactId>
+            <version>1.0.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-rest-webmvc</artifactId>
+            <version>2.1.0.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.amqp</groupId>
+            <artifactId>spring-rabbit</artifactId>
+            <version>1.3.6.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>3.2.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.integration</groupId>
+            <artifactId>spring-integration-core</artifactId>
+            <version>4.0.4.RELEASE</version>
+        </dependency>
 
         <!--        <dependency>
                     <groupId>org.apache.camel</groupId>
@@ -227,36 +264,36 @@
 
             <!--Настройка упаковки в JAR. По дефолту привязан к циклу package. см. http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html
                 Настройка генерации MANIFEST.MF в ЖЦ packаge -->
-          <!--  <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                &lt;!&ndash; В конфигурации jar плагина определяем правила формирования MANIFEST.MF&ndash;&gt;
-                <configuration>
-                    <archive>
+            <!--  <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-jar-plugin</artifactId>
+                  <version>2.4</version>
+                  &lt;!&ndash; В конфигурации jar плагина определяем правила формирования MANIFEST.MF&ndash;&gt;
+                  <configuration>
+                      <archive>
 
-                        &lt;!&ndash;Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста&ndash;&gt;
-                        &lt;!&ndash;<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>&ndash;&gt;
+                          &lt;!&ndash;Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста&ndash;&gt;
+                          &lt;!&ndash;<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>&ndash;&gt;
 
-                        <manifest>
-                            &lt;!&ndash; Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
-                            Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
-                            Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
-                            т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
-                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass&ndash;&gt;
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
+                          <manifest>
+                              &lt;!&ndash; Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
+                              Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
+                              Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
+                              т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
+                              Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass&ndash;&gt;
+                              <addClasspath>true</addClasspath>
+                              <classpathPrefix>lib/</classpathPrefix>
 
-                            &lt;!&ndash;Если ClassPath нужно определить вручную &ndash;&gt;
-                            &lt;!&ndash;<classpathLayoutType>custom</classpathLayoutType>
-                            <customClasspathLayout>
-                                ${maven-jar-plugin.customClasspathLayout}
-                            </customClasspathLayout>&ndash;&gt;
-                            <mainClass>App</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>-->
+                              &lt;!&ndash;Если ClassPath нужно определить вручную &ndash;&gt;
+                              &lt;!&ndash;<classpathLayoutType>custom</classpathLayoutType>
+                              <customClasspathLayout>
+                                  ${maven-jar-plugin.customClasspathLayout}
+                              </customClasspathLayout>&ndash;&gt;
+                              <mainClass>App</mainClass>
+                          </manifest>
+                      </archive>
+                  </configuration>
+              </plugin>-->
 
 
             <!--Skipping test by default
@@ -273,31 +310,31 @@
             <!--Создание Uber jar-файл - это один огромный jar-файл, содержащий и код нашего приложения и все нужные для его работы библиотеки
                 сливает артефакты в один jar плагин maven-shade-plugin. Можно слить зависимости, часть или вообще одну. В данном случае исключаем одну зависимость junit
              -->
-<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <artifactSet>
-                                <excludes>
-                                    <exclude>junit:junit</exclude>
-                                </excludes>
-                            </artifactSet>
-                            <transformers>
-                                <transformer  implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
--->
+            <!--
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-shade-plugin</artifactId>
+                            <version>2.2</version>
+                            <executions>
+                                <execution>
+                                    <phase>package</phase>
+                                    <goals>
+                                        <goal>shade</goal>
+                                    </goals>
+                                    <configuration>
+                                        <artifactSet>
+                                            <excludes>
+                                                <exclude>junit:junit</exclude>
+                                            </excludes>
+                                        </artifactSet>
+                                        <transformers>
+                                            <transformer  implementation="org.apache.maven.plugins.shade.resource.ComponentsXmlResourceTransformer"/>
+                                        </transformers>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+            -->
 
         </plugins>
     </build>
