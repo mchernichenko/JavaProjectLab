@@ -1,0 +1,11 @@
+﻿Исходники фреймворка: git clone https://github.com/spring-projects/spring-framework.git
+
+Собственный репозиторий Spring: http://repo.spring.io
+	поиск по spring-framework-4.1*RELEASE (последнюю версию релиза см. по ссылка ниже)
+	От туда же при желании можно взять .ZIP архив всего спринга
+
+Последний релиз Spring Framework: http://projects.spring.io/spring-framework/ , там же ссылка на GitHub
+
+Spring JavaDoc : http://docs.spring.io/spring-framework/docs/current/javadoc-api/
+
+Spring на русском: http://spring-projects.ru/projects/spring-framework/
