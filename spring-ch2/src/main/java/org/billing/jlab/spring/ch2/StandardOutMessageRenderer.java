@@ -5,11 +5,11 @@ package org.billing.jlab.spring.ch2;
  */
 public class StandardOutMessageRenderer implements MessageRenderer
 {
-    private MessageProvider messageProvider;
+    private MessageProvider msgProvider;
 
     @Override
     public MessageProvider getMessageProvider() {
-        return this.messageProvider;
+        return this.msgProvider;
     }
 
     /**
@@ -17,14 +17,14 @@ public class StandardOutMessageRenderer implements MessageRenderer
      */
     @Override
     public void render() {
-        if (messageProvider==null) {
+        if (msgProvider==null) {
             throw new RuntimeException("Должно быть установлено свойство messageProvider класса: " + StandardOutMessageRenderer.class.getName());
         }
-        System.out.println(messageProvider.getMessage());
+        System.out.println(msgProvider.getMessage());
     }
 
     @Override
     public void setMessageProvider(MessageProvider provider) {
-        this.messageProvider = provider;
+        this.msgProvider = provider;
     }
 }

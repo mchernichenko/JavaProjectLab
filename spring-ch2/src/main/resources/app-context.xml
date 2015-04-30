@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Данный XML служит тем же целям, что и MessageSupportFactory
+    1. Сначала объявляется пространство имен Spring, при этом по дефолту этим пространством является beans, используемое для объявления бинов, которые должны управляться Spring
+    2. Объявляются требования к зависимостям (в данном примере св-во messageProvider бина renderer ссылается на бин provider) для Spring,
+    чтобы разрешить и внедрить эти зависимости
+    3. Объявляется бин с идентификатором "provider" и соответсвующий класс реализации.
+       Во время инициализации ApplicationContext платформа Spring обнаруживает определение бина, создаёт экземпляр класса и сохраняет его с указанным идентификатором.
+    4. Объявляется бин визуализатора с ид. "renderer"
+       Этот бин должен полагаться на интерфейс MessageProvider при получении сообщения для визуализации.
+       Чтобы информировать Spring о требовании DI (внедрении зависимости) используется атрибут пространства имён p
+       p:messageProvider-ref="provider" сообщает Spring, что св-во messageProvider бина должно внедриться с помощью другого бина.
+       Наименование св-ва формируется по имени метода "setMessageProvider" в котором инициализируется параметр класса ссылкой на внедряемый объект
+
+       Внедряемый в это св-во бин должен ссылаться на бин с ид. "provider". Когда Spring встречает это определение, он создаёт экземпляр класса, находит в бине
+       св-во по имени messageProvider и внедряет его с экзампляром бина, имеющего ид. "provider"
+
+-->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+    
+    <bean id="provider" class="org.billing.jlab.spring.ch2.HelloWorldMessageProvider"/>
+    <bean id="renderer" class="org.billing.jlab.spring.ch2.StandardOutMessageRenderer" p:messageProvider-ref="provider"/>
 </beans>
