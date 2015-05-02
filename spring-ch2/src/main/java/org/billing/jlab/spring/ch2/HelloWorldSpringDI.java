@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- *
+ * Демонстрация внедрения зависимостей с помощью Spring контекста
  */
 public class HelloWorldSpringDI
 {
@@ -14,7 +14,7 @@ public class HelloWorldSpringDI
         ApplicationContext context = new ClassPathXmlApplicationContext("app-context.xml");
 
         /*
-            Во время иициализации ApplicationContext метод main() получает бин MessageRenderer, используя безопасный к типам метод getBean
+            Во время инициализации ApplicationContext метод main() получает бин MessageRenderer, используя безопасный к типам метод getBean
             с передачей ему ид. и ожидаемого возвращаемого типа, которым является интейфейс MessageRenderer и вызывает render().
             Spring создаёт реализацию MessageProvider и внедряет её в реализацию MessageRenderer
 
