@@ -40,7 +40,8 @@
        </context:component-scan>
 
        <!--  Пример бина для внедрения в конструктор -->
-       <bean id="message" class="java.lang.String" c:_0="Конфигурируемое сообщение" />
+       <!--<bean id="message" class="java.lang.String" c:_0="Конфигурируемое сообщение" />-->
+       <!--<bean id="message" class="java.lang.Integer" c:_0="2" />-->
 
        <!--  Sample for collection injection  -->
    <!--    <util:map id="map" map-class="java.util.HashMap">

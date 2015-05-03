@@ -14,18 +14,20 @@
 
 
        <!-- Пример внедрения через конструктор. Если несколько аргументов или несколько конструкторов, то каждому дескриптору constructor-arg
-            нудно предоставить атрибут index
+            нудно предоставить атрибут index.  Если конструкторы перегружены, то нужно указать ещё и тип аргумента.
        -->
- <!--      <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider">
-              <constructor-arg index="0" value="Конфигурируемое сообщение"/>
-             &lt;!&ndash; <constructor-arg>
+       <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider">
+              <!--<constructor-arg type="java.lang.String" index="0" value="Конфигурируемое сообщение"/>-->
+              <constructor-arg type="int" index="0" value="3"/>
+             <!-- <constructor-arg>
                      <value>Конфигурируемое сообщение</value>
-              </constructor-arg>&ndash;&gt;
-       </bean>-->
+              </constructor-arg>-->
+       </bean>
 
-       <!-- Пример внедрения через конструктор используя пространство имён "c"-->
-    <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider"
-          c:message="Конфигурируемое сообщение"/>
+       <!-- Таже самое, пример внедрения через конструктор используя пространство имён "c"-->
+<!--    <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider"
+          c:msg="Конфигурируемое сообщение"/>-->
+
     <bean id="configurableMessageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer"
           p:messageProvider-ref="configurableMessageProvider"/>
 

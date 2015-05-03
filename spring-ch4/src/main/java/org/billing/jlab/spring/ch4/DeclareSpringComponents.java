@@ -14,17 +14,20 @@ public class DeclareSpringComponents {
     public static void main(String[] args) {
 
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-        ctx.load("classpath:app-context-xml.xml");
-      //  ctx.load("classpath:app-context-annotation.xml");
+
+        // выбираем вариант конфигурации, либо XML-файлом, либо Java-аннотациями. На результат не влияет.
+      //  ctx.load("classpath:app-context-xml.xml");
+        ctx.load("classpath:app-context-annotation.xml");
         ctx.refresh();
 
      // MessageProvider messageProvider = ctx.getBean("messageProvider", MessageProvider.class);
      // System.out.println(messageProvider.getMessage());
 
+        // внедрение через метод установки (setter injection)
         MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
         messageRenderer.render();
 
-        // пример использования внедрения через конструктор
+        // пример использования внедрения через конструктор (constructor injection)
         MessageRenderer configurableMessageRenderer = ctx.getBean("configurableMessageRenderer", MessageRenderer.class);
         configurableMessageRenderer.render();
 
