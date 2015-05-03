@@ -11,7 +11,7 @@ public class HelloWorldSpringDI
     public static void main(String[] args) {
 
         // Инициализация ApplicationContext
-        ApplicationContext context = new ClassPathXmlApplicationContext("app-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("app-context-xml.xml");
 
         /*
             Во время инициализации ApplicationContext метод main() получает бин MessageRenderer, используя безопасный к типам метод getBean

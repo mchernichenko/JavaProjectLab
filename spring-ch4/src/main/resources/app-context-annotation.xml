@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-        <!-- 1. Сначала объявляется пространство имен Spring, при этом по дефолту этим пространством является beans, используемое для объявления бинов, которые должны управляться Spring
-        Пространство имен beans является базовым и обязательным - требуется для объявления бинов
-        Платформа Spring предоставляет много других пространств для различных целей:
-        - context - обеспечивает поддержку для конфигурирования ApplicationContext
-        - p - предоставляет более простую конфигурацию DI для Setter Injection
-        - c -  предоставляет более простую конфигурацию DI для Constructor Injection
-        - util - предоставляет ряд полезных утилит для конфигурации DI
-        - aop, tx - для поддержки АОП, транзакций и пр
-       -->
+ <!-- Сначала объявляется пространство имен Spring, при этом по дефолту этим пространством является beans, используемое для объявления бинов, которые должны управляться Spring
+      Пространство имен beans является базовым и обязательным - требуется для объявления бинов
+      Платформа Spring предоставляет много других пространств для различных целей:
+            - context - обеспечивает поддержку для конфигурирования ApplicationContext
+            - p - предоставляет более простую конфигурацию DI для Setter Injection
+            - c -  предоставляет более простую конфигурацию DI для Constructor Injection
+            - util - предоставляет ряд полезных утилит для конфигурации DI
+            - aop, tx - для поддержки АОП, транзакций и пр
+-->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
-       xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
        <description>XML-конфигурация Spring c поддержкой аннотаций</description>
 
        <!-- Для поддержки аннотаций в Spring необходимо поместить в XML-файл конфигурации 2 дескриптора
-            1. Данный дескриптор сообщает Spring о необходимости просканировать кодовую базу на предмет требований зависимостей
+         1. Данный дескриптор сообщает Spring о необходимости просканировать кодовую базу на предмет требований зависимостей
+            После добавления данного дескриптора во время иницализаци ApplicationContext Spring обнаруживает аннотации
+            @Autowired для классов аннотируемых с помощью @Service и внедряет эту зависимость, т.е. вызывает set-метод, где
+            в качестве параметра передаётся экземпляр внедняемыого объекта
        -->
-       <context:annotation-config />
+       <context:annotation-config/>
 
        <!-- 2. Данный дескриптор заставляет Spring сканировать код для поиска внедряемых бинов в рамках указанного пакета (и всех его подпакетов)
-            можно определеть множество пакетов через [, ; пробел]. Дескроптор поддерживает включение/исключение сканирования компонентов для более точного управления
+            можно определеть множество пакетов через [, ; пробел]. Дескриптор поддерживает включение/исключение сканирования компонентов для более точного управления
             В данном случае пропускаем классы, которым был назначен тип, заданный в выражении (класс или интерфейс)
-            Для типа можно указать: annotation, regex, assignable, AspectJ, custom
+            Для типа можно указать: annotation, regex, assignable, AspectJ, custom в качестве критерия фильтрации.
        -->
        <context:component-scan base-package="org.billing.jlab.spring.ch4.annotation;org.billing.jlab.spring.ch4.annotation1">
-              <context:exclude-filter type="assignable" expression="org.billing.jlab.spring.ch4.annotation1.Bean2" />
+              <context:exclude-filter type="assignable" expression="org.billing.jlab.spring.ch4.annotation1.Bean2"/>
        </context:component-scan>
 
-       <!--  Sample for constructor injection -->
-       <bean id="message" class="java.lang.String" c:_0="This is a configurable message" />
+       <!--  Пример бина для внедрения в конструктор -->
+       <bean id="message" class="java.lang.String" c:_0="Конфигурируемое сообщение" />
 
        <!--  Sample for collection injection  -->
-       <util:map id="map" map-class="java.util.HashMap">
+   <!--    <util:map id="map" map-class="java.util.HashMap">
               <entry key="someValue">
                      <value>Hello World!</value>
               </entry>
@@ -57,5 +62,5 @@
        <util:list id="list">
               <value>Hello World!</value>
               <ref bean="oracle" />
-       </util:list>
+       </util:list>-->
 </beans>

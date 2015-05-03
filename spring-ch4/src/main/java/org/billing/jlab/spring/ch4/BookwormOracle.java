@@ -1,7 +1,7 @@
 package org.billing.jlab.spring.ch4;
 
 /**
- * Реалтизуем смысл жизни для библиофила
+ * Реализуем смысл жизни для библиофила
  */
 public class BookwormOracle implements Oracle {
 

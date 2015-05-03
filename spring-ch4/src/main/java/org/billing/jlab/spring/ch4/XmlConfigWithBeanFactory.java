@@ -16,7 +16,7 @@ public class XmlConfigWithBeanFactory
             DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 
         // читаем информацию из XML-файла с помощью XmlBeanDefinitionReader
-        // плвтформа Spring предоставляет класс PropertiesBeanDefinitionReader(factory), которыйпозволяет управлять конфигурацией бина
+        // платформа Spring предоставляет класс PropertiesBeanDefinitionReader(factory), который позволяет управлять конфигурацией бина
         // c использоваинем свойств отличных от XML (обычно истользуется для тривиальных конфигов)
 
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);

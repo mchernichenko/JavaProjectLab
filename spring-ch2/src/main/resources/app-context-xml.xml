@@ -8,7 +8,7 @@
         - p - предоставляет более простую конфигурацию DI для Setter Injection
         - c -  предоставляет более простую конфигурацию DI для Constructor Injection
         - util - предоставляет ряд полезных утилит для конфигурации DI
-        - aop, tx - для поддержки АОП, транзакций и пр
+        - aop, tx - для поддержки АОП, транзакций и пр.
 
     2. Объявляются требования к зависимостям (в данном примере св-во messageProvider бина renderer ссылается на бин provider) для Spring,
     чтобы разрешить и внедрить эти зависимости
@@ -30,7 +30,24 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
-    
+
+    <!-- Определение бина с ид. и соответствующим классом реализации -->
     <bean id="provider" class="org.billing.jlab.spring.ch2.HelloWorldMessageProvider"/>
+
+    <!-- Пример определения и внедрения зависимости через метод установки (Setter Dependency injection)
+         в дескрипторе property указывается имя сеттера, с помощью которого внедряется зависимость
+         в данном случае для setMessageProvider имя будет messageProvider,
+    -->
+<!--	<bean id="renderer" class="org.billing.jlab.spring.ch2.StandardOutMessageRenderer">
+		<property name="messageProvider">
+			<ref bean="provider"/>
+		</property>
+	</bean>-->
+
+    <!-- тоже самое определение и внедрение бина, только с использованием пространства имён "p" (начиная с Spring 2.5)
+         по сути здесь, при инициализации ApplicationContext, Spring создаёт экзампляр класса StandardOutMessageRenderer и
+         вызывает метод setMessageProvider, в который передаёт экзампляр класса HelloWorldMessageProvider
+    -->
     <bean id="renderer" class="org.billing.jlab.spring.ch2.StandardOutMessageRenderer" p:messageProvider-ref="provider"/>
+
 </beans>
