@@ -28,11 +28,15 @@ public class StandardOutMessageRenderer implements MessageRenderer {
     /**
      * Для внедрения методом установки (для стиля аннотаций) используется @Autowired для set-метода внедрения
      * Можно использовать @Resource, которая поддерживает name для реализации более точных требований DI
+     * В данном случае мы точно указываем внедряемый бин т.е. configurableMessageProvider
+     * Если указать аннотацию @Autowired, то внедряемым бином может быть класс, реализующий интерфейс MessageProvider
+     * и помечен аннотацией @Service, а таких может оказаться несколько, например HelloWorldMessageProvider,
+     * и Spring будет ругаться, т.к. не сможет однозначно
+     * определить внедряемый объект. В этой ситуации требуется использовать @Resource
      * @param provider
      */
+   // @Resource(name="configurableMessageProvider")  // Effect is the same as Autowired
     @Autowired
-    //@Resource(name="messageProvider")  // Effect is the same as Autowired
-    @Override
     public void setMessageProvider(MessageProvider provider) {
         this.messageProvider = provider;
     }

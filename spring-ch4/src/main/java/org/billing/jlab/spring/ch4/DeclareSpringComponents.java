@@ -24,12 +24,12 @@ public class DeclareSpringComponents {
      // System.out.println(messageProvider.getMessage());
 
         // внедрение через метод установки (setter injection)
-        MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
-        messageRenderer.render();
+    //    MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
+    //    messageRenderer.render();
 
         // пример использования внедрения через конструктор (constructor injection)
-        MessageRenderer configurableMessageRenderer = ctx.getBean("configurableMessageRenderer", MessageRenderer.class);
-        configurableMessageRenderer.render();
+        MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
+        messageRenderer.render();
 
     }
 

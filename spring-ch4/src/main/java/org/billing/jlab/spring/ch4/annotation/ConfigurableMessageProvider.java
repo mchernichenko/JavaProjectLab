@@ -2,7 +2,6 @@ package org.billing.jlab.spring.ch4.annotation;
 
 import org.billing.jlab.spring.ch4.MessageProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,14 +19,15 @@ public class ConfigurableMessageProvider implements MessageProvider
     // значение предназначенное для внедрения рекомендуется выносить за пределы кода
     // в конфигурации определяем бин с ид. message, а класс реализации указываем String
 
-/*    public ConfigurableMessageProvider(String message) {
-        this.message = message;
-    }*/
-
     @Autowired
-    public ConfigurableMessageProvider(@Value("90") int message) {
-        this.message = "Число: " + Integer.toString(message);
+    public ConfigurableMessageProvider(String message) {
+        this.message = message;
     }
+
+
+/*    public ConfigurableMessageProvider(@Value("90") int message) {
+        this.message = "Число: " + Integer.toString(message);
+    }*/
 
 
     // это вариант с определением значения, внедряемого в конструктор, прямо в коде
