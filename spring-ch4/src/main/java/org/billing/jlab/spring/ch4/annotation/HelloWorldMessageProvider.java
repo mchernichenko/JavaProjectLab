@@ -1,6 +1,7 @@
 package org.billing.jlab.spring.ch4.annotation;
 
 import org.billing.jlab.spring.ch4.MessageProvider;
+import org.springframework.stereotype.Service;
 
 /**
  * Пример объявления бинов Spring в стиле аннотаций
@@ -8,12 +9,12 @@ import org.billing.jlab.spring.ch4.MessageProvider;
  * которые могут понадобиться другим службам
  */
 
-//@Service("messageProvider")
+@Service("messageProvider")
 public class HelloWorldMessageProvider implements MessageProvider {
 
     public String getMessage() {
 
-        return "Hello World!";
+        return "Привет из annotation/HelloWorldMessageProvider";
     }
 
 }

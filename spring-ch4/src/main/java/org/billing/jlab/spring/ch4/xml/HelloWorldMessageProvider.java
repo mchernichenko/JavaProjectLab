@@ -9,6 +9,6 @@ public class HelloWorldMessageProvider implements MessageProvider
 {
     @Override
     public String getMessage() {
-        return "Hello World";
+        return "Привет из xml/HelloWorldMessageProvider";
     }
 }

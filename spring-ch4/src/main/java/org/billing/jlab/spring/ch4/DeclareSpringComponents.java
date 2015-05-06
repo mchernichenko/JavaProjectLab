@@ -23,13 +23,15 @@ public class DeclareSpringComponents {
      // MessageProvider messageProvider = ctx.getBean("messageProvider", MessageProvider.class);
      // System.out.println(messageProvider.getMessage());
 
-        // внедрение через метод установки (setter injection)
-    //    MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
-    //    messageRenderer.render();
-
-        // пример использования внедрения через конструктор (constructor injection)
+        // пример использования внедрения через метод установки (setter injection)
         MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
         messageRenderer.render();
+
+        // тоже самое, только дополнительно использкем внедрение через конструктор (constructor injection)
+        // для инициализации текстового сообщения. Теперь "HelloWorld" можно прописать в контексте app-context-xml.xml
+        MessageRenderer configurableMessageRenderer = ctx.getBean("configurableMessageRenderer", MessageRenderer.class);
+        configurableMessageRenderer.render();
+
 
     }
 

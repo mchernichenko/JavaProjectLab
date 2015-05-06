@@ -2,8 +2,9 @@ package org.billing.jlab.spring.ch4.annotation;
 
 import org.billing.jlab.spring.ch4.MessageProvider;
 import org.billing.jlab.spring.ch4.MessageRenderer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Пример объявления бинов Spring в стиле аннотаций
@@ -35,8 +36,10 @@ public class StandardOutMessageRenderer implements MessageRenderer {
      * определить внедряемый объект. В этой ситуации требуется использовать @Resource
      * @param provider
      */
-   // @Resource(name="configurableMessageProvider")  // Effect is the same as Autowired
-    @Autowired
+
+  //  @Resource(name="configurableMessageProvider")  // Effect is the same as Autowired
+   @Resource(name="messageProvider")  // Effect is the same as Autowired
+    //@Autowired
     public void setMessageProvider(MessageProvider provider) {
         this.messageProvider = provider;
     }
