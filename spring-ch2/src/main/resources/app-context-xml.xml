@@ -32,7 +32,7 @@
                            http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- Определение бина с ид. и соответствующим классом реализации -->
-    <bean id="provider" class="org.billing.jlab.spring.ch2.HelloWorldMessageProvider"/>
+    <bean id="provider" class="org.billing.jlab.spring.ch2.HelloWorldMessageProvider"/> <!-- Определение бина с ид. и соответствующим классом реализации -->
 
     <!-- Пример определения и внедрения зависимости через метод установки (Setter Dependency injection)
          в дескрипторе property указывается имя сеттера, с помощью которого внедряется зависимость
