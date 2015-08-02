@@ -44,7 +44,7 @@
                           <customClasspathLayout>
                               ${maven-jar-plugin.customClasspathLayout}
                           </customClasspathLayout>-->
-                          <mainClass>org.billing.jlab.spring.ch4.XmlConfigWithBeanFactory</mainClass>
+                          <mainClass>org.billing.jlab.spring.ch4.DeclareSpringComponents</mainClass>
                       </manifest>
                   </archive>
               </configuration>

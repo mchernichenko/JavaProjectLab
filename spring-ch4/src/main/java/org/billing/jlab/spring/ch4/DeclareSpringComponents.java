@@ -16,8 +16,8 @@ public class DeclareSpringComponents {
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 
         // выбираем вариант конфигурации, либо XML-файлом, либо Java-аннотациями. На результат не влияет.
-      //  ctx.load("classpath:app-context-xml.xml");
-        ctx.load("classpath:app-context-annotation.xml");
+        ctx.load("classpath:META-INF/spring/app-context-xml.xml");
+      //  ctx.load("classpath:app-context-annotation.xml");
         ctx.refresh();
 
      // MessageProvider messageProvider = ctx.getBean("messageProvider", MessageProvider.class);
@@ -27,7 +27,7 @@ public class DeclareSpringComponents {
         MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
         messageRenderer.render();
 
-        // тоже самое, только дополнительно использкем внедрение через конструктор (constructor injection)
+        // тоже самое, только дополнительно используем внедрение через конструктор (constructor injection)
         // для инициализации текстового сообщения. Теперь "HelloWorld" можно прописать в контексте app-context-xml.xml
         MessageRenderer configurableMessageRenderer = ctx.getBean("configurableMessageRenderer", MessageRenderer.class);
         configurableMessageRenderer.render();

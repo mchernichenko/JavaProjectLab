@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+       <!-- Конфигурируем два бина, один в качастве внедряемого и один в качестве цели для внедрения (messageRenderer)
+       Каждый бин имеет идентификатор и каждому бину можно (необязательно) назначить псевдоним с помощью атрибута name
+       Пресводим можно использовать при внедрении бина см. <ref bean="псевдоним или id бина"
+       -->
+
+       <bean id="messageProviderId" name="messageProvider" class="org.billing.jlab.spring.ch4.xml.HelloWorldMessageProvider"/>
+
+       <!-- свойство messageProvider класса StandardOutMessageRenderer инициализируется бином с id=messageProviderId через метод установки -->
+       <bean id="messageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer">
+           <property name="messageProvider">
+               <ref bean="messageProviderId"/>
+           </property>
+       </bean>
+
+      <!--Альтернативный вариант внедрения через метод установки -->
+    <!--       <bean id="messageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer"
+             p:messageProvider-ref="messageProvider"/> -->
+
+    <!-- Пример внедрения через конструктор. Если несколько аргументов или несколько конструкторов, то каждому дескриптору constructor-arg
+         нужно предоставить атрибут index.  Если у класса несколько конструкторов, то нужно указать ещё и тип аргумента,
+         для того чтобы создать объект (экземпляр класса-бин) вызвав нужный конструктор.
+
+    -->
+       <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider">
+            <!--  <constructor-arg type="java.lang.String" index="0" value="Конфигурируемое сообщение [app-context-xml]"/>-->
+              <constructor-arg type="int" index="0" value="3"/>
+             <!-- <constructor-arg>
+                     <value>Конфигурируемое сообщение</value>
+              </constructor-arg>-->
+       </bean>
+
+       <!-- Тоже самое, пример внедрения через конструктор используя пространство имён "c"-->
+<!--    <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider"
+          c:msg="Конфигурируемое сообщение"/>-->
+
+    <bean id="configurableMessageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer"
+          p:messageProvider-ref="configurableMessageProvider"/>
+
+</beans>
