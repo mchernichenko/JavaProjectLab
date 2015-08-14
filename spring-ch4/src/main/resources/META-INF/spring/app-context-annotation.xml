@@ -39,8 +39,13 @@
               <context:exclude-filter type="assignable" expression="org.billing.jlab.spring.ch4.annotation1.Bean2"/>
        </context:component-scan>
 
-       <!--  Пример бина для внедрения в конструктор -->
+       <!--  Пример бина для внедрения в конструктор. Позволяет избавиться от аннотации Value в целевом бине
+             Конструктор должен быть помечен @Autowired. Если конструкторов несколько то помечается только один.
+             Объявленное имя бина и его идентификатор должен совпадать с именем аргумента, в нашем случае message
+       -->
        <bean id="message" class="java.lang.String" c:_0="Конфигурируемое сообщение [в app-context-annotation]" />
+       <bean id="message1" class="java.lang.String" c:_0="Конфигурируемое сообщение [в app-context-annotation]_1" />
+
        <!--<bean id="message" class="java.lang.Integer" c:_0="2" />-->
 
        <!--  Sample for collection injection  -->

@@ -4,7 +4,7 @@ import org.springframework.context.support.GenericXmlApplicationContext;
 
 /**
  * Вариант конфигурации Spring никак не влияет на способ получения бинов из ApplicationContext
- * Вместо DefaultListableBeanFactory создаётся экземпляр GenericXmlApplicationContext.
+ * Вместо DefaultListableBeanFactory, при использовании BeanFactory, создаётся экземпляр GenericXmlApplicationContext.
  * Этот класс реализует ApplicationContext и способен выполнить начальную загрузку контекста из конфигураций, проеделённых в XML
  * Если заменить один файл конфигурации другим, в данном случае файл ковфигурации в стиле XML на файл конфигурации в стиле
  * аннотаций, то результат будет одинаков.
@@ -16,14 +16,17 @@ public class DeclareSpringComponents {
         GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
 
         // выбираем вариант конфигурации, либо XML-файлом, либо Java-аннотациями. На результат не влияет.
-        ctx.load("classpath:META-INF/spring/app-context-xml.xml");
-      //  ctx.load("classpath:app-context-annotation.xml");
+
+        //ctx.load("classpath:META-INF/spring/app-context-xml.xml");
+        ctx.load("classpath:META-INF/spring/app-context-annotation.xml");
+
+        //создание бинов и внедрение зависимостей согласно загруженному контексту приложения
         ctx.refresh();
 
      // MessageProvider messageProvider = ctx.getBean("messageProvider", MessageProvider.class);
      // System.out.println(messageProvider.getMessage());
 
-        // пример использования внедрения через метод установки (setter injection)
+        // пример использования внедрения через метод установки (Setter Injection)
         MessageRenderer messageRenderer = ctx.getBean("messageRenderer", MessageRenderer.class);
         messageRenderer.render();
 

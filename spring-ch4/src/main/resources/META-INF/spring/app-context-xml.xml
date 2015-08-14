@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Сначала объявляется пространство имен Spring, при этом по дефолту этим пространством является beans, используемое для объявления бинов, которые должны управляться Spring
+     Пространство имен beans является базовым и обязательным - требуется для объявления бинов
+     Платформа Spring предоставляет много других пространств для различных целей:
+           - context - обеспечивает поддержку для конфигурирования ApplicationContext
+           - p - предоставляет более простую конфигурацию DI для Setter Injection
+           - c -  предоставляет более простую конфигурацию DI для Constructor Injection
+           - util - предоставляет ряд полезных утилит для конфигурации DI
+           - aop, tx - для поддержки АОП, транзакций и пр
+-->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -24,14 +35,16 @@
     <!--       <bean id="messageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer"
              p:messageProvider-ref="messageProvider"/> -->
 
-    <!-- Пример внедрения через конструктор. Если несколько аргументов или несколько конструкторов, то каждому дескриптору constructor-arg
-         нужно предоставить атрибут index.  Если у класса несколько конструкторов, то нужно указать ещё и тип аргумента,
+    <!-- Пример внедрения через конструктор.
+         Если несколько аргументов или несколько конструкторов, то каждому дескриптору constructor-arg
+         нужно предоставить атрибут index начиная с 0. Если у класса несколько конструкторов, то нужно указать ещё и тип аргумента,
          для того чтобы создать объект (экземпляр класса-бин) вызвав нужный конструктор.
-
+         Дескриптор <value> используется для простых типов, для внедрения объектов попрежнему нужно использовать <ref>
+         Конфиг приведён в общем виде.
     -->
        <bean id="configurableMessageProvider" class="org.billing.jlab.spring.ch4.xml.ConfigurableMessageProvider">
             <!--  <constructor-arg type="java.lang.String" index="0" value="Конфигурируемое сообщение [app-context-xml]"/>-->
-              <constructor-arg type="int" index="0" value="3"/>
+              <constructor-arg type="int" index="0" value="5"/>
              <!-- <constructor-arg>
                      <value>Конфигурируемое сообщение</value>
               </constructor-arg>-->

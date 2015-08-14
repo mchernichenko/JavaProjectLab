@@ -1,4 +1,4 @@
-package org.billing.jlab.spring.ch4;
+package org.billing.jlab.spring.ch4.beanfactory;
 
 /**
  * Реализуем смысл жизни для библиофила

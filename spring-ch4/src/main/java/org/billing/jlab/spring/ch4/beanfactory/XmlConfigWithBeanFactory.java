@@ -1,11 +1,11 @@
-package org.billing.jlab.spring.ch4;
+package org.billing.jlab.spring.ch4.beanfactory;
 
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 
 /**
- * Пример взаимодействия  с контейнером Spring DI через интерфейс BeanFactory
+ * Пример взаимодействия  с контейнером Spring DI через интерфейс BeanFactory (хотя на практике всегда нужно пользовать ApplicationContext)
  *
  * Рассматривается создание и внешнее конфигурирование (с помощью xml-конфига) фабрики бинов
  * т.е. инициализация BeanFactory и получения бина oracle для работы с ним
@@ -20,12 +20,12 @@ public class XmlConfigWithBeanFactory
         DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 
         // 2. Конфигурируем класс в соответствие с информацией о бине и его зависимостях, т.е.
-        // читаем информацию из XML-файла с помощью XmlBeanDefinitionReader
-        // платформа Spring предоставляет класс PropertiesBeanDefinitionReader(factory), который позволяет управлять конфигурацией бина
-        // c использоваинем свойств отличных от XML (обычно истользуется для тривиальных конфигов)
+        // читаем информацию из XML-файла с помощью XmlBeanDefinitionReader.
+        // Также платформа Spring предоставляет класс PropertiesBeanDefinitionReader(factory), который позволяет управлять конфигурацией бина
+        // c использоваинем свойств отличных от XML (обычно используется для тривиальных конфигов)
 
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(factory);
-        reader.loadBeanDefinitions(new FileSystemResource("xmlBeanFactory.xml"));
+        reader.loadBeanDefinitions(new FileSystemResource("spring-ch4\\src\\main\\resources\\META-INF\\spring\\xmlBeanFactory.xml"));
 
         // 3. после того как реализация BeanFactory создана и сконфигурирована можно получить доступ к бинам через BeanFactory
         // т.е. извлекаем бин Oracle, используя его Ид, которое настроено в XML конфигурации

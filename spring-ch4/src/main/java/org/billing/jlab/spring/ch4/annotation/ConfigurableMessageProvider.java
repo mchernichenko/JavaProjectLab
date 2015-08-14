@@ -2,7 +2,6 @@ package org.billing.jlab.spring.ch4.annotation;
 
 import org.billing.jlab.spring.ch4.MessageProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,18 +20,15 @@ import org.springframework.stereotype.Service;
 public class ConfigurableMessageProvider implements MessageProvider
 {
     private String message;
+    private String message1;
 
     // значение предназначенное для внедрения рекомендуется выносить за пределы кода
     // в конфигурации определяем бин с ид. message, а класс реализации указываем String
 
     @Autowired
-    public ConfigurableMessageProvider(String message) {
-        this.message = message;
-    }
-
-
-    public ConfigurableMessageProvider(@Value("90") int message) {
-        this.message = "Число: " + Integer.toString(message);
+    public ConfigurableMessageProvider(String message, String message1) {
+        this.message = "Инициализация в конструкторе свойства 'message' значением: " + message;
+        this.message1 = "Инициализация в конструкторе свойства 'message' значением: " + message1;
     }
 
     // это вариант с определением значения, внедряемого в конструктор, прямо в коде
@@ -42,6 +38,6 @@ public class ConfigurableMessageProvider implements MessageProvider
 
     @Override
     public String getMessage() {
-        return message;
+        return "Пример Constructor Injection c конфигурацией в стиле Java-annotation. " + message + message1;
     }
 }

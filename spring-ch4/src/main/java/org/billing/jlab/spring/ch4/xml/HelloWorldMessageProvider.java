@@ -7,8 +7,11 @@ import org.billing.jlab.spring.ch4.MessageProvider;
  */
 public class HelloWorldMessageProvider implements MessageProvider
 {
+    public HelloWorldMessageProvider() {
+        System.out.println("run construstor HelloWorldMessageProvider()");
+    }
+
     @Override
     public String getMessage() {
-        return "Привет из xml/HelloWorldMessageProvider";
-    }
+        return "Пример Setter Injection в стиле XML-конфигурации. Привет из xml/HelloWorldMessageProvider";}
 }

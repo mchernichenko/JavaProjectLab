@@ -6,5 +6,5 @@
 
        <!-- Бин oracle, используемый в нескольких примерах
        объявляется бин с ид., именем и лежащим в основе классом реализации -->
-       <bean id="oracle" name="wiseworm" class="org.billing.jlab.spring.ch4.BookwormOracle"/>
+       <bean id="oracle" name="wiseworm" class="org.billing.jlab.spring.ch4.beanfactory.BookwormOracle"/>
 </beans>

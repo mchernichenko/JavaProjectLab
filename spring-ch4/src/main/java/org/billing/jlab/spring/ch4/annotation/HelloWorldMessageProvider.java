@@ -14,7 +14,7 @@ public class HelloWorldMessageProvider implements MessageProvider {
 
     public String getMessage() {
 
-        return "Привет из annotation/HelloWorldMessageProvider";
+        return "Пример Setter Injection c конфигурацией стиле Java-аннотаций . Привет из annotation/HelloWorldMessageProvider";
     }
 
 }
