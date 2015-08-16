@@ -97,24 +97,62 @@
          в бин target1 внедряется бин injectBeanParent определённый в parent.xml
          в бин target2 внедряется бин injectBean. Т.к. он определён в обоих контекстах, то используется собственый контекст
          в бин target3 внедряется бин injectBean. Т.к. он определён в обоих контекстах, то для внедрения родительского бина требуется явное указание атрибура parent
+
+         (!)Закоментированно для того чтобы запустить другие примеры, где не используется вложение контекстов
      -->
-    <bean id="injectBean" class="java.lang.String">
-        <constructor-arg value="Дочерний бин"/>
-    </bean>
+    <!-- <bean id="injectBean" class="java.lang.String">
+         <constructor-arg value="Дочерний бин"/>
+     </bean>
 
-    <bean id="target1" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
-        <property name="val" ref="injectBeanParent"/>
-    </bean>
+     <bean id="target1" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+         <property name="val" ref="injectBeanParent"/>
+     </bean>
 
-    <bean id="target2" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
-        <property name="val" ref="injectBean"/>
-    </bean>
+     <bean id="target2" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+         <property name="val" ref="injectBean"/>
+     </bean>
 
-    <bean id="target3" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
-        <property name="val">
-            <ref parent="injectBean"/>
+     <bean id="target3" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+         <property name="val">
+             <ref parent="injectBean"/>
+         </property>
+     </bean>-->
+
+    <!--  Внедрение коллекций
+          Чтобы внедрить коллекцию необходимо выбрать дескриптор list, map, set, props для предоставления экзамляров List, Map, Set, Properties соответственно
+          Для list, map, set можно использовать любой дескриптор при внедрении в свойство и даже дескриптор другой коллекции
+          Для props позволяет передать только String
+    -->
+
+    <bean id="injectCollection" class="org.billing.jlab.spring.ch4.xml.CollectionInjection">
+        <property name="map">
+            <map>
+                <entry key="someValue">
+                    <value>Hello World!</value>
+                </entry>
+                <entry key="someBean">
+                    <ref bean="oracle"/>
+                </entry>
+            </map>
+        </property>
+        <property name="props">
+            <props>
+                <prop key="firstName">Clarence</prop>
+                <prop key="secondName">Ho</prop>
+            </props>
+        </property>
+        <property name="set">
+            <set>
+                <value>Hello World!</value>
+                <ref bean="oracle"/>
+            </set>
+        </property>
+        <property name="list">
+            <list>
+                <value>Hello World!</value>
+                <ref bean="oracle"/>
+            </list>
         </property>
     </bean>
-
 
 </beans>

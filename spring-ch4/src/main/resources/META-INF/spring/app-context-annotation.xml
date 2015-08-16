@@ -46,27 +46,22 @@
        <bean id="message" class="java.lang.String" c:_0="Конфигурируемое сообщение [в app-context-annotation]" />
        <bean id="message1" class="java.lang.String" c:_0="Конфигурируемое сообщение [в app-context-annotation]_1" />
 
-       <!--<bean id="message" class="java.lang.Integer" c:_0="2" />-->
 
-       <!--  Sample for collection injection  -->
-   <!--    <util:map id="map" map-class="java.util.HashMap">
-              <entry key="someValue">
-                     <value>Hello World!</value>
-              </entry>
-              <entry key="someBean">
-                     <ref bean="oracle" />
-              </entry>
-       </util:map>
-       <util:properties id="props">
-              <prop key="firstName">Clarence</prop>
-              <prop key="secondName">Ho</prop>
-       </util:properties>
-       <util:set id="set">
-              <value>Hello World!</value>
-              <ref bean="oracle" />
-       </util:set>
-       <util:list id="list">
-              <value>Hello World!</value>
-              <ref bean="oracle" />
-       </util:list>-->
+    <!--  Пример внедрения коллекций -->
+    <util:map id="map" map-class="java.util.HashMap">
+        <entry key="someValue" value="Hello World!"/>
+        <entry key="someBean" value-ref="oracle"/>
+    </util:map>
+    <util:properties id="props">
+        <prop key="firstName">Clarence</prop>
+        <prop key="secondName">Ho</prop>
+    </util:properties>
+    <util:set id="set">
+        <value>Hello World!</value>
+        <ref bean="oracle"/>
+    </util:set>
+    <util:list id="list">
+        <value>Hello World!</value>
+        <ref bean="oracle"/>
+    </util:list>
 </beans>
