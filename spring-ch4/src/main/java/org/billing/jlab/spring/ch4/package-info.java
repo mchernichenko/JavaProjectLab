@@ -22,6 +22,15 @@
  Вариант конфигурации Spring никак не влияет на способ палучения бинов из ApplicationContext
 
   3. Использование внедрения через конструктор
-     В  том же DeclareSpringComponents рассмотрен пример получения бина configurableMessageRenderer который конфигуриться в конструкторе
+     В  том же DeclareSpringComponents рассмотрен пример получения бина configurableMessageRenderer, который конфигуриться в конструкторе
+
+  4. Параметры внедрения простых типов рассмотрены в InjectSimple.
+
+  5. Внедрение значений с использованием SpEL (Spring Expression Language)
+     Например, если заранее мы не знаем параметры конструирования объекта. Тогда для динамического конструирования объектов
+     внедряемые параметры выносятся в конфигурационый класс (InjectSimpleConfig), а затем применяются в ApplicationContext для внедрения в бины (см. пример InjectSimpleSpel)
+
+  6.
+
  */
 package org.billing.jlab.spring.ch4;

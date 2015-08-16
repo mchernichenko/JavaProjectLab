@@ -3,25 +3,29 @@ package org.billing.jlab.spring.ch4.xml;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
 /**
- * Внедрение простых значений в бины
+ *  Внедрение значений в бины с использованием SpEL
+ *
  */
-public class InjectSimple {
+public class InjectSimpleSpel {
+
     private String name;
+
     private int age;
+
     private float height;
+
     private boolean programmer;
+
     private Long ageInSeconds;
 
     public static void main(String[] args) {
 
-        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
-        ctx.load("classpath:META-INF/spring/app-context-xml.xml");
-        ctx.refresh();
-
-        InjectSimple simple = (InjectSimple) ctx.getBean("injectSimple");
-     //   InjectRef oracle = (InjectRef) ctx.getBean("injectRef");
+    	GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
+		ctx.load("classpath:META-INF/spring/app-context-xml.xml");
+		ctx.refresh();    	
+    	
+        InjectSimpleSpel simple = (InjectSimpleSpel)ctx.getBean("injectSimpleSpel");
         System.out.println(simple);
-        System.out.println(ctx.getBean("injectRef"));
     }
 
     public void setAgeInSeconds(Long ageInSeconds) {
@@ -45,11 +49,11 @@ public class InjectSimple {
     }
 
     public String toString() {
-        return "Name :" + name + "\n"
+        return    "Name :" + name + "\n"
                 + "Age:" + age + "\n"
                 + "Age in Seconds: " + ageInSeconds + "\n"
                 + "Height: " + height + "\n"
                 + "Is Programmer?: " + programmer;
-    }
-
+    }	
+	
 }

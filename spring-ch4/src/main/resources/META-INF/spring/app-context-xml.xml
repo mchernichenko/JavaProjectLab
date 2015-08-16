@@ -57,4 +57,64 @@
     <bean id="configurableMessageRenderer" class="org.billing.jlab.spring.ch4.xml.StandardOutMessageRenderer"
           p:messageProvider-ref="configurableMessageProvider"/>
 
+    <!-- Конфигурирование внедрения простых значений  -->
+    <bean id="injectSimple" class="org.billing.jlab.spring.ch4.xml.InjectSimple">
+        <property name="name" value="John Smith"/>
+        <property name="age" value="35"/>
+        <property name="height" value="1.78"/>
+        <property name="programmer" value="true"/>
+
+        <property name="ageInSeconds">
+            <value>1103760000</value>
+        </property>
+    </bean>
+
+    <!--  Внедрение простых значений в бины с применением SpEL -->
+
+    <!-- Конфигурационный бин, содержащий значения, предназначенные для внедрения -->
+    <bean id="injectSimpleConfig" class="org.billing.jlab.spring.ch4.xml.InjectSimpleConfig"/>
+    <!--  Внедрение свойств, значения которые беруться из конфигурационого бина -->
+    <bean id="injectSimpleSpel" class="org.billing.jlab.spring.ch4.xml.InjectSimpleSpel">
+        <property name="name" value="#{injectSimpleConfig.name}"/>
+        <property name="age" value="#{injectSimpleConfig.age + 1}"/>
+        <property name="height" value="#{injectSimpleConfig.height}"/>
+        <property name="programmer" value="#{injectSimpleConfig.programmer}"/>
+        <property name="ageInSeconds" value="#{injectSimpleConfig.ageInSeconds}"/>
+    </bean>
+
+    <!--  внедрение бинов -->
+    <bean id="oracle" name="wiseworm" class="org.billing.jlab.spring.ch4.beanfactory.BookwormOracle"/>
+    <bean name="injectRef" class="org.billing.jlab.spring.ch4.xml.InjectRef">
+       <property name="oracle">
+           <ref bean="oracle"/>
+       </property>
+    </bean>
+
+    <!-- Иерархия ApplicationContext
+         в дескрипторе ref можно ссылаться на бины как в дочернем так и в родительском контекстах
+         это позволяет перемещать бины между конфигурационными файлами по мере роста приложения
+
+         в бин target1 внедряется бин injectBeanParent определённый в parent.xml
+         в бин target2 внедряется бин injectBean. Т.к. он определён в обоих контекстах, то используется собственый контекст
+         в бин target3 внедряется бин injectBean. Т.к. он определён в обоих контекстах, то для внедрения родительского бина требуется явное указание атрибура parent
+     -->
+    <bean id="injectBean" class="java.lang.String">
+        <constructor-arg value="Дочерний бин"/>
+    </bean>
+
+    <bean id="target1" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+        <property name="val" ref="injectBeanParent"/>
+    </bean>
+
+    <bean id="target2" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+        <property name="val" ref="injectBean"/>
+    </bean>
+
+    <bean id="target3" class="org.billing.jlab.spring.ch4.hierarchical.SimpleTarget">
+        <property name="val">
+            <ref parent="injectBean"/>
+        </property>
+    </bean>
+
+
 </beans>

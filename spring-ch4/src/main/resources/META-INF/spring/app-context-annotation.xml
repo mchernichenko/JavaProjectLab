@@ -35,7 +35,7 @@
             В данном случае пропускаем классы, которым был назначен тип, заданный в выражении (класс или интерфейс)
             Для типа можно указать: annotation, regex, assignable, AspectJ, custom в качестве критерия фильтрации.
        -->
-       <context:component-scan base-package="org.billing.jlab.spring.ch4.annotation;org.billing.jlab.spring.ch4.annotation1">
+       <context:component-scan base-package="org.billing.jlab.spring.ch4.annotation;org.billing.jlab.spring.ch4.annotation1;org.billing.jlab.spring.ch4.beanfactory">
               <context:exclude-filter type="assignable" expression="org.billing.jlab.spring.ch4.annotation1.Bean2"/>
        </context:component-scan>
 
