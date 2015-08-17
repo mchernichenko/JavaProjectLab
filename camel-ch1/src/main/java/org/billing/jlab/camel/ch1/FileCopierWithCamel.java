@@ -25,7 +25,7 @@ public class FileCopierWithCamel {
 
         // start the route and let it do its work
         context.start();
-        Thread.sleep(10000); //10сек
+      //  Thread.sleep(10000); //10сек
 
         // stop the CamelContext
         context.stop();

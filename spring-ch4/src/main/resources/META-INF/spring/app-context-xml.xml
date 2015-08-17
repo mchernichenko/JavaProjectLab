@@ -100,7 +100,7 @@
 
          (!)Закоментированно для того чтобы запустить другие примеры, где не используется вложение контекстов
      -->
-     <bean id="injectBean" class="java.lang.String">
+<!--     <bean id="injectBean" class="java.lang.String">
          <constructor-arg value="Дочерний бин"/>
      </bean>
 
@@ -116,7 +116,7 @@
          <property name="val">
              <ref parent="injectBean"/>
          </property>
-     </bean>
+     </bean>-->
 
     <!--  Внедрение коллекций
           Чтобы внедрить коллекцию необходимо выбрать дескриптор list, map, set, props для предоставления экзамляров List, Map, Set, Properties соответственно
@@ -153,6 +153,14 @@
                 <ref bean="oracle"/>
             </list>
         </property>
+    </bean>
+
+    <!-- Конфигурация необиночного бина
+        область действия бина на уровне прототипа (scope="prototype") заставляет Spring создавать новый экзампляр бина каждый раз, когда он запрашивается приложением -->
+    <bean id="nonSingleton" class="java.lang.String" scope="prototype">
+        <constructor-arg>
+            <value>Clarence Ho</value>
+        </constructor-arg>
     </bean>
 
 </beans>
