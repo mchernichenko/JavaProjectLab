@@ -54,7 +54,7 @@ public class App
         System.out.println(str);
         System.out.println(str1);*/
 
-//       загрузка данный из файла и получение отсортированные строки в массиве
+//       загрузка данных из файла и получение отсортированные строки в массиве
         FileReader in = new FileReader("input.txt");
         String[] array = loadAndSort(in);
         for (String list : array) {
