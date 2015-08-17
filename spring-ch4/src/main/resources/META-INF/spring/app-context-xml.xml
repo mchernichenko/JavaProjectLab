@@ -90,7 +90,7 @@
        </property>
     </bean>
 
-    <!-- Иерархия ApplicationContext
+    <!-- Иерархия ApplicationContext (HierarchicalAppContextUsage.class)
          в дескрипторе ref можно ссылаться на бины как в дочернем так и в родительском контекстах
          это позволяет перемещать бины между конфигурационными файлами по мере роста приложения
 
@@ -100,7 +100,7 @@
 
          (!)Закоментированно для того чтобы запустить другие примеры, где не используется вложение контекстов
      -->
-    <!-- <bean id="injectBean" class="java.lang.String">
+     <bean id="injectBean" class="java.lang.String">
          <constructor-arg value="Дочерний бин"/>
      </bean>
 
@@ -116,7 +116,7 @@
          <property name="val">
              <ref parent="injectBean"/>
          </property>
-     </bean>-->
+     </bean>
 
     <!--  Внедрение коллекций
           Чтобы внедрить коллекцию необходимо выбрать дескриптор list, map, set, props для предоставления экзамляров List, Map, Set, Properties соответственно

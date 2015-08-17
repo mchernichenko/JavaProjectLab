@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+Исходники для книги Camel in Action на GitHub: https://github.com/camelinaction/camelinaction
+Сайт Apache Camel: http://camel.apache.org/download.html
+Там последняя версия для зависимости в Maven. Прописываем в корневой POM
+
+CamelContext состоит из маршрутов, процессов и компонент
+Routes - маршруты определяются с помощью одного из DSLs (domain-specific languages)
+        DSL связывает процессоры и конечные точки для формироваиня маршрутов. DSL в Camel это гибкий Java-API, который содержит методы названные по имени EIP точки
+Processors - процессоры используются для преобразования и манипулировать сообщений во время маршрутизации, а также реализуют все интергационные шаблоны (EIP - Enterprise Integration Patterns),
+             которые имеют соответствующие ключевые слова в языках DSL
+Components - Компоненты точки расширения в Camel для добавления подключения к другим системам
+            Например FileComponent компонент используется, если в качестве типа конечной точки указан file (пример: from("file:camel-ch1/data/inbox?noop=true").to("file:camel-ch1/data/outbox");)Этот
+            FileComponent создаёт фабрику на основе остальных частей URI, т.е. в данном случае "camel-ch1/data/inbox" это стартовая папка, после ? указываются опции
+            Конечная точка выступает в качестве фабрики для создания потребителей и производителей, которые способны принимать и посылать сообщения
+
+</body>
+</html>

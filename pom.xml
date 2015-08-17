@@ -41,6 +41,7 @@
         <module>lab-10-deploy-application</module>
         <module>spring-ch2</module>
         <module>spring-ch4</module>
+        <module>camel-ch1</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
@@ -60,6 +61,13 @@
                <myapp.artifactId>JavaProjectLab</myapp.artifactId>
                <myapp.version>1.0-SNAPSHOT</myapp.version>
                <myapp.fillname>${myapp.artifactId}-${myapp.version}</myapp.fillname>-->
+
+        <camel-version>2.15.2</camel-version>
+        <junit-version>4.11</junit-version>
+        <log4j-version>1.2.17</log4j-version>
+        <spring-version>4.1.7.RELEASE</spring-version>
+        <slf4j-version>1.7.5</slf4j-version>
+
         <skipTests>true</skipTests>
     </properties>
 
@@ -98,10 +106,12 @@
         автоматически обновляет список External Libraries (см. св-ва проекта) для успешной компиляции проекта.
     -->
     <dependencies>
+
+        <!-- Зависимость для использования Spring Framework -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
-            <version>4.1.7.RELEASE</version>
+            <version>${spring-version}</version>
         </dependency>
 
         <dependency>
@@ -116,23 +126,37 @@
             <version>1.3.6.RELEASE</version>
         </dependency>
 
-        <!--        <dependency>
-                    <groupId>org.apache.camel</groupId>
-                    <artifactId>camel-core</artifactId>
-                    <version>2.12.2</version>
-                </dependency>
-        -->
-        <!--        <dependency>
-                    <groupId>org.apache.camel</groupId>
-                    <artifactId>camel-jetty</artifactId>
-                    <version>2.12.2</version>
-                </dependency>
-        -->
+        <!-- Зависимость для использования Apache Camel -->
+        <dependency>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-core</artifactId>
+            <version>${camel-version}</version>
+        </dependency>
 
+        <!-- Логи -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j-version}</version>
+        </dependency>
+
+        <!-- JUnit-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit-version}</version>
             <!--Scope задаёт для чего библиотека используется. в данном случае только в тестах и загружается только при запуске цикла test, когда перед компиляциеё теста загрузится необходимая библиотека
                 Использование библиотеки в основном коде выдаст ошибку кампиляции.
                 Библиотека пемеченная как compile (по дефолту, и для этой библиотеки scope можно опустить) будет доступна  везде, т.е. при компиляции основного приложения и тестов и на стадии запуска основного прил. и тестов
