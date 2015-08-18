@@ -42,6 +42,7 @@
         <module>spring-ch2</module>
         <module>spring-ch4</module>
         <module>camel-ch1</module>
+        <module>spring-ch5</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
