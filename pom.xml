@@ -43,6 +43,13 @@
         <module>spring-ch4</module>
         <module>camel-ch1</module>
         <module>spring-ch5</module>
+        <module>pattern-5-singleton</module>
+        <module>pattern-1-strategy</module>
+        <module>pattern-2-observer</module>
+        <module>pattern-3-decorator</module>
+        <module>pattern-4-factory</module>
+        <module>pattern-6-command</module>
+        <module>pattern-7-adapter</module>
     </modules>
 
     <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
