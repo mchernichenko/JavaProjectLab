@@ -2,6 +2,12 @@ package org.billing.jlab.factory.pizzas;
 
 import java.util.ArrayList;
 
+/**
+ * Родительский класс для всех конкретных классов пиццы.
+ * Общие атрибуты класса объявлены здесь и определляются в подклассах.
+ * Класс объявлен абстрактным, чтобы было нельзя создать его экзампляр т.е. new Pizza(), только через субкласс.
+ */
+
 abstract public class Pizza {
 	String name;
 	String dough;

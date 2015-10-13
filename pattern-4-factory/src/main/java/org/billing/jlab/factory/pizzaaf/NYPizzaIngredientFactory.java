@@ -1,5 +1,8 @@
 package org.billing.jlab.factory.pizzaaf;
 
+/**
+ * Конкретный класс фабрика, создающий семейство объектов
+ */
 public class NYPizzaIngredientFactory implements PizzaIngredientFactory {
  
 	public Dough createDough() {

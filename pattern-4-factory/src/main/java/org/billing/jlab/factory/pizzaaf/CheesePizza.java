@@ -6,7 +6,10 @@ public class CheesePizza extends Pizza {
 	public CheesePizza(PizzaIngredientFactory ingredientFactory) {
 		this.ingredientFactory = ingredientFactory;
 	}
- 
+
+	/**
+	 * создание объектов-атрибутов для Pizza с помощью абстрактоной фабрики
+	 */
 	void prepare() {
 		System.out.println("Preparing " + name);
 		dough = ingredientFactory.createDough();

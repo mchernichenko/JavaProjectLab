@@ -10,6 +10,11 @@ public abstract class Pizza {
 	Pepperoni pepperoni;
 	Clams clam;
 
+	/**
+	 * Абстрактный метод реализующий интерфейс абстрактной фабрики т.е.
+	 * Метод инициализации объектов-атрибутов: Dough, Sauce, Veggies, Cheese, Pepperoni, Clams
+	 * с помощью абстрактной фабрики
+	 */
 	abstract void prepare();
 
 	void bake() {
