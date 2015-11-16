@@ -1,8 +1,15 @@
 package org.billing.jlab.starbuzz;
 
+/**
+ * Шоколадная добавка
+ */
 public class Mocha extends CondimentDecorator {
 	Beverage beverage;
- 
+
+	/**
+	 * Добавляем шоколадную добавку
+	 * @param beverage
+	 */
 	public Mocha(Beverage beverage) {
 		this.beverage = beverage;
 	}

@@ -23,7 +23,8 @@ public class WeatherData extends Observable {
 		/* оповещение наблюдателей только при установленном флаге changed. после оповещения флаг опять сбрасывается
 		  В метод можно передать любой объект, который передается в метод update для дальнейшей обработке на клиенте
 		 */
-		notifyObservers();
+		//notifyObservers();
+		notifyObservers("Здесь м.б. любой объект Object, который передаётся на клиента при вызове update()");
 	}
 	
 	public void setMeasurements(float temperature, float humidity, float pressure) {

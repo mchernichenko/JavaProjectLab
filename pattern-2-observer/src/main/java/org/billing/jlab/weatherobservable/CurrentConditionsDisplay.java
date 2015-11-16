@@ -7,7 +7,8 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
 	Observable observable;
 	private float temperature;
 	private float humidity;
-	
+	String str;
+
 	public CurrentConditionsDisplay(Observable observable) {
 		this.observable = observable;
 		observable.addObserver(this);
@@ -18,6 +19,13 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
 			WeatherData weatherData = (WeatherData)obs;
 			this.temperature = weatherData.getTemperature();
 			this.humidity = weatherData.getHumidity();
+
+			// из субъекта м.б. передан любой объект, в данном случае строка
+			if (arg instanceof String) {
+				str = (String) arg;
+				System.out.println(str);
+			}
+
 			display();
 		}
 	}
