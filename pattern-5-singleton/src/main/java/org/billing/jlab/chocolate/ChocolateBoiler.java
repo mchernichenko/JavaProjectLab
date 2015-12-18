@@ -1,5 +1,9 @@
 package org.billing.jlab.chocolate;
- 
+
+/**
+ * Классическая реализация паттерна Одиночка, с использованием статической переменной для хранения единственного экземпляра.
+ * (!) Это потоко-небезопасный код создания одиночного объекта
+ */
 public class ChocolateBoiler {
 	private boolean empty;
 	private boolean boiled;
@@ -12,10 +16,10 @@ public class ChocolateBoiler {
   
 	public static ChocolateBoiler getInstance() {
 		if (uniqueInstance == null) {
-			System.out.println("Creating unique instance of Chocolate Boiler");
+			System.out.println("Создание уникального экзампляра of Chocolate Boiler");
 			uniqueInstance = new ChocolateBoiler();
 		}
-		System.out.println("Returning instance of Chocolate Boiler");
+		System.out.println("Возвращаем экзампляр of Chocolate Boiler");
 		return uniqueInstance;
 	}
 

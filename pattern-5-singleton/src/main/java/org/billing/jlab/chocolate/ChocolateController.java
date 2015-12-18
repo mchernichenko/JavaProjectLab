@@ -7,7 +7,7 @@ public class ChocolateController {
 		boiler.boil();
 		boiler.drain();
 
-		// will return the existing instance
+		// будет возвращён сущетвующий экземпляр
 		ChocolateBoiler boiler2 = ChocolateBoiler.getInstance();
 	}
 }

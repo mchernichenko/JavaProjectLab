@@ -6,6 +6,8 @@
  *
  * <a href="http://logback.qos.ch/manual/architecture.html>Описание фреймворка для логирования Logback</a>
  *
+ unit.framework.Assert.* — deprecated необходимо использовать org.junit.Assert.*; вместо него.
+
  Доступные аннотации JUnit
  В следующей таблице приведен обзор имеющихся в аннотации JUnit 4.x.
 
