@@ -12,7 +12,8 @@ import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static org.billing.jlab.Util.msgRabbitBodyCreate;
+//import static org.billing.jlab.Util.msgRabbitBodyCreate;
+import static org.billing.jlab.Util.*;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class RabbitSimpleTest {
@@ -39,12 +40,15 @@ public class RabbitSimpleTest {
         // 1. установка соединения с сервером. Соединение с брокером находящимся на локальной машине.
         //    можно указать IP кролика вместо localhost, если брокер работает на другой машине.
 
-        RABBIT_HOST = "172.30.96.43"; //"172.20.112.141" - Юрин кроль // 172.30.96.43/
-        EXCHANGE_NAME = "ps.demo.exchange";
-        ROUTING_KEY = "ps.pay_add.1.1"; // ps.pay_add.macroRegionId.customerDatabaseId.NNN
-        ROUTING_KEY_BIND = "ps.pay_add.*.*"; // маска для маршрутизации, где # - много слов, * - одно слово
+        RABBIT_HOST = "srv2-drse-pays2"; //"172.20.112.141" - Юрин кроль // 172.30.96.43/
+        EXCHANGE_NAME = "NS_CART";  // "NS_CART"
+       // ROUTING_KEY = "ps.ns_cart.subscription_block";
+        ROUTING_KEY = "ps.ns_cart.unsuccess_write_off";
+        // ROUTING_KEY = ps.ns_cart.success_write_off --ps.pay_add.macroRegionId.customerDatabaseId.NNN
+//        ROUTING_KEY_BIND = "ps.pay_add.*.*"; // маска для маршрутизации, где # - много слов, * - одно слово
 
-        QUEUE_NAME = "ps.demo.queue";
+      //  QUEUE_NAME = "subscription_block";
+        QUEUE_NAME = "unsuccess_write_off"; // success_write_off
 
         BATCH_SIZE = 10_000;
 
@@ -52,7 +56,7 @@ public class RabbitSimpleTest {
         factory.setHost(RABBIT_HOST);
         factory.setUsername("test");
         factory.setPassword("test");
-        factory.setVirtualHost("/");
+        factory.setVirtualHost("/pps");
         factory.setPort(5672);
 
         connection = factory.newConnection();
@@ -88,7 +92,7 @@ public class RabbitSimpleTest {
         // такие как Message TTL, Auto expire, Max length и пр.
         channel.queueDeclare(QUEUE_NAME, durable, exclusive, autodelete, null); // a durable, non-exclusive, non-autodelete queue
 
-        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY_BIND);
+        channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
     }
 
     /*  Соединиться с rabbitmq
@@ -101,7 +105,8 @@ public class RabbitSimpleTest {
         logger.info(" ~~~ testPublishDemo begin ~~~");
 
         // генерилка тела сообщения из платежей
-        byte[] msgBody = msgRabbitBodyCreate(2,0).getBytes();
+      //  byte[] msgBody = msgRabbitBodyCreate(1,0).getBytes();
+        byte[] msgBody = msgRabbitCreateMsgForPPS(1,0).getBytes();
 
         //Опубликовать сообщение
         // вместо null м.б. указан MessageProperties.PERSISTENT_TEXT_PLAIN - т.е. сохранять сообщения на диске
@@ -109,7 +114,7 @@ public class RabbitSimpleTest {
       //  channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, body);
 
         // Создаём очередь, а если она уже создана, то новая не создаётся и возвращается ссылка на объект типа DeclareOk с данными об очереди.
-        Thread.sleep(1000); //засыпаем на 1 секунду, чтобы данные об очереди успели обновиться
+            Thread.sleep(1000); //засыпаем на 1 секунду, чтобы данные об очереди успели обновиться
         AMQP.Queue.DeclareOk queueDeclareResult = channel.queueDeclare(QUEUE_NAME, true, false, false, null);
 
         // Получить данные об очереди: Имя и кол-во сообщений в очереди.
@@ -123,6 +128,38 @@ public class RabbitSimpleTest {
         //assertEquals(4, count);
         logger.info(" ~~~ testPublishDemo end ~~~");
     }
+
+    @Test
+    public void testPublishForPPS() throws IOException {
+        String msg="";
+        StringBuilder messageBuilder = new StringBuilder();
+        String templateMsg = "{" +
+                "\"subscriptionId\": \"%1\",\n " +
+                "\"subscriberId\": %2,\n" +
+                "\"msisdn\": 9268888881,\n" +
+                "\"objectTypeId\": 1,\n" +
+                "\"objectId\": 1,\n" +
+                "\"objectName\": \"Object name\",\n" +
+                "\"balance\": 75,\n" +
+                "\"chargeAmount\": 120\n" +
+                "}";
+
+        logger.info(" ~~~ Публикация сообщений для PPS. Begin testPublishForPPS ~~~");
+
+        //(1) без подтверждения, но с сохранением на диске (PERSISTENT_BASIC)
+        long time1 = System.currentTimeMillis();
+        for (int i = 0; i < 3000; i++) {
+        //    msg = messageBuilder.append(templateMsg.replace("%1", Integer.toString(i))).toString();
+            msg = templateMsg.replace("%1", Integer.toString(i+1));
+            msg = msg.replace("%2", Integer.toString(i+11000));
+            System.out.println(msg);
+            byte[] msgBody = msg.getBytes();
+            // channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY,  MessageProperties.PERSISTENT_BASIC, body);
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.MINIMAL_BASIC, msgBody);
+        }
+        logger.info("(1) Отправлено за :" + (System.currentTimeMillis() - time1) + " ms");
+    }
+
 
     /*
         Сравнить производительность публикации 10000 сообщений
@@ -410,13 +447,16 @@ public class RabbitSimpleTest {
         logger.info(" ~~~ Заливка платежей. Begin myTestPublishPayments ~~~");
 
         int BATCH_MSG = 1;  // кол-во платежей в сообщении
-        int BATCH_SIZE = 100_000; // кол-во сообщений
+        int BATCH_SIZE = 1; // кол-во сообщений
 
         //(1) публикация без подтверждения
         long time1 = System.currentTimeMillis();
         for (int i = 0; i < BATCH_SIZE; i++) {
             // генерилка тела сообщения состоящей из пачки платежей с уникальным номером чека
-            byte[] msgBody = msgRabbitBodyCreate(BATCH_MSG, i * BATCH_MSG).getBytes();
+            //byte[] msgBody = msgRabbitBodyCreate(BATCH_MSG, i * BATCH_MSG).getBytes();
+
+            byte[] msgBody = msgRabbitCreateMsgForPPS(BATCH_MSG, i * BATCH_MSG).getBytes();
+
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_BASIC, msgBody);
         }
         logger.info("(1) Отправлено " + BATCH_SIZE + " сообщений без транзакций за :" + (System.currentTimeMillis() - time1) + " ms");

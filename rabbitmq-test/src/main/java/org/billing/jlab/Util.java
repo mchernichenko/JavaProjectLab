@@ -53,11 +53,53 @@ public class Util {
         messageBuilder.append("[");
         for (int i = 0; i < cntPay; i++) {
             messageBuilder.append(templateMsg.replace("%1", Integer.toString(i + 1 + offset)));
+            // добавляем , перевод строки для формирования следующего сообщения, если оно не последнее
             if (i != cntPay - 1) {
                 messageBuilder.append(",\n");
             }
         }
         messageBuilder.append("]");
+        return messageBuilder.toString();
+    }
+
+    /**
+     * Формирование CART-сообщений в JSON для отправки в RabbitMQ
+     * @param cntWriteOff - количество сообщений в пачке. Указать 1
+     * @param offset - смещение для формирования уникального номера подписки в CART_SRV
+     * @return - возвращает тело сообщения в JSON для отправки в RabbitMQ
+       Пример:
+     {   "subscriptionId":   "1"
+        ,"subscriberId":     1278356578
+        ,"msisdn":           9268888881
+        ,"objectTypeId":     1
+        ,"objectId":         1
+        ,"objectName":       "Object name"
+        ,"balance":          75
+        ,"chargeAmount":     120
+     }
+     */
+    public static String msgRabbitCreateMsgForPPS(int cntWriteOff, int offset) {
+
+        String msg="";
+        StringBuilder messageBuilder = new StringBuilder();
+        String templateMsg = "{" +
+                "\"subscriptionId\": \"%1\",\n " +
+                "\"subscriberId\": %2,\n" +
+                "\"msisdn\": 9268888881,\n" +
+                "\"objectTypeId\": 1,\n" +
+                "\"objectId\": 1,\n" +
+                "\"objectName\": \"Object name\",\n" +
+                "\"balance\": 75,\n" +
+                "\"chargeAmount\": 120\n" +
+                "}";
+
+        for (int i = 0; i < 1; i++) {
+            messageBuilder.append(templateMsg.replace("%1", Integer.toString(i + 1 + offset)));
+            if (i != cntWriteOff - 1) {
+                messageBuilder.append(",\n");
+            }
+        }
+
         return messageBuilder.toString();
     }
 }

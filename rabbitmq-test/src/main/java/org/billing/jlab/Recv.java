@@ -23,16 +23,22 @@ import com.rabbitmq.client.QueueingConsumer; // для буфферизации 
  */
 public class Recv {
 
-    private static final String EXCHANGE_NAME = "X_HELLO";
-    private static final String QUEUE_NAME = "Q_HELLO";
-    private static final String ROUTING_KEY = "ps.pay";
+    private static final String EXCHANGE_NAME = "NS_CART";
+    private static final String QUEUE_NAME = "unsuccess_write_off";
+    private static final String ROUTING_KEY = "ps.ns_cart.unsuccess_write_off";
+    private static final String RABBIT_HOST = "srv2-drse-pays2";
 
     public static void main(String[] arg) throws java.io.IOException, java.lang.InterruptedException {
 
         // 1. Установка соединения с сервером. Соединение с брокером находящимся на локальной машине.
         //    можно указать IP кролика вместо localhost, если брокер работает на другой машине.
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("localhost");
+        factory.setHost(RABBIT_HOST);
+        factory.setUsername("test");
+        factory.setPassword("test");
+        factory.setVirtualHost("/");
+        factory.setPort(5672);
+
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
 
@@ -51,7 +57,7 @@ public class Recv {
         String queueName = channel.queueDeclare().getQueue();
 
         // создание exchange. Должен создаваться сендером, но если его нет, то создаём, т.к. без него не сделать биндинг
-        channel.exchangeDeclare(EXCHANGE_NAME, "fanout");
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
         // 3. связываем очередь и exchange. т.к. exchange fanout, то routing_key не указываем "".
         channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "");
 

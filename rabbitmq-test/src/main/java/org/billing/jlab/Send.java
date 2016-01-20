@@ -1,12 +1,10 @@
 package org.billing.jlab;
 
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.MessageProperties;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Герерация сообщений и отправка их в rabbitMQ.
@@ -14,7 +12,7 @@ import java.util.Scanner;
  * 1. подключение к rabbitMQ
  * 2. создание exchange,
  * 3. создание очереди
- * 4. Публикация сообщений (сосбености  публикации в AMQP default). Включение поддержки Message durability (сохранения сообщений на диск - messages as persistent)
+ * 4. Публикация сообщений (особености  публикации в AMQP default). Включение поддержки Message durability (сохранения сообщений на диск - messages as persistent)
  * 5.
  */
 public class Send {
@@ -24,10 +22,10 @@ public class Send {
     private static final String ROUTING_KEY = "test_send";
     private static final String RABBIT_HOST = "172.20.112.141";*/
 
-    private static final String EXCHANGE_NAME = "X_HELLO";
-    private static final String QUEUE_NAME = "Q_HELLO";
-    private static final String ROUTING_KEY = "ps.pay";
-    private static final String RABBIT_HOST = "172.20.112.157";
+    private static final String EXCHANGE_NAME = "NS_CART_test"; // точка публикации для CART
+    private static final String QUEUE_NAME = "subscription_block";  // очередь неуспешных списаний -- success_write_off
+    private static final String ROUTING_KEY = "ps.ns_cart.subscription_block"; //"ps.ns_cart.unsuccess_write_off"; // ps.ns_cart.success_write_off
+    private static final String RABBIT_HOST = "srv2-drse-pays2";  // тестовый стенд PPS -- "172.20.112.157";
 
     public static void main(String[] args) throws IOException {
 
@@ -59,10 +57,10 @@ public class Send {
 
         // 2. Создание exchange с указанием типа точки входа (direct, topic, headers, fanout)
         //    по дефолту используется AMQP default -  direct exchange
-        channel.exchangeDeclare(EXCHANGE_NAME, "direct");
+        channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 
         // 3. Создание очереди. Этот шаг для отправителья не обязателен. Создание очередей и их Bindings забота получателя сообщений
-        // Для отсылки сообщения необходимо создать очередь, чтобы посылать в неё. Очередь создаётся если её нет.
+        // Для отсылки сообщения необходимо создать очередь, чтобы посылать в неё. Очередь создаётся, если её нет.
         // durable - признак того, что очередь физически сохраняется на диске и при падении rabbit все сообщения не пропадут
         // если очередь с таким именем уже есть, но свойство Durability другое, возникнет ошибка
         boolean durable = true;
@@ -90,7 +88,7 @@ public class Send {
         long time1 = System.currentTimeMillis();
         String str = message;
         System.out.println("Поехали...." + time1);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             str = message + i;
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, str.getBytes());
             //  channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, null, msg.append(i).toString().getBytes());
