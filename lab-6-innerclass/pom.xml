@@ -14,7 +14,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-
     <artifactId>innerclass</artifactId>
     <packaging>jar</packaging>
 
@@ -33,12 +32,12 @@
             <scope>test</scope>
         </dependency>
 
-<!--        <dependency>
+        <dependency>
             <groupId>org.billing.jlab</groupId>
             <artifactId>reflection</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
     </dependencies>
 
