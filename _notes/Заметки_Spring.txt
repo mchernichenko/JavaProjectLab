@@ -8,4 +8,4 @@
 
 Spring JavaDoc : http://docs.spring.io/spring-framework/docs/current/javadoc-api/
 
-Spring на русском: http://spring-projects.ru/projects/spring-framework/
+Spring на русском: http://spring-projects.ru/projects/spring-framework

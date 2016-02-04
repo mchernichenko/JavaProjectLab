@@ -1,6 +1,6 @@
 ﻿Для запуска jar-архивов по DoubleClick
 C:\>assoc .jar=jarfile
-C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %* 
+C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
 
 Просмотр JAR в ТotalСommander: На архиве нажать Ctrl-PgDown.
 
@@ -135,4 +135,4 @@ PS: Лучше сборку делать Maven`ом
 По Alt+Enter idea предлагает их удалить, но мы выбираем "Bing Constructor Parameters to fields"
 Автоматически создаются private параметры и их инициализация
 5. Далее по Alt+Ins генерим гетеры и сеттеры
-6. При необходимости equals/hasCode и пр. 
+6. При необходимости equals/hasCode и пр.
