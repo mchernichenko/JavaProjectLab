@@ -5,10 +5,7 @@ import org.junit.*;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -133,13 +130,18 @@ public class RabbitSimpleTest {
     public void testPublishForPPS() throws IOException {
         String msg="";
         StringBuilder messageBuilder = new StringBuilder();
-        String templateMsg = "{" +
-                "\"subscriptionId\": \"%1\",\n " +
+        List<UnsuccessWriteOff> list = fillCartData("../data/MsisdnForPPS.txt");
+
+        String currentDir = System.getProperty("user.dir");
+        System.out.println("Текущий рабочий каталог: " + currentDir);
+
+        String templateMsg = "{\n" +
+                "\"subscriptionId\": \"%1\",\n" +
                 "\"subscriberId\": %2,\n" +
-                "\"msisdn\": 9268888881,\n" +
+                "\"msisdn\": \"%3\",\n" +
                 "\"objectTypeId\": 1,\n" +
                 "\"objectId\": 1,\n" +
-                "\"objectName\": \"Object name\",\n" +
+                "\"objectName\": \"Object name (MCH)\",\n" +
                 "\"balance\": 75,\n" +
                 "\"chargeAmount\": 120\n" +
                 "}";
@@ -148,15 +150,24 @@ public class RabbitSimpleTest {
 
         //(1) без подтверждения, но с сохранением на диске (PERSISTENT_BASIC)
         long time1 = System.currentTimeMillis();
-        for (int i = 0; i < 3000; i++) {
+        for (UnsuccessWriteOff unsuccessWriteOff : list) {
+            msg = templateMsg.replace("%1", Long.toString(unsuccessWriteOff.getSubscriptionId()));
+            msg = msg.replace("%2", Long.toString(unsuccessWriteOff.getSubscriberId()));
+            msg = msg.replace("%3", unsuccessWriteOff.getMsisdn());
+            System.out.println(msg);
+            byte[] msgBody = msg.getBytes();
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_BASIC, msgBody);
+        }
+
+       /* for (int i = 0; i < 3; i++) {
         //    msg = messageBuilder.append(templateMsg.replace("%1", Integer.toString(i))).toString();
             msg = templateMsg.replace("%1", Integer.toString(i+1));
-            msg = msg.replace("%2", Integer.toString(i+11000));
+            msg = msg.replace("%2", Integer.toString(i+1));
             System.out.println(msg);
             byte[] msgBody = msg.getBytes();
             // channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY,  MessageProperties.PERSISTENT_BASIC, body);
             channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.MINIMAL_BASIC, msgBody);
-        }
+        }*/
         logger.info("(1) Отправлено за :" + (System.currentTimeMillis() - time1) + " ms");
     }
 
@@ -180,7 +191,7 @@ public class RabbitSimpleTest {
         long time1 = System.currentTimeMillis();
         for (int i = 0; i < BATCH_SIZE; i++ ) {
            // channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY,  MessageProperties.PERSISTENT_BASIC, body);
-            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.MINIMAL_BASIC, body);
+            channel.basicPublish(EXCHANGE_NAME, ROUTING_KEY, MessageProperties.PERSISTENT_BASIC, body);
         }
         logger.info("(1) Отправлено " + BATCH_SIZE + " сообщений без транзакций за :" + (System.currentTimeMillis() - time1) + " ms");
 

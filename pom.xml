@@ -31,20 +31,20 @@
          Например: проект может состоять из  busines-logic, web-interface. Можно сделать отдельные независимые проекты, т.е. разные п/с,
          но использовать модули удобнее -->
     <modules>
-        <module>lab-13-collections</module>
-        <module>lab-4-javadoc</module>
-        <module>lab-1-intro</module>
-        <module>lab-11-exceptions</module>
-        <module>lab-4-objects</module>
-        <module>lab-5-6-oop</module>
-        <module>lab-5-reflection</module>
-        <module>lab-6-innerclass</module>
+        <module>java-13-collections</module>
+        <module>java-4-javadoc</module>
+        <module>java-1-intro</module>
+        <module>java-11-exceptions</module>
+        <module>java-4-objects</module>
+        <module>java-5-6-oop</module>
+        <module>java-5-reflection</module>
+        <module>java-6-innerclass</module>
         <module>rabbitmq-test</module>
-        <module>lab-7-swing-intro</module>
-        <module>lab-14-threads</module>
+        <module>java-7-swing-intro</module>
+        <module>java-14-threads</module>
         <module>JMX-test</module>
-        <module>lab-8-events</module>
-        <module>lab-10-deploy-application</module>
+        <module>java-8-events</module>
+        <module>java-10-deploy-application</module>
         <module>spring-ch2</module>
         <module>spring-ch4</module>
         <module>camel-ch1</module>
@@ -219,27 +219,28 @@
             Этот дефолтный путь определяется в maven-site-plugin, который успользует maven-javadoc-plugin
             создание javadoc в формате указаном в теге <goal> можно привязать к ЖЦ, и тогда javadoc будет формироваться автоматом на указанной фазе в <phase>
             -->
+<!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.3</version>
                 <configuration>
-                    <!--Переопределяем путь формирования javadoc в destDir относительно reportOutputDirectory-->
-                    <!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
-                    <!--<destDir>myapidocs</destDir>-->
+                    &lt;!&ndash;Переопределяем путь формирования javadoc в destDir относительно reportOutputDirectory&ndash;&gt;
+                    &lt;!&ndash;<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>&ndash;&gt;
+                    &lt;!&ndash;<destDir>myapidocs</destDir>&ndash;&gt;
 
-                    <!-- тот тег нифига не переопределяется и чем от отличается от reportOutputDirectory не ясно-->
-                    <!--<outputDirectory>${project.reporting.outputDirectory}/qqq</outputDirectory>-->
+                    &lt;!&ndash; тот тег нифига не переопределяется и чем от отличается от reportOutputDirectory не ясно&ndash;&gt;
+                    &lt;!&ndash;<outputDirectory>${project.reporting.outputDirectory}/qqq</outputDirectory>&ndash;&gt;
 
-                    <!--docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника-->
+                    &lt;!&ndash;docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника&ndash;&gt;
                     <encoding>UTF-8</encoding>
                     <docencoding>UTF-8</docencoding>
 
-                    <!--включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources-->
+                    &lt;!&ndash;включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources&ndash;&gt;
                     <docfilessubdirs>true</docfilessubdirs>
 
                 </configuration>
-                <!--При создании jar всегда создавать и  jar-архив javadoc-->
+                &lt;!&ndash;При создании jar всегда создавать и  jar-архив javadoc&ndash;&gt;
                 <executions>
                     <execution>
                         <goals>
@@ -249,19 +250,20 @@
                     </execution>
                 </executions>
             </plugin>
+-->
 
             <!--Настройка компилятора-->
-            <plugin>
+           <!-- <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
-                    <!--<encoding>windows-1251</encoding>-->
+                    &lt;!&ndash;<encoding>windows-1251</encoding>&ndash;&gt;
                 </configuration>
 
-            </plugin>
+            </plugin>-->
 
             <!--Настройка копирования зависимостей от которых зависит проект в папку /lib, которая прописана в манифесте ниже. ЖЦ install -->
             <plugin>
