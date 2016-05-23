@@ -4,12 +4,12 @@ C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
 
 Просмотр JAR в ТotalСommander: На архиве нажать Ctrl-PgDown.
 
-Рекоммендации по использованию
+Рекомендации по использованию
 ====================================== Интерфейс =========================================
 1. Убрать лишние тулзы: ToolBar, Tool Buttons (Alt+1 Показать окно проекта), Navigаtion Bar (Alt+Home показать)
    2xAlt и задержать, то появится скрытый Tool Buttons
    Shift+Ctrl+F12 - максимизировать окно редактора
-   Ctrl+` 	Quick switch current scheme
+   Ctrl+` 	Quick switch current scheme или Settings->Appearance & Behavior -> Appearance
    Ctrl+Shift+A - навигация по быстрым вызовам (shortcut)
    Ctrl+Alt+F10 - Full screen (shortcut по умолчанию не определён)
 

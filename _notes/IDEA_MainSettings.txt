@@ -7,7 +7,7 @@ C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
 ========================
 1. Убрать генерацию стандартный загаловков файлов: 
 	Settings->Editor->File and Code Templates->Includes->File Header
-2. Тамже в закладке Code убрать «throws Exception» в шаблонах для JUnit: 
+2. Там же в закладке Code убрать «throws Exception» в шаблонах для JUnit:
 	- JUnit4 Test Method
 	- JUnit4 SetUp Method
 3. Автоматический импорт: Settings->Editor->General->Auto Import->указать Optimize imports on the fly

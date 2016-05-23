@@ -125,7 +125,7 @@ public class CalendarTest {
         }
 
         // возвращаем массив тайм-зон со смещением +4 относительно GMT
-        ids = TimeZone.getAvailableIDs(12 * 60 * 60 * 1000);
+        ids = TimeZone.getAvailableIDs(-5 * 60 * 60 * 1000);
         cal = Calendar.getInstance(); // берём локальное время
         System.out.println("\n---Все тайм-зоны со смещением +4 ---");
         for (String id : ids) {

@@ -1,0 +1,44 @@
+Назначение Sonar
+SonarQube (бывший Sonar[1]) — решение с открытым исходным кодом для непрерывного инспектирования качества кода.
+
+1. Потребуется
+   - "SonarQube" - собственно сервер сонар, который хранит данные о тестах
+   - Плагин для определённого языка программирования, программу на котором планируется анализировать
+   - "SonarRunner" для запуска самой проверки
+  Найти можно здесь: http://www.sonarqube.org/downloads/
+  Далее распаковываем оба продукта в папки, например:
+    "D:\sonarqube" слагин в D:\sonarqube\extensions\plugins
+    "D:\sonar-runner"
+
+2. Установка плагина в IDEA: File -> Setting, в списке настроек выбрать Plugins, нажать Browse repositories, далее найти и установить плагин SonarQube Community Plugin.
+
+3. Запускаем "SonarQube": "D:/sonarqube/bin/<OS>/"
+
+4. В корень проекта добавляем файл конфигурации "sonar-project.properties":
+    sonar.projectKey=ProjKey // Путь, по которому будет доступна страничка с результатами тестов в браузере
+    sonar.projectName=ProjName // Имя проекта
+    sonar.projectVersion=1.0 // Версия проверки
+    sonar.sources=src // Папки, которые будут проверяться (можно перечислить через запятую)
+    sonar.language=Java // Язык программирования для проверки
+    sonar.dynamicAnalysis=false // Включение\отключение функций, отвечающих за юнит тестирование
+    sonar.sourceEncoding=UTF-8 // Кодировка файлов
+
+5. Запускаем "SonarRunner", тем самым он создаст проект в "SonarQube" и настроит его по умолчанию:
+    cd "<path_to_project>"
+    D:/sonar-runner/bin/sonar-runner
+    Если "SonarRunner" упал / не сработал, попробуйте удалить комментарии из файла с настройками.
+
+6. Настройка: Выбрать File -> Settings -> SonarQube:
+    Добавить SonarQube server:
+        Server Name: PS Sonar
+        Url: http://srv2-rnd-ubs01:9000/
+        User: свои доменные данные
+
+    Добавить Local analysis script:
+        Name: PS Sonar
+        Script: "<путь к каталогу где установлен maven>\bin\mvn.bat" test -P coverage sonar:sonar -Dsonar.language=java  -Dsonar.analysis.mode=incremental -Dsonar.host.url=http://srv2-rnd-ubs01:9000
+        Path to sonar -repost.json: $WORKING_DIR/target/sonar/sonar-report.json
+
+7. Использование
+    В любом месте редактора вызвать контекстное меню и выбрать в нем Analyze -> Inspect Code.
+    В появившемся диалоге задать желаемые настройки анализа.
