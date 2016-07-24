@@ -1,0 +1,30 @@
+основные команды:
+
+-- справка --
+mvn help:help
+mvn help:describe -Dcmd=install -Ddetail=true
+mvn help:describe -Dcmd=deploy
+mvn help:describe -Dplugin=org.apache.maven.plugins:maven-dependency-plugin
+mvn help:describe -Dplugin=org.apache.maven.plugins:maven-help-plugin
+mvn help:describe -Dplugin=dependency
+mvn help:describe -Dplugin=assembly -Ddetail=true
+mvn help:describe -Dplugin=install
+mvn help:effective-pom   				- Эффектифный POM (образуетс¤ как SuperPOM + POM файлов проекта)
+mvn help:system
+
+mvn test -Dmaven.compiler.source=1.5 -Dmaven.compiler.target=1.5 - запуск компил¤ции с указанием версии
+mvn dependency:tree  					- список зависимостей в виде дерева
+mvn dependency:list  					- итоговый список артефактов и их scope
+mvn dependency:purge-local-repository 	- служит для удаления из локального репозитори¤ всех артефактов, от которых пр¤мо или косвенно зависит наш проект.
+										- Затем удаленные артефакты заново загружаютс¤ из internet, это может быть нужно, когда какой-то из файлов артефактов был загружен из internet со сбо¤ми и нет времени искать его
+mvn dependency:sources 					- для загрузки из internet исходников для всех артефактов используемых в проекте
+
+mvn dependency:copy-dependencies -DoutputDirectory=target/lib 	- скопирование зависимостей проекта в target/lib
+
+mvn clean install -Dmaven.test.skip=true 						- компил¤ци¤ (можно указать сборку) без компил¤ции и запусков тестов
+mvn install:install-file -DgroupId=bar-group -DartifactId=commons-bar -Dversion=1.0 -Dpackaging=jar -Dfile=file-bar-commons.jar   - самосто¤тельное инсталлирование библиотеки в локальный репозиторий 
+mvn exec:java -Dexec.mainClass=package.ClassName - запуск приложени¤ с указанием точки входа
+mvn clean:clean
+mvn exec:exec -DmainClass=com.demo.App
+
+mvn package -Dmaven.test.skip=true      -- упаковка в jar с пропуском тестов

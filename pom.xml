@@ -318,6 +318,9 @@
                             <!--includeScope задаёт фильтр для dependencies, которые попадут в lib. Это позволяет, к примеру, не включать junit (у которого scope test).-->
                             <includeScope>compile</includeScope>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
                 </executions>
@@ -396,7 +399,6 @@
                             </executions>
                         </plugin>
             -->
-
         </plugins>
     </build>
 

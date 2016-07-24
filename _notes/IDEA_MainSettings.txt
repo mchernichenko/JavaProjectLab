@@ -22,5 +22,9 @@ C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
 	!!! Можно убрать «Are you sure you want to exit IDEA» при выходе !!!
 7. Inspections: Settings->Editor->Inspections
 		- «Missing @ Override annotation» указать галочку и Severity:Error - обязательное требование начичия аннотации @Override при наследовании метода.
-8. Плагин: Key Promoter	- помогает учить шорткаты. Если что-то делать мышкой и на это действие есть шорткат, то плаги сделает подсказку
+8. Плагины:
+     Key Promoter	- помогает учить шорткаты. Если что-то делать мышкой и на это действие есть шорткат, то плаги сделает подсказку
+     PlantUML - PluntUML является одним из простых и удобных решений для создания UML диаграмм. http://plantuml.sourceforge.net/
 9. Export/Import Settings
+10. Разделение методов горизонтальной линией (IDE settings -> Editor -> Appearence -> Show method separator)
+11. Memory indicator (IDE settings -> Appearance -> Show memory indicator)
