@@ -292,6 +292,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <!-- source: версия JVM, для которой написан (обеспечивается совместимость) исходный код. Чтобы не корректировать старый код, иногда бывает полезно использовать этот ключик.-->
+                    <!-- target: это версия JVM, с которой можно будет запускать приложение, т.е. классы компилируются для указанной JVM -->
                     <source>1.8</source>
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>

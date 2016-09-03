@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+
+  <display-name>Archetype Created Web Application</display-name>
+  <!-- в этом файле мы зарегистрируем наш сервлет и мапим его на URL.
+       указываем имя сервлета (оно может быть любое) это имя является идентификатором, и должно быть уникальным.
+       и указываем полный пакетный путь к севрлету. После чего мы можем к нему обращаться по его name (идентификатору).
+   -->
+  <servlet>
+    <servlet-name>HelloWorld</servlet-name>
+    <servlet-class>org.billing.jlab.webproject1.serlvet.HelloServlet</servlet-class>
+  </servlet>
+
+  <!-- указываем имя сервлета (идентификатор) который хотим замапить на определенный URL.
+       далее указываем на какой URL мапить сервлет.
+       Так как у нас стоит /sayhello — это значит что зайдя на URL http://hostname:port/hello/sayhello мы получим сервлет,
+       а именно то что в методе doGet -->
+
+  <servlet-mapping>
+    <servlet-name>HelloWorld</servlet-name>
+    <url-pattern>/sayhello</url-pattern>
+  </servlet-mapping>
+
+</web-app>
