@@ -1,5 +1,9 @@
 /**
+<<<<<<< bc7de03b15e8b75cd41a2d82ecacef70df50b422
  Отлдадка сервлетов на Tomcat:
+=======
+ Отладка сервлетов на Tomcat:
+>>>>>>> fix web project-1
  Ссылки: http://javatalks.ru/topics/15501?page=1#164663  - Запуск/debug веб приложений
          http://javatalks.ru/topics/32699  - Debug application on Tomcat с картинками
          http://devcolibri.com/4249 - Intellij IDEA деплой на Tomcat с картинками
@@ -26,6 +30,13 @@
  Порты конечно должны совпадать с тем, что есть в IntelliJ.
  После запуска Tomcat, можно запускать только что созданную конфигурацию из IntelliJ
 
+<<<<<<< bc7de03b15e8b75cd41a2d82ecacef70df50b422
+=======
+ При создании конфигурации нужно указать артефакт для деплоя (в закладке Deployment). Можно на выбор указать артифакт либо в фармате war, либо в формате war-exploaded (т.е. файлы не пакуются в war-архив
+ и сразу заливаются на сервер). в Данном случае это лучше, т.к. если есть exploaded-директория (директория для разворачивания) приложения, то war-архив томкатом не распаковывается
+
+ Web Application: Exploded - это набор файлов для web-приложения
+>>>>>>> fix web project-1
 
  */
 package org.billing.jlab.webproject1.serlvet;
