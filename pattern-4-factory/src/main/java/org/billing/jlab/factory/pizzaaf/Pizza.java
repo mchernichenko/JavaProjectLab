@@ -18,15 +18,15 @@ public abstract class Pizza {
 	abstract void prepare();
 
 	void bake() {
-		System.out.println("Bake for 25 minutes at 350");
+		System.out.println("bake(): Bake for 25 minutes at 350");
 	}
 
 	void cut() {
-		System.out.println("Cutting the pizza into diagonal slices");
+		System.out.println("cut(): Cutting the pizza into diagonal slices");
 	}
 
 	void box() {
-		System.out.println("Place pizza in official PizzaStore box");
+		System.out.println("box(): Place pizza in official PizzaStore box");
 	}
 
 	void setName(String name) {
@@ -39,20 +39,21 @@ public abstract class Pizza {
 
 	public String toString() {
 		StringBuffer result = new StringBuffer();
-		result.append("---- " + name + " ----\n");
+		result.append("Состав пиццы: " + name + "\n");
 		if (dough != null) {
-			result.append(dough);
+			result.append("Тесто: " + dough);
 			result.append("\n");
 		}
 		if (sauce != null) {
-			result.append(sauce);
+			result.append("Соус: " + sauce);
 			result.append("\n");
 		}
 		if (cheese != null) {
-			result.append(cheese);
+			result.append("Сыр: " + cheese);
 			result.append("\n");
 		}
 		if (veggies != null) {
+			result.append("Набор специй: ");
 			for (int i = 0; i < veggies.length; i++) {
 				result.append(veggies[i]);
 				if (i < veggies.length-1) {
@@ -62,11 +63,11 @@ public abstract class Pizza {
 			result.append("\n");
 		}
 		if (clam != null) {
-			result.append(clam);
+			result.append("Слизняки: " + clam);
 			result.append("\n");
 		}
 		if (pepperoni != null) {
-			result.append(pepperoni);
+			result.append("Колбаски: " + pepperoni);
 			result.append("\n");
 		}
 		return result.toString();

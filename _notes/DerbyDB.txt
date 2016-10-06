@@ -1,0 +1,48 @@
+1. DerbyDB входит в состав JDK (%JAVA_HOME%/db)
+2. Настроить окружение для запуска скриптов, которые используют DERBY_HOME, JAVA_HOME
+	set DERBY_HOME=c:\Derby_10
+	set PATH=%DERBY_HOME%\bin;%PATH%
+3. Создание БД
+    - перейти в каталог где должна быть создана БД
+    - запустить команду ji, т.е. зайти в тулзу выполнения SQL-сценариев. ij является клиентским приложением для соединения с БД
+    - выполнить
+	     ij> CONNECT 'jdbc:derby:firstdb;create=true'; или CONNECT 'jdbc:derby://localhost:1527/firstdb;create=true';
+			где CONNECT - команда устанавливающея соединение с БД по jdbc протоколу jdbc:derby:
+			firstdb - имя БД, ;create=true - URL атрибут используемый для создания БД
+
+        Прим: для создания БД  командой CONNECT 'jdbc:derby://localhost:1527/firstdb;create=true';
+		 необходимо сначала запустить сервер derbyDb из папки, где находится БД или где должны создасться файлы БД
+		 Варианты запуска сервера DerbyDB:
+			* java -jar %DERBY_HOME%\lib\derbyrun.jar server start -noSecurityManager
+			* %DERBY_HOME%/bin/startNetworkServer -h localhost -p 1527 -noSecurityManager (по дефолту derby запускается на порту localhost:1527)
+			* %DERBY_HOME%/bin/startNetworkServer -noSecurityManager (по дефолту derby запускается на порту localhost:1527)
+
+	либо так:
+		derby.properties
+		derby.drda.startNetworkServer=true
+		derby.drda.portNumber=1110
+		derby.drda.host=myhost
+
+		Про properties: http://db.apache.org/derby/docs/10.11/adminguide/index.html
+		(!) описание проблемы недоступности порта 1527:  http://www.sql.ru/forum/1148931/poslednyaya-versiya-jdk-1-8-0-40-ne-mozhet-zapustit-javadb-apache-derby-10-11-1-1
+
+
+	- пример создания схемы и наполнения таблиц данными можно взять из %JAVA_HOME%\demo\programs\toursdb\ предварительно скачав архив с Demos and Samples
+	  скопировать sql скрипты в текущий каталог и выполнить команды:
+      ij>  run 'ToursDB_schema.sql';  - скрипт создания схемы
+      ij>  run 'loadTables.sql';      -- скрипт наполнения таблиц
+
+4. Для запуска сервера DerbyDB, утилиты для запросов в БД (а-ля sqlplus) используется один jar`ник: derbyrun.jar
+	java -jar %DERBY_HOME%\lib\derbyrun.jar ij [-p propertiesfile] [sql_script]
+	java -jar %DERBY_HOME%\lib\derbyrun.jar sysinfo [-cp ...] [-cp help]
+	java -jar %DERBY_HOME%\lib\derbyrun.jar dblook [arg]* (or no arguments for usage)
+	java -jar %DERBY_HOME%\lib\derbyrun.jar server [arg]* (or no arguments for usage)
+
+	где ij — инструмент, позволяющий выполнять SQL-сценарии для любой базы данных JDBC.
+	dblook — инструмент извлечения схемы базы данных Derby, т.е. инструмент генерации DDL
+	SysInfo — утилита для отображения номера версии и пути к java-классу Derby.
+
+4. вместо п.3 можно воспользовться скриптами
+	- bin\sysinfo.bat
+	- set DERBY_OPTS=-Dij.protocol=jdbc:derby://localhost/ и запустить bin\ij.bat
+    - dblook -d 'jdbc:derby://localhost/myDB;user=usr'
