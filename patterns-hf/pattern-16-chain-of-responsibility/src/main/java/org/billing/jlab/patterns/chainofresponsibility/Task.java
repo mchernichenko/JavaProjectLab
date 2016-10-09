@@ -12,12 +12,8 @@ public class Task implements ProjectItem {
     private Contract owner;
     private String details;
     private boolean primaryTask;
-
-    // хранит коллекцию подзадач
-    private ArrayList<ProjectItem> projectItems = new ArrayList<ProjectItem>();
-
-    // ссылка на родительский объект
-    private ProjectItem prent;
+    private ProjectItem prent;     // ссылка на родительский объект
+    private ArrayList<ProjectItem> projectItems = new ArrayList<ProjectItem>(); // хранит коллекцию подзадач
 
     public Task(String name, Contract owner, String details, boolean primaryTask, ProjectItem prent) {
         this.name = name;
