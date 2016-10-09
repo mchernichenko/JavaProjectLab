@@ -1,7 +1,5 @@
 package org.billing.jlab.reflection;
 
-import org.billing.jlab.oop.Employee;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
