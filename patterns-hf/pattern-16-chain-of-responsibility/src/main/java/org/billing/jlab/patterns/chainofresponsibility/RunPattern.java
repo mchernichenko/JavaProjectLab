@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Iterator;
 
 /**
- * координирует работу остальных классов: извлекает проект из файла, затем получает владельца
+ координирует работу остальных классов: извлекает проект из файла, затем получает владельца
  и детали по каждой задаче и всему проекту в целом
  */
 public class RunPattern {
@@ -15,10 +15,10 @@ public class RunPattern {
         Project project = (Project) DataRetriever.deserializeData("data.ser");
         System.out.println("Получение Owner и детали для каждого элемента проекта");
         System.out.println();
-        getitemInfo(project);
+        getItemInfo(project);
     }
 
-    private static void getitemInfo(ProjectItem item) {
+    private static void getItemInfo(ProjectItem item) {
         System.out.println("ProjectItem: " + item);
         System.out.println("Owner: " + item.getOwner());
         System.out.println("Details: " + item.getDetails());
@@ -26,7 +26,7 @@ public class RunPattern {
         if (item.getProjectItems() != null) {
             Iterator iterator = item.getProjectItems().iterator();
             while (iterator.hasNext()) {
-                getitemInfo((ProjectItem) iterator.next());
+                getItemInfo((ProjectItem) iterator.next());
             }
         }
     }

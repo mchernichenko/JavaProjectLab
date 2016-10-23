@@ -1,34 +1,51 @@
 package org.billing.jlab.patterns.chainofresponsibility;
 
-import java.security.PrivateKey;
 import java.util.ArrayList;
 
 /**
- * Класс Task представляет собой некоторую отдельную задачу в рамках проекта
+ * Класс Task представляет собой некоторую отдельную задачу в рамках проекта (Project)
+ * Имеет ссылку на родительский объект, который м.б. экземпляром как Task или Project
+ * а также имеет список подзадач и признак терминального (последнего) таска не имеющего подтасков.
  * Поведение, характерное для шаблона Chain of Responsibility, проявляется в методах getOwner и getDetails
  */
 public class Task implements ProjectItem {
     private String name;
     private Contract owner;
     private String details;
-    private boolean primaryTask;
-    private ProjectItem prent;     // ссылка на родительский объект
+    private boolean primaryTask; // признак простейшего, терминального таска, т.е. у него уже не должно быть подтасков
+    private ProjectItem parent;     // ссылка на родительский объект, который м.б. экземпляром Task или Project
     private ArrayList<ProjectItem> projectItems = new ArrayList<ProjectItem>(); // хранит коллекцию подзадач
 
-    public Task(String name, Contract owner, String details, boolean primaryTask, ProjectItem prent) {
+    /**
+     *
+     * @param name - Имя таска
+     * @param owner - владелец таска
+     * @param details - детали таска
+     * @param primaryTask - признак терминального таска (узла), т.е. только до этого узда будет выводится детализация
+     * @param parent - ссылка на родительский объект, который м.б. экземпляром Task или Project
+     *
+     * Список подзадач такски формируется путём добавления её с помощью addProjectItems
+     * При создании задачи она ничего не знает из каких подзачач она состоит, только знает за каким объектом он следует
+     * т.е. знает её родителя
+     */
+    public Task(String name, Contract owner, String details, boolean primaryTask, ProjectItem parent) {
         this.name = name;
         this.owner = owner;
         this.details = details;
         this.primaryTask = primaryTask;
-        this.prent = prent;
+        this.parent = parent;
     }
 
-    public Task(ProjectItem prent) {
-        this("", null, "", false, prent);
+    /**
+     *
+     * @param parent - ссылка на родителя
+     */
+    public Task(ProjectItem parent) {
+        this("", null, "", false, parent);
     }
 
-    public ProjectItem getPrent() {
-        return prent;
+    public ProjectItem getParent() {
+        return parent;
     }
 
     public boolean isPrimaryTask() {
@@ -36,17 +53,17 @@ public class Task implements ProjectItem {
     }
 
     /**
-     * Данный метод вызывает метод getDetails каждого из родителей до тех пор, пока не достигнет класса
-     Task или Project, идентифицированного как терминальный узел. Это означает, что метод getDetails возвращает набор объектов
-     класса String, совокупность которых представляет описание конкретной задачи с глубиной детализации, соответствующей
-     точке вызова getDetails.
+     Данный метод вызывает метод getDetails каждого из родителей до тех пор, пока не достигнет класса
+     Project или Task, идентифицированного как терминальный узел - primaryTask=true
+     По сути признак терминального таска определяет на какой таске завершится вывод деталицации, где глубина детализации
+     конкретной задачи определяется соответствующей точке вызова getDetails.
      * @return
      */
     public String getDetails() {
         if (primaryTask) {
             return details;
         } else {
-            return prent.getDetails() + EOL_STRING + "\t" + details;
+            return parent.getDetails() + EOL_STRING + "\t" + details;
         }
     }
 
@@ -61,7 +78,7 @@ public class Task implements ProjectItem {
      */
     public Contract getOwner() {
         if (owner == null) {
-            return prent.getOwner();
+            return parent.getOwner();
         } else {
             return owner;
         }
@@ -91,10 +108,14 @@ public class Task implements ProjectItem {
         this.primaryTask = primaryTask;
     }
 
-    public void setPrent(ProjectItem prent) {
-        this.prent = prent;
+    public void setParent(ProjectItem parent) {
+        this.parent = parent;
     }
 
+    /**
+     * Функция добавления подзадач для таски. Дважды одну и ту же подзадачу добавить нельзя.
+     * @param element - подзадача
+     */
     public void addProjectItems(ProjectItem element) {
         if (!projectItems.contains(element)) {
             projectItems.add(element);
@@ -103,10 +124,6 @@ public class Task implements ProjectItem {
 
     public void ramoveProjectItems(ProjectItem element) {
         projectItems.remove(element);
-    }
-
-    public ProjectItem getParent() {
-        return prent;
     }
 
     @Override

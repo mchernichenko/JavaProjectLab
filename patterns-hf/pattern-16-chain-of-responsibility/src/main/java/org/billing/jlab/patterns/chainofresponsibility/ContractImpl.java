@@ -10,9 +10,9 @@ public class ContractImpl implements Contract {
     private String organization;
 
     /**
-     *
-     * @param firstName
-     * @param lastName
+     * Определяет владельца проекта или задачи (Task)
+     * @param firstName - Имя
+     * @param lastName - Фамилия
      * @param title
      * @param organization
      */

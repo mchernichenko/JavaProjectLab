@@ -3,7 +3,7 @@ package org.billing.jlab.patterns.chainofresponsibility;
 import java.io.Serializable;
 
 /**
- * Created by Миша on 09.10.2016.
+ * Интерфейс для определения владельца
  */
 public interface Contract extends Serializable {
     public static final String SPACE = "  ";

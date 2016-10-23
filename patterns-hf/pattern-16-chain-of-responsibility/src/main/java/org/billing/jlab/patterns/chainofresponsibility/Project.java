@@ -3,7 +3,9 @@ package org.billing.jlab.patterns.chainofresponsibility;
 import java.util.ArrayList;
 
 /**
- * Created by Миша on 09.10.2016.
+ * Класс Project является базой проекта с иерархической структурой, который
+ * может состоять из нескольких отдельных задач (Task), которые в свою очередь могут состоять из подзадач
+ * Родителей не имееет, а подзадачи в проект, определяющие его структуро добавляются спомощью addProjectItem
  */
 public class Project implements ProjectItem {
     private String name;
