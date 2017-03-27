@@ -1,0 +1,8 @@
+[box11]
+10.10.0.101 
+
+[box2]
+10.10.0.102 
+
+[box3]
+10.10.0.103 ansible_ssh_user=vagrant ansible_ssh_password=vagrant

@@ -1,0 +1,110 @@
+0. Как поставить Ansible вручную на пустую BM: https://confluence.billing.ru/pages/viewpage.action?pageId=28224667
+> sudo yum install epel-release
+> sudo yum -y install ansible
+
+Рекомендуется также юзать пакетный менеджер питона PIP или из исходников (см. гугл):
+> sudo yum -y install git
+> git clone https://github.com/ansible/ansible.git --recursive
+> cd ./ansible
+> source ./hacking/env-setup
+
+1. Генерация ключей
+> ssh-keygen -t rsa -f dz-ansible
+> ssh-copy-id -i dz-ansible.pub Dmitriy.Zverev@srv2-x64rh6-01  -- копирование ключа в ~/.ssh/authorized_keys не редактируя файл вручную. Это позволяет ходить на машину без пароля
+> ssh -i dz-ansible 'Dmitriy.Zverev@srv2-x64rh6-01'
+
+Копирование:
+	> scp path/myfile user@8.8.8.8:/full/path/to/new/location/
+	> scp user@8.8.8.8:/full/path/to/file /path/to/put/here
+
+=====
+hosts - сервера с которыми взаимодействует ansible
+ansinle.cfg - настройки окружения
+playbook - сценарии (наборы последовательных инструкций ), состоящие из одной и более задач (ролей), описываются с помощью функциональности ядра или сторонних модулей ansible в формате YAML
+		YAML парсер: http://yaml-online-parser.appspot.com/
+
+
+AdHoc команды - команды которые выполняются без playbook: http://docs.ansible.com/ansible/intro_adhoc.html
+  ansible -i <инвентарный файл> <группа серверов> -m <модуль> -a <аргументы модуля>
+Примеры:
+> ansible -i hosts box2 -m copy -a "src=/etc/hosts dest=/home/vagrant/dest_dir"   --копирование на удалённом хосте box2 из scr в dest
+> ansible –i hosts box2 -m shell -a 'echo $TERM'  -- выполнить shell команду на удалённом сервере box2
+> ansible -i hosts all -m ping -- пропинговать все хосты
+
+===== HOSTS =======================================================
+
+Можно указывать одиночные хосты (ip, их имена, алиасы и прочие параметры: тип подключения, пользователя под которым хародим на хост и пр.), можно их группировать, а можно группировать группы, например:
+
+# здесь указываются внегрупповые хосты
+[группа_1 хостов, обычно указывают продукт, который ставится]
+10.10.0.101
+aliace ansible_ssh_host=10.10.0.102 ansible_ssh_user=vagrant ansible_ssh_password=vagrant ansible_connection=ssh
+
+[группа_2 хостов]
+host1
+host2
+[группа_3:children]   -- это группа групп, где children служебное слово
+# здесь указываются подгруппы
+....
+
+===== ansible.cfg =========================================================
+http://docs.ansible.com/intro_configuration.html
+можно переопределить часть или всю конфигурацию в параметрах playbook или переменных окружения. При исполнении команд Ansible проверяет наличие файла конфигурации в следующих расположениях:
+	Проверяется переменная окружения ANSIBLE_CONFIG, которая может указывать на файл конфигурации.
+	./ansible.cfg – в текущей директории
+	~/.ansible.cfg — в домашней директории
+	/etc/ansible/ansible.cfg — в каталоге, сгенерированном при установке ansible через менеджер пакетов.
+
+# включить логирование
+log_path=/home/vagrant/ansible.log
+# проверка ключа включена по умолчанию. Если хост переустанавливался и имеет свой ключ в "known_hosts", это приведет к сообщению об ошибке
+host_key_checking = false
+
+========= структура PLAYBOOK ====================
+Запуск плейбука: ansible-playbook -i hosts test.yml -vvvv
+
+-vvvv кол-во 'v' уровень детализации
+
+=== Переменные =======================================
+М.б. определены в
+1. play vars_files, play vars
+   playbook, в конструкции vars или из внешнего файла. Описать нужно до описания тасков и ролей.
+		vars:
+		  favcolor: blue
+		vars_files:
+		  - /vars/external_vars.yml
+2. include_vars
+		tasks:
+		- include_vars: "<имя_файла>.yml"  -- таск с параметрами изи файла .yml
+
+3. include params
+	   tasks:
+	   - include: wordpress.yml wp_user=timmy -- вложенный таск с передачей параметров
+
+4. в отдельных файлах для группы ролей или для всех ролей: group_vars/<group_name>.yml или 'group_vars/all.yml'
+   аналогично для хостов: 'host_vars/<host_name>.yml'
+   Файла должны именоваться соответственное как именуются хосты или роли. group_vars/host_vars должны располагаться где и сам файл hosts
+3.
+    переменные роли:
+	3.1 /roles/<имя_роли>/defaults/main.yml   - если на момент выполнения роли переменная не определена, например в playbook или в inventory, то ёе значение определяется по умолчанию
+	3.2 /roles/<имя_роли>/vars/main.yml       - переменные роли, переопределяют значение из host_vars/group_vars/play vars и пр., но не переопределяют, например, extra vars, include_vars
+	3.3 /roles/common/vars/main.yml           - общие переменные для ролей
+	3.4 roles:
+		- { role: apache, http_port: 8080 }   - роли с параметрами (role params), переопределяют role vars (определённые в role/vars/main.yml)
+
+	см. все проиритеты: http://docs.ansible.com/ansible/playbooks_variables.html
+
+4.
+
+
+Проверка переменных перед запуском задания:
+ - либо в самом playbook
+ - либо в файле /roles/<имя_роли>/tasks/init.yml , который затем нужно заиклюдить в main.yml ( - include: init.yml )
+ - либо в командной строке: ansible-playbook playbook.yml --extra-vars "hosts=vipers user=starbuck"
+
+Пример:
+ - assert:
+    that:
+      - zk_install_dir != ''
+      - zk_arch != '' 
+	
