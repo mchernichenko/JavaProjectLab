@@ -8,15 +8,9 @@
 > cd ./ansible
 > source ./hacking/env-setup
 
-1. Генерация ключей
-> ssh-keygen -t rsa -f dz-ansible
-> ssh-copy-id -i dz-ansible.pub Dmitriy.Zverev@srv2-x64rh6-01  -- копирование ключа в ~/.ssh/authorized_keys не редактируя файл вручную. Это позволяет ходить на машину без пароля
-> ssh -i dz-ansible 'Dmitriy.Zverev@srv2-x64rh6-01'
-
-Копирование:
-	> scp path/myfile user@8.8.8.8:/full/path/to/new/location/
-	> scp user@8.8.8.8:/full/path/to/file /path/to/put/here
-
+Настройка SSH доступов, если их нет. Можно пропинговать все хосты "ansible -i hosts all -m ping", чтобы пропинговать все хосты
+> ssh-keygen -t rsa
+> ssh-copy-id -i user@server
 =====
 hosts - сервера с которыми взаимодействует ansible
 ansinle.cfg - настройки окружения
@@ -67,15 +61,14 @@ host_key_checking = false
 
 === Переменные =======================================
 М.б. определены в
-1. play vars_files, play vars
-   playbook, в конструкции vars или из внешнего файла. Описать нужно до описания тасков и ролей.
+1. playbook, в конструкции vars или vars_files - из внешнего файла. Описать нужно до описания тасков и ролей.
 		vars:
 		  favcolor: blue
 		vars_files:
 		  - /vars/external_vars.yml
 2. include_vars
 		tasks:
-		- include_vars: "<имя_файла>.yml"  -- таск с параметрами изи файла .yml
+		- include_vars: "<имя_файла>.yml"  -- таск с параметрами из файла .yml
 
 3. include params
 	   tasks:
@@ -83,9 +76,10 @@ host_key_checking = false
 
 4. в отдельных файлах для группы ролей или для всех ролей: group_vars/<group_name>.yml или 'group_vars/all.yml'
    аналогично для хостов: 'host_vars/<host_name>.yml'
-   Файла должны именоваться соответственное как именуются хосты или роли. group_vars/host_vars должны располагаться где и сам файл hosts
-3.
-    переменные роли:
+   Файлы должны именоваться соответственно как именуются хосты или роли. group_vars/host_vars должны располагаться там, где и сам файл hosts
+   но как правило, переменные роли указываются см. п.5
+
+5. переменные роли:
 	3.1 /roles/<имя_роли>/defaults/main.yml   - если на момент выполнения роли переменная не определена, например в playbook или в inventory, то ёе значение определяется по умолчанию
 	3.2 /roles/<имя_роли>/vars/main.yml       - переменные роли, переопределяют значение из host_vars/group_vars/play vars и пр., но не переопределяют, например, extra vars, include_vars
 	3.3 /roles/common/vars/main.yml           - общие переменные для ролей
