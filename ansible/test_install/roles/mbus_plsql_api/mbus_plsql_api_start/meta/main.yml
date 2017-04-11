@@ -1,0 +1,8 @@
+---
+dependencies:
+    - { role: tomcat/tomcat_start,
+        tm_install_dir: '{{mbus_plsql_api_tomcat_install_dir}}'}
+tags: 
+   - start
+   - start MBUS_PLSQL_API
+   

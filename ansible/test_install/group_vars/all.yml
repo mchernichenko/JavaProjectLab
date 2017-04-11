@@ -1,0 +1,39 @@
+# переменные для всех групп в файле all.yml
+# переменные для определённой роли определяются в файле с именем роли.
+
+# ANSIBLE VARIABLES
+ansible_ssh_user:  vagrant
+ansible_ssh_pass:  vagrant
+
+# ENVIRONMENT VARIABLES FOR EACH SERVER
+env:
+    ORACLE_BASE:     /u01/app/oracle
+    ORACLE_HOME:     /u01/app/oracle/product/11.2.0/client
+    ORA_NLS33:       /u01/app/oracle/product/11.2.0/client/nls/data
+    TNS_ADMIN:       ~/sqlnet
+    ZOOKEEPER_HOME:  /home/vagrant/zookeeper
+
+# PRODUCT VARIABLES
+
+# MBUS_PLSQL_API
+mbus_plsql_api_distrib:                                    '/vagrant/distribs/mbus_plsql_api-usr-004.03.zip'
+mbus_plsql_api_tomcat_disrib:                              '/vagrant/distribs/tomcat.tar.gz'
+mbus_plsql_api_tomcat_install_dir:                         '/home/vagrant/mbus_plsql_api'
+mbus_plsql_api_warfile_name:                               'adapter-4.3.war'
+mbus_plsql_api_warfile_name_prefix:                        'adapter-4.3'
+mbus_plsql_api_jdbc_conn_str:                              'jdbc:oracle:thin:@srv2-ora35.net.billing.ru:1521:rddb13'
+
+# ZOOKEEPER
+zk_install_dir:                                            '/home/vagrant/zookeeper'
+zk_arch:                                                   '/vagrant/distribs/zookeeper.tar'
+zk_host:                                                   '10.10.1.40'
+
+# RabbitMQ
+rabbit_rpm:                                                '/vagrant/distribs/rabbitmq-server-3.3.5-1.noarch.rpm'
+erlang_rpm:                                                '/vagrant/distribs/otp-17.3-1.x86_64.rpm'
+rabbit_rpm_name:                                           'rabbitmq-server-3.3.5-1.noarch.rpm'
+erlang_rpm_name:                                           'otp-17.3-1.x86_64.rpm'
+rmq_user:                                                  'admin'
+rmq_pass:                                                  'qwerty12'
+rmq_host:                                                  '10.10.1.50'
+rmq_port:                                                  '15672'

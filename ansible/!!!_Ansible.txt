@@ -86,7 +86,7 @@ host_key_checking = false
 	3.4 roles:
 		- { role: apache, http_port: 8080 }   - роли с параметрами (role params), переопределяют role vars (определённые в role/vars/main.yml)
 
-	см. все проиритеты: http://docs.ansible.com/ansible/playbooks_variables.html
+	см. все приоритеты: http://docs.ansible.com/ansible/playbooks_variables.html
 
 4.
 

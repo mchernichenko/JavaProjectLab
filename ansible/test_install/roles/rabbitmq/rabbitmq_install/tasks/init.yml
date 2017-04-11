@@ -1,0 +1,14 @@
+---
+- assert:
+    that:
+      - rabbit_rpm != ''
+      - rabbit_rpm != ''
+      - rabbit_rpm_name != ''
+      - erlang_rpm_name != ''
+      - rmq_user != ''
+      - rmq_pass != ''
+  name: Ensure all variables present for installer
+  tags:
+    - install
+    - install RabbitMq
+    - check_vars

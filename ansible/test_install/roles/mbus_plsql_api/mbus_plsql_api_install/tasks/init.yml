@@ -1,0 +1,10 @@
+---
+- assert:
+    that:
+      - mbus_plsql_api_distrib != ''
+      - mbus_plsql_api_tomcat_install_dir != ''
+      - mbus_plsql_api_warfile_name != ''
+  tags: 
+    - check_vars
+    - install
+    - install MBUS_PLSQL_API    

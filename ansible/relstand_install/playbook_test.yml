@@ -1,0 +1,30 @@
+---
+- name: Playbook_Name_1
+  hosts : spp_bis_adapter
+  gather_facts: yes
+
+  # Сценарии могут выполняться не только от имени пользователя, под именем которого установлено соедиение, но и любого другого
+  # remote_user: root
+
+  # если требуется выполнять команды под другим пользователем или запускать команды от пользователя с sudo правами.
+  # включаем возможность повышения приведегий и указываем пользователя, отличного от того под кем зашли или от remote_user
+  #become: yes
+  #become_method: sudo
+  #become_user: vagrant
+
+  vars:
+    playbook_name: "Playbook_Name"
+
+  vars_prompt:
+    - name: "prompt_var"
+      prompt: "what is your name?"
+  
+  tasks:
+  - name: "Task1: {{playbook_name}}"
+    debug: msg="IP адреса интерфейсов хоста {{ansible_all_ipv4_addresses}}"
+
+  - name: "Task2: {{playbook_name}}"
+    debug: msg="Хост {{inventory_hostname}} has gateway {{ansible_default_ipv4.gateway}}"
+
+  - name: "Task3: {{prompt_var}}"
+    debug: msg="{{prompt_var}}"

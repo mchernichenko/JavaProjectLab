@@ -1,0 +1,6 @@
+---
+- wait_for: port=8080
+  name: Check that MBUS_PLSQL_API started
+  tags: 
+     - start
+     - start MBUS_PLSQL_API

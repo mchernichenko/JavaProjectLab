@@ -1,0 +1,58 @@
+---
+- include: init.yml
+- name: Copy distribs
+  copy: src={{ item }} dest=/tmp
+  with_items: 
+     - "{{ erlang_rpm }}"
+     - "{{ rabbit_rpm }}"
+  tags:
+    - install RabbitMq
+    - install
+
+- name: install erlang
+  yum: name=/tmp/{{erlang_rpm_name}} state=present
+  tags:
+    - install RabbitMq
+    - install
+  
+- name: install rabbit
+  yum: name=/tmp/{{rabbit_rpm_name}} state=present
+  tags:
+    - install RabbitMq
+    - install
+  
+- name: rmq plugins(web ui)
+  shell: "rabbitmq-plugins enable rabbitmq_management"
+  tags:
+    - install RabbitMq
+    - install
+
+- service: name=rabbitmq-server state=started
+  name: Rmq start
+  tags:
+    - install RabbitMq
+    - install
+  
+- name: Create admin user
+  shell: "rabbitmqctl add_user {{rmq_user}} {{rmq_pass}}"
+  tags:
+    - install RabbitMq
+    - install
+
+- name: Add permissions to admin user
+  shell: 'rabbitmqctl set_permissions {{rmq_user}} ".*" ".*" ".*"'
+  tags:
+    - install RabbitMq
+    - install
+
+- name: Add permissions tags
+  shell: "rabbitmqctl set_user_tags {{rmq_user}} administrator"
+  tags:
+    - install RabbitMq
+    - install
+  
+- service: name=rabbitmq-server state=stopped
+  name: Rmq stop
+  tags:
+    - install RabbitMq
+    - install

@@ -1,0 +1,46 @@
+---
+- include: init.yml
+
+- file:
+    path: '{{ zk_install_dir }}'
+    state: directory
+  name: Create installation dir
+  tags:
+    - install Zookeeper
+    - install
+
+# - name: check if zookeper is already installed
+  # register: st
+  # stat:
+    # path: '{{ zk_install_dir }}/bin/zkServer.sh'
+  # tags:
+    # - install Zookeeper
+    # - install
+
+# - fail: msg="Zookeeper already installed"
+  # when: st.stat.exists
+  # tags:
+    # - install Zookeeper
+    # - install
+    
+- name: unpack
+  unarchive:
+    dest: '{{ zk_install_dir }}'
+    src: '{{ zk_arch }}'
+  tags:
+    - install Zookeeper
+    - install
+    
+- file: 'path={{zk_install_dir}}/bin/zkServer.sh mode=a+rx'
+  name: change mode for start script
+  tags:
+    - install Zookeeper
+    - install
+    
+- file:
+    path: '{{ zk_install_dir }}/logs'
+    state: directory
+  name: create logs dir
+  tags:
+    - install Zookeeper
+    - install

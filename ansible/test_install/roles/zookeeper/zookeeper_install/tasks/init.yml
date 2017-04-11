@@ -1,0 +1,10 @@
+---
+- assert:
+    that:
+      - zk_install_dir != ''
+      - zk_arch != ''
+  name: Ensure all variables present for installer
+  tags:
+    - install
+    - install Zookeeper
+    - check_vars

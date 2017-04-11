@@ -1,0 +1,29 @@
+---
+- include: init.yml
+
+- name: check if zookeper is installed
+  register: st
+  stat:
+    path: '{{ zk_install_dir }}/bin/zkServer.sh'
+  tags:
+    - stop Zookeeper
+    - stop 
+
+- fail: msg="Zookeeper not installed"
+  when: st.stat.exists != True
+  tags:
+    - stop Zookeeper
+    - stop 
+
+- name: stop zookeper
+  shell: '{{ zk_install_dir }}/bin/zkServer.sh stop'
+  tags:
+    - stop Zookeeper
+    - stop 
+
+# Pause for zk stop.
+- pause: seconds={{zk_stop_timeout}}
+  tags:
+    - stop Zookeeper
+    - stop 
+  

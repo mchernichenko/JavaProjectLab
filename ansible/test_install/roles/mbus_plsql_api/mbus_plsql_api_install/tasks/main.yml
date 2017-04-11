@@ -1,0 +1,22 @@
+---
+- include: init.yml
+
+- name: Create temp dir
+  shell: 'mkdir -p {{ mbus_plsql_api_tomcat_install_dir }}/temp_dir'
+  tags:
+    - install
+    - install MBUS_PLSQL_API
+        
+- name: Unpack
+  unarchive:
+    dest: '{{ mbus_plsql_api_tomcat_install_dir }}/temp_dir'
+    src: '{{ mbus_plsql_api_distrib }}'
+  tags:
+    - install
+    - install MBUS_PLSQL_API
+
+- name: Copy warfile and remove temp dir
+  shell: 'cp -f {{ mbus_plsql_api_tomcat_install_dir }}/temp_dir/Distrib/{{mbus_plsql_api_warfile_name}} {{ mbus_plsql_api_tomcat_install_dir }}/webapps && rm -fr {{ mbus_plsql_api_tomcat_install_dir }}/temp_dir'
+  tags:
+    - install
+    - install MBUS_PLSQL_API

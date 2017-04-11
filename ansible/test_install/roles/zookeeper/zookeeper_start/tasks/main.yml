@@ -1,0 +1,34 @@
+---
+- include: init.yml
+
+- name: check if zookeper is installed
+  register: st
+  stat:
+    path: '{{ zk_install_dir }}/bin/zkServer.sh'
+  tags:
+    - start Zookeeper
+    - start
+
+- fail: msg="Zookeeper not installed"
+  when: st.stat.exists != True
+  tags:
+    - start Zookeeper
+    - start
+
+- template: src=zoo.cfg dest="{{zk_install_dir}}/conf/zoo.cfg"   
+  name : configure zoo.cfg
+  tags:
+    - start Zookeeper
+    - start
+    
+- name: start zookeper
+  shell: '{{ zk_install_dir }}/bin/zkServer.sh start'
+  tags:
+    - start Zookeeper
+    - start
+
+# Pause for zk start.
+- pause: seconds={{zk_start_timeout}}
+  tags:
+    - start Zookeeper
+    - start  

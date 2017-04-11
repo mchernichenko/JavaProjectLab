@@ -36,6 +36,7 @@
 Это позволяет ходить на машину без пароля. Ключ добавляется в "~/.ssh/authorized_keys" на сервере, а не замещает как "scp"
 
 > ssh-copy-id -i user@server
+
 > ssh-copy-id -i ~/.ssh/id_rsa.pub user@server            : Когда публичный ключ лежит не по дефолтному пути
 > ssh-copy-id -i ~/.ssh/id_rsa.pub "-p port user@server"  : Когда ssh работает на нестандартном порту:
 

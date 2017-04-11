@@ -1,0 +1,12 @@
+[spp_bis_adapter]
+srv2-gf-spp
+
+[relstand]
+srv2-gf-app01
+srv2-gf-app02
+srv2-gf-cd01
+srv2-gf-mon ansible_ssh_user=root ansible_ssh_password=root123456
+srv3-amain-m ansible_ssh_user=root ansible_ssh_password=root123456
+srv3-amain-a ansible_ssh_user=root ansible_ssh_password=root123456
+srv3-amain-p
+

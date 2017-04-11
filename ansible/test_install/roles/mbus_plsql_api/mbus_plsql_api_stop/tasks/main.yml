@@ -1,0 +1,6 @@
+---
+- wait_for: port=8080 state=stopped
+  name: Check that MBUS_PLSQL_API stopped
+  tags: 
+     - stop
+     - stop MBUS_PLSQL_API

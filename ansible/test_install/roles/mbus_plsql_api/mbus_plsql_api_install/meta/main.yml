@@ -1,0 +1,5 @@
+---
+dependencies:
+    - { role: tomcat/tomcat_install,
+        tm_install_dir: '{{mbus_plsql_api_tomcat_install_dir}}',
+        tomcat_arch:    '{{mbus_plsql_api_tomcat_disrib}}' }

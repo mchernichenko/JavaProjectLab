@@ -1,0 +1,6 @@
+---
+- service: name=rabbitmq-server state=started
+  name: Rmq start
+  tags:
+    - start RabbitMq
+    - start

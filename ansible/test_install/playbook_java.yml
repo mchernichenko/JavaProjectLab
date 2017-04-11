@@ -1,0 +1,68 @@
+#--------------- For 64-bit Systems ---------------
+# cd /opt
+# wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u121-b13/jdk-8u121-linux-x64.rpm"
+# chmod +x jdk-8u45-linux-x64.rpm
+# rpm -Uvh jdk-8u45-linux-x64.rpm
+
+# wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jre-8u121-linux-x64.rpm"
+
+# Установка JAVA (JDK) на CentOS: http://linux-notes.org/ustanovka-java-jdk-na-centos-rhel-fedora/
+# cd /usr/local/src/ && wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.rpm"
+# cd /usr/local/src && wget --header "Cookie: oraclelicense=accept-securebackup-cookie" http://download.oracle.com/otn-pub/java/jdk/8u121-b13/e9e7ea248e2c4826b92b3f075a80e441/jdk-8u121-linux-x64.rpm
+# sudo yum localinstall jdk-8u121-linux-x64.rpm -- Теперь Java должна быть установлена по адресу: /usr/java/jdk1.8.0_121/jdk/bin/java, и связана с /usr/bin/java.
+
+# Настройка
+# export JAVA_HOME=/usr/java/jdk1.8.0_121/
+# export PATH=$PATH:$JAVA_HOME
+# echo $JAVA_HOME
+# echo $PATH
+
+# PATH будет удален при перезагрузки системы. Чтобы сделать его постоянным, вы должны добавить пути в профиль системы.
+# vim /etc/profile.d/java.sh
+
+#!/bin/bash
+#JAVA_HOME=/usr/java/jdk1.8.0_121/
+#PATH=$JAVA_HOME/bin:$PATH
+#export PATH JAVA_HOME
+#export CLASSPATH=.
+
+# chmod +x /etc/profile.d/java.sh
+# source /etc/profile.d/java.sh   -- перечитаем файл
+
+# Для запуска приложения с нужной JRE нужно прописать к ней путь или установить переменную окружения
+# nohup /u01/deploy/jre1.8.0_121/bin/java -cp "$parent_path/conf/:$parent_path/lib/*" com.peterservice.spp.sppbisadapter.processor.Process &
+
+- name: Сценарий установки java
+  hosts: 127.0.0.1
+#  remote_user: vagrant
+  sudo: yes
+  vars:
+    home: /home/vagrant
+    download_url: http://download.oracle.com/otn-pub/java/jdk/7u67-b01/jdk-7u67-linux-x64.tar.gz
+    download_folder: /opt
+    java_name: "{{download_folder}}/jdk1.7.0_67"
+    java_archive: "{{download_folder}}/jdk-7u67-linux-x64.tar.gz"
+  
+  tasks:
+  - name: Download Java
+    command: "wget -q -O {{java_archive}} --no-check-certificate --no-cookies --header 'Cookie: oraclelicense=accept-securebackup-cookie' {{download_url}} creates={{java_archive}}"
+  
+  - name: Unpack archive
+    command: "tar -zxf {{java_archive}} -C {{download_folder}} creates={{java_name}}"
+  
+  - name: Fix ownership
+    file: state=directory path={{java_name}} owner=root group=root recurse=yes
+  
+  - name: Make Java available for system
+    command: 'alternatives --install "/usr/bin/java" "java" "{{java_name}}/bin/java" 2000'
+  
+  - name: add java PATH
+    sudo: no
+    shell: echo 'export PATH={{java_name}}/bin:$PATH' >> "{{ home }}/.bash_profile"
+
+  - name: add JAVA_HOME
+    sudo: no
+    shell: echo 'export JAVA_HOME={{java_name}}' >> "{{ home }}/.bash_profile"
+  
+  - name: Clean up
+    file: state=absent path={{java_archive}}
