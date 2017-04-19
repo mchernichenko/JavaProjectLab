@@ -1,0 +1,10 @@
+- name: Playbook_Include
+
+  hosts : box12
+
+  vars:
+    playbook_name: "Playbook_Include"
+
+  tasks:
+  - name: "task in {{playbook_name}}"
+    debug: msg="Хост {{inventory_hostname}} --- hello '{{playbook_name}}' --------"

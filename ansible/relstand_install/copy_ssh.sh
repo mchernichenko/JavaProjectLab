@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # ssh-keygen -t rsa  -- генерация ключей
-# копирование публичных ключей на виртуалки стенда
+# sudo yum install sshpass  -- нужен, т.к. ssh-copy-id запрашивает пароль, а на входе его не передать
+# копирование публичных ключей на виртуалки стенда, чтобы в последствие ходить без пароля
 
 sshpass -p 'rs123456' ssh-copy-id -i relstand@srv3-amain-a
 sshpass -p 'rs123456' ssh-copy-id -i relstand@srv3-amain-m
