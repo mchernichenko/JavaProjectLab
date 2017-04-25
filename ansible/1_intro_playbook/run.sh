@@ -3,7 +3,7 @@
 # -vvvv кол-во 'v' уровень детализации.
 # включить в ansible.cfg логирование log_path=/home/vagrant/ansible.log
 
- ansible-playbook -i hosts 1_intro_playbook.yml  # Запуск плейбука с hosts, расположенным в папке с плейбуком
+# ansible-playbook -i hosts 1_intro_playbook.yml  # Запуск плейбука с hosts, расположенным в папке с плейбуком
 
 # ansible-playbook -i inventory/gf/hosts playbook_test.yml   # Запуск плейбука с hosts, расположенным в inventory/gf/hosts относительно плейбука
 # ansible-playbook playbook_test.yml -vvvv                   # Запуск плейбука с дефалтовым hosts, расположенным /etc/ansible/hosts
@@ -19,5 +19,5 @@
 # ansible -i hosts box2 -m copy -a "src=/etc/hosts dest=/tmp/hosts" -v
 # ansible -i hosts box2 -m shell -a "echo $TERM" -v
 # ansible -i hosts box2 -m command -a 'uptime' -v
-
-
+# ansible -i hosts box2 -m setup -a "filter=ansible_local"  # сбор фактов с хостов, можно собирать не все факты, т.к. м.б. долго, а указать какие конкретно,
+                                                          # например, локальные (ansible_local), определляемые в файле <name_file>.fact в каталоге '/etc/ansible/facts.d' или "filter=<имя_атрибута_json>"

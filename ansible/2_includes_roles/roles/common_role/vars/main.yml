@@ -1,0 +1,11 @@
+# ENVIRONMENT VARIABLES
+env:
+    ORACLE_BASE:     /u01/app/oracle
+    ORACLE_HOME:     /u01/app/oracle/product/11.2.0/client
+    ORA_NLS33:       /u01/app/oracle/product/11.2.0/client/nls/data
+    TNS_ADMIN:       ~/sqlnet
+    ZOOKEEPER_HOME:  /home/vagrant/zookeeper
+
+# MBUS_PLSQL_API
+mbus_plsql_api_distrib:       '/vagrant/distribs/mbus_plsql_api-usr-004.03.zip'
+mbus_plsql_api_tomcat_disrib: '/vagrant/distribs/tomcat.tar.gz'

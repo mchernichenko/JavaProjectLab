@@ -1,0 +1,79 @@
+---
+- name: jinja2_testing
+  hosts : box2
+
+  gather_facts: yes
+
+  become: yes
+  become_method: sudo
+
+  vars:
+    url: "http://example.com/users/foo/resources/bar"
+    a: [1,2,3,4,5]
+    b: [2,3]
+    mylist:
+      - 1
+      - 3 == 3
+      - True
+    myotherlist:
+      - False
+      - True
+
+  tasks:
+    - name: "match() требует полного соответствия строке"
+      debug: msg="matched pattern 1"
+      when: url | match("http://example.com/users/.*/resources/.*")
+
+    - name: "search() ищет по помножеству строки. Возвращает TRUE или FALSE"
+      debug: "msg='matched pattern 2'"
+      when: url | search("/users/.*/resources/.*")
+
+    - debug: msg="Результат {{ url | search("/users/") }}"
+      when: url | search("/users/")
+
+    - debug: msg="A includes B"
+      when: a|issuperset(b)
+
+    - debug: msg="B is included in A"
+      when: b|issubset(a)
+
+#    - name: "Использование any all для определения вхождедий элементов одного списка в другой"
+#      debug: msg="all are true"
+#      when: mylist|all
+
+#    - debug: msg="at least one is true"
+#      when: myotherlist|any
+
+    - name: "Удаление файла hosts"
+      file:
+        path: "/home/vagrant/dest_dir/hosts"
+        state: absent
+      register: result_del
+
+    - name: "Task2: {{playbook_name}}. Копированиe hosts"
+      copy:
+        src="/etc/hosts"
+        dest="/home/vagrant/dest_dir"
+      register: result
+
+    # анализ результатов выполнения таска
+    - name: "If failed"
+      debug: msg="it failed"
+      when: result|failed
+
+    # in most cases you'll want a handler, but if you want to do something right now, this is nice
+    - name: "If changed"
+      debug: msg="it changed"
+      when: result|changed
+
+    - name: "If succeeded"
+      debug: msg="it succeeded in Ansible >= 2.1"
+      when: result|succeeded
+
+    - name: "If success"
+      debug: msg="it succeeded"
+      when: result|success
+
+    - name: "If skipped"
+      debug: msg="it was skipped"
+      when: result|skipped
