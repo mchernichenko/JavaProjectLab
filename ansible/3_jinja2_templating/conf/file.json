@@ -1,0 +1,11 @@
+{
+  "webInfLib": [{
+    "contextRoot": "Application1"
+    },
+    {
+      "contextRoot": "Application2"
+    },
+    {
+      "contextRoot": "Application3"
+    }]
+}

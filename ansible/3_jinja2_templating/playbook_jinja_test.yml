@@ -1,6 +1,6 @@
 ---
 - name: jinja2_testing
-  hosts : box2
+  hosts : box1
 
   gather_facts: yes
 
@@ -19,7 +19,20 @@
       - False
       - True
 
+    # If you want to convert the json into a dictionary, you have to use from_json
+    json_data: "{{ lookup('file', 'conf/file.json') | from_json }}"
+    json_data1: "{{ lookup('file', 'conf/file.json') }}"
+
   tasks:
+    # считываем файл, нужно указывать абсолютный путь
+#    - name: "Run a shell command"
+#      command: cat /home/vagrant/3_jinja2_templating/conf/file.json
+#      register: result
+#
+#    - set_fact: jsonVar="{{ result.stdout | from_json }}"
+#    - debug: var=jsonVar
+
+    #############################################################################################
     - name: "match() требует полного соответствия строке"
       debug: msg="matched pattern 1"
       when: url | match("http://example.com/users/.*/resources/.*")
@@ -77,3 +90,67 @@
     - name: "If skipped"
       debug: msg="it was skipped"
       when: result|skipped
+
+    # CSV File Lookup - поиск в CSV файле: lookup('csvfile', 'key arg1=val1 arg2=val2 ...'), где key- значение ключа в первой столбце, остальные необязательные.
+    # col - номер столбца, начиная с 0, по умолчанию 1, если колонки нет, то ошибка - index out of range
+    - debug: msg="Первое значение в стороке с ключём key_3 {{ lookup('csvfile', 'key_3 file=conf/file.csv delimiter=, default=no_key') }}" #
+    - debug: msg="Второе значение в стороке с ключём key_33 {{ lookup('csvfile', 'key_33 file=conf/file.csv delimiter=, col=2 default="no_key"') }}"
+
+    # поиск по ini файлам. Файлы .properties воспринимаются как ini-файлы, нужно только указать тип файла как type=properties, по умолчанию ini
+    # Формат команды:  lookup('ini', 'key [type=<properties|ini>] [section=section] [file=file.ini] [re=true] [default=<defaultvalue>]')
+    - debug: msg="Пользователь в секции [integration] {{ lookup('ini', 'user section=integration file=conf/file.ini') }}"
+    - debug: msg="Пользователь в секции [production]  {{ lookup('ini', 'user section=production  file=conf/file.ini') }}"
+    - debug: msg="Достаём значение проперти user.name =  {{ lookup('ini', 'user.name type=properties file=conf/file.properties') }}"
+
+    # присвоим переменной значение = содержимому файла
+    - set_fact: my_var="{{ lookup('file', 'conf/file.json') | from_json }}"
+
+    - debug: var=my_var
+
+    - name: Iterate JSON
+      set_fact:
+        app_item: "{{ item.contextRoot }}"
+      with_items: "{{ json_data.webInfLib }}"
+      register: app_result
+
+    #- set_fact: apps="{{ app_result.results | map(attribute='ansible_facts.app_item') | list }}"
+    - set_fact: apps="{{ my_var | map(attribute='my_var.webInfLib.contextRoot') | list }}"
+
+    - name:  Print Fact
+      debug: var=apps
+
+    # - debug: msg="Значение myvar1.receiptNumber  {{ myvar1.webInfLib.contextRoot }}"
+    #- debug: msg="Достаём значение из json-файла = {{ lookup('file', 'conf/file.json') | from_json }}"
+    #- debug: msg="Достаём значение из json-файла = {{ lookup('file', 'conf/file.json') }}"
+
+    - name: Get JSON from the Interwebs
+      uri: url="https://raw.githubusercontent.com/ljharb/node-json-file/master/package.json" return_content=yes
+      register: json_response
+      tags:
+        - tg
+
+    - debug: msg="Error - undefined tag"
+      when: json_response["non_existent_tag"] is not defined
+
+    - name: Get JSON from the Interwebs
+      debug: msg="Success - tag defined =>{{  (json_response.content|from_json)['scripts']['test'] }}<="
+      when:  (json_response.content|from_json)['scripts']['test']  is defined
+      tags:
+        - tg
+
+    # использование блоков
+    - block:
+        - name: "Выполняем команду ls /home/vagrant"
+          command: ls /home #cat /home/vagrant/3_jinja2_templating/conf/file.json
+          register: home_dirs
+
+        - name: "Вывод данных команды "
+          debug: msg="{{ item }}"
+          with_items: "{{ home_dirs.stdout_lines }}"
+
+      # таски ваполняемые при ошибках предыдущих тасков
+      rescue:
+        - debug: msg='Перехватчик ошибок'
+      tags:
+        - tg1
+
