@@ -27,49 +27,38 @@
     <artifactId>JavaProjectLab</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <!-- Перечисление списка модулей, которые образуют проект (представляет собой набор каталогов). Порядок не важен.
-         Например: проект может состоять из  busines-logic, web-interface. Можно сделать отдельные независимые проекты, т.е. разные п/с,
-         но использовать модули удобнее -->
-    <modules>
-        <module>java-13-collections</module>
-        <module>java-core/java-4-javadoc</module>
-        <module>java-core/java-1-intro</module>
-        <module>java-11-exceptions</module>
-        <module>java-4-objects</module>
-        <module>java-5-6-oop</module>
-        <module>java-5-reflection</module>
-        <module>java-6-innerclass</module>
-        <module>rabbitmq-test</module>
-        <module>java-7-swing-intro</module>
-        <module>java-14-threads</module>
-        <module>JMX-test</module>
-        <module>java-8-events</module>
-        <module>java-10-deploy-application</module>
-        <module>spring-ch2</module>
-        <module>spring-ch4</module>
-        <module>camel-ch1</module>
-        <module>spring-ch5</module>
-        <module>pattern-5-singleton</module>
-        <module>pattern-1-strategy</module>
-        <module>pattern-2-observer</module>
-        <module>pattern-3-decorator</module>
-        <module>pattern-4-factory</module>
-        <module>pattern-6-command</module>
-        <module>pattern-7-adapter</module>
-    </modules>
-
-    <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
-        pom - указывается в родительском pom.xml многомодульного приложения -->
-    <packaging>pom</packaging>
-
     <!--Дополнительная необязательная информация о проекте-->
     <name>JavaProjectLab (FullNameProject)</name>
     <description>Description project</description>
     <url>http://billing.ru</url>
 
-    <!--Здесь определяются переменные проекта, которые используются так: ${maven-jar-plugin.customClasspathLayout}
-        По Ctrl+Alt+V можно выделить любую переменную в properties автоматически
+    <!--тип проекта после сборки. Возможные варианты pom, jar, war, ear. Если представление проекта м.б. только jar, то можно packaging и не указывать
+        pom - указывается в родительском pom.xml многомодульного приложения
+        Родительский POM удобен для наследования зависимостей, что избавляет от дублирования описаний.
+        Чтобы наследование заработало, проект-предок, состоящий по сути из одного pom.xml, нужно установить в локальный репозиторий, запустив mvn install в папке с pom.xml файлом
+        или указать ссылку на корневой модуль в <parent> <relativePath>../pom.xml</relativePath> </parent>
+
+        Про работу с модулями описано здесь: https://github.com/wizardjedi/my-spring-learning/wiki/%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8F%D0%BC%D0%B8-maven
     -->
+    <packaging>pom</packaging>
+
+    <!-- Описание модулей проекта необязательно, если не требуется их собирать автоматически, т.е. модули проекта независимы и/или собирать их сразу все вместе не имеет смысла.
+         Использование модулей позволяет описывать межпроектные(точнее межкомпонентные) зависимости, не создавая собственный репозиторий maven
+         Кроме структуризации, разделение на модули позволяет упорядочить процесс сборки - собираем основной проект с головным pom.xml и автоматически собираются все подпроекты описаные в <modules>.
+         Зависимости между модулями (связь типа модуль - подмодуль) описываются в разделах <modules /> для корневого модуля - и это нужно для сборки нескольких подмодулей
+         и <parent /> - для подмодуля, который используется только для наследования
+
+         Перечисление списка модулей, которые образуют проект представляет собой набор каталогов. Порядок не важен, т.к. если один подмодуль зависит от другого, то maven сам определит порядок сборки
+         и сначала соберёт проект от которого зависят другие, например, server.jar, положит атрифакт в локальный рапозиторий, а затем соберуться зависимые проекты, которые будут использовать собранный ранее артифакт.
+         Например: проект может состоять из busines-logic, web-interface. Можно сделать отдельные независимые проекты, т.е. разные п/с, но использовать модули удобнее для сборки сразу нескольких подпроектов
+    -->
+    <modules>
+        <module>java-core/java-4-javadoc</module>
+        <module>java-core/java-1-intro</module>
+    </modules>
+
+    <!--Здесь определяются переменные проекта, которые используются так: ${maven-jar-plugin.customClasspathLayout}
+        По Ctrl+Alt+V можно выделить любую переменную в properties автоматически  -->
     <properties>
         <!--       <myapp.groupId>org.billing.jlab</myapp.groupId>
                <myapp.artifactId>JavaProjectLab</myapp.artifactId>
@@ -77,23 +66,25 @@
                <myapp.fillname>${myapp.artifactId}-${myapp.version}</myapp.fillname>-->
 
         <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
-        <maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
-        <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
-        <maven-jar-plugin.version>2.6</maven-jar-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
 
+        <sonar-maven-plugin.version>3.0.1</sonar-maven-plugin.version>
+        <sonar.language>java</sonar.language>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <camel-version>2.15.2</camel-version>
         <junit-version>4.12</junit-version>
+        <testng-version>6.8.8</testng-version>
         <log4j-version>1.2.17</log4j-version>
         <slf4j-version>1.7.5</slf4j-version>
         <jcl.slf4j.version>1.7.18</jcl.slf4j.version>
         <logback.version>1.1.3</logback.version>
-
-        <sonar-maven-plugin.version>3.0.1</sonar-maven-plugin.version>
-        <sonar.language>java</sonar.language>
-
+        <artifact.scope>compile</artifact.scope>
         <oracle.version>12.1.0.2</oracle.version>
         <spring-rabbit.version>1.5.4.RELEASE</spring-rabbit.version>
         <spring.version>4.2.5.RELEASE</spring.version>
@@ -170,11 +161,11 @@
             <version>${slf4j-version}</version>
         </dependency>
 
-            <dependency>
-                  <groupId>org.slf4j</groupId>
-                  <artifactId>slf4j-log4j12</artifactId>
-                  <version>${slf4j-version}</version>
-              </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
 
         <!--           <dependency>
                      <groupId>log4j</groupId>
@@ -182,7 +173,7 @@
                      <version>${log4j-version}</version>
                  </dependency>-->
 
-        <!-- JUnit-->
+        <!-- Для тестов -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -197,6 +188,14 @@
             <scope>compile</scope>
             <!--<systemPath>${java.home}/lib/особеннаяЛиба.jar</systemPath>-->
         </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng-version}</version>
+            <scope>${artifact.scope}</scope>
+        </dependency>
+
     </dependencies>
 
     <!--Using Alternative Output Directory для javadoc
@@ -253,38 +252,38 @@
             Этот дефолтный путь определяется в maven-site-plugin, который успользует maven-javadoc-plugin
             создание javadoc в формате указаном в теге <goal> можно привязать к ЖЦ, и тогда javadoc будет формироваться автоматом на указанной фазе в <phase>
             -->
-<!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.3</version>
-                <configuration>
-                    &lt;!&ndash;Переопределяем путь формирования javadoc в destDir относительно reportOutputDirectory&ndash;&gt;
-                    &lt;!&ndash;<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>&ndash;&gt;
-                    &lt;!&ndash;<destDir>myapidocs</destDir>&ndash;&gt;
+            <!--
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-javadoc-plugin</artifactId>
+                            <version>2.10.3</version>
+                            <configuration>
+                                &lt;!&ndash;Переопределяем путь формирования javadoc в destDir относительно reportOutputDirectory&ndash;&gt;
+                                &lt;!&ndash;<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>&ndash;&gt;
+                                &lt;!&ndash;<destDir>myapidocs</destDir>&ndash;&gt;
 
-                    &lt;!&ndash; тот тег нифига не переопределяется и чем от отличается от reportOutputDirectory не ясно&ndash;&gt;
-                    &lt;!&ndash;<outputDirectory>${project.reporting.outputDirectory}/qqq</outputDirectory>&ndash;&gt;
+                                &lt;!&ndash; тот тег нифига не переопределяется и чем от отличается от reportOutputDirectory не ясно&ndash;&gt;
+                                &lt;!&ndash;<outputDirectory>${project.reporting.outputDirectory}/qqq</outputDirectory>&ndash;&gt;
 
-                    &lt;!&ndash;docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника&ndash;&gt;
-                    <encoding>UTF-8</encoding>
-                    <docencoding>UTF-8</docencoding>
+                                &lt;!&ndash;docencoding "Cp1251" кодировка результирующего html,encoding UTF-8 кодировка исходника&ndash;&gt;
+                                <encoding>UTF-8</encoding>
+                                <docencoding>UTF-8</docencoding>
 
-                    &lt;!&ndash;включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources&ndash;&gt;
-                    <docfilessubdirs>true</docfilessubdirs>
+                                &lt;!&ndash;включаем копирование картинок, которые размещаются в src/javadoc/resources и копируются в /target/site/apidocs/resources&ndash;&gt;
+                                <docfilessubdirs>true</docfilessubdirs>
 
-                </configuration>
-                &lt;!&ndash;При создании jar всегда создавать и  jar-архив javadoc&ndash;&gt;
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>javadoc</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-            </plugin>
--->
+                            </configuration>
+                            &lt;!&ndash;При создании jar всегда создавать и  jar-архив javadoc&ndash;&gt;
+                            <executions>
+                                <execution>
+                                    <goals>
+                                        <goal>javadoc</goal>
+                                    </goals>
+                                    <phase>package</phase>
+                                </execution>
+                            </executions>
+                        </plugin>
+            -->
 
             <!--Общие настройки компилятора для всех модулей проекта-->
             <plugin>
@@ -294,14 +293,13 @@
                 <configuration>
                     <!-- source: версия JVM, для которой написан (обеспечивается совместимость) исходный код. Чтобы не корректировать старый код, иногда бывает полезно использовать этот ключик.-->
                     <!-- target: это версия JVM, с которой можно будет запускать приложение, т.е. классы компилируются для указанной JVM -->
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
-
             </plugin>
 
             <!--Настройка копирования зависимостей от которых зависит проект в папку /lib, которая прописана в манифесте ниже. ЖЦ install -->

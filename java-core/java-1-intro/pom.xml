@@ -2,115 +2,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!--<parent>-->
-        <!--<artifactId>JavaProjectLab</artifactId>-->
-        <!--<groupId>org.billing.jlab</groupId>-->
-        <!--<version>1.0-SNAPSHOT</version>-->
-    <!--</parent>-->
+    <parent>
+        <artifactId>JavaCore</artifactId>
+        <groupId>org.billing.jlab</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
-    <groupId>org.billing.jlab</groupId>
+    <!--<groupId>org.billing.jlab</groupId>-->
     <artifactId>java-1-intro</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-
     <name>java-1-intro</name>
-    <url>http://maven.apache.org</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>6.8.8</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>1.7.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.2</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-        </dependency>
-
-
-    </dependencies>
-
-    <!--Настройка упаковки в JAR. По дефолту привязан к циклу package. см. http://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html
-                Настройка генерации MANIFEST.MF в ЖЦ packаge -->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
-                <configuration>
-                    <archive>
-                        <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
-                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
-                        <manifest>
-                            <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
-                            Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
-                            Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
-                            т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
-                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.billing.jlab.intro.CalendarTest</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <!-- <plugin>
-                 <groupId>org.apache.maven.plugins</groupId>
-                 <artifactId>maven-compiler-plugin</artifactId>
-                 <version>3.2</version>
-                 <configuration>
-                     <source>1.8</source>
-                     <target>1.8</target>
-                 </configuration>
-             </plugin>-->
-        </plugins>
-    </build>
 </project>

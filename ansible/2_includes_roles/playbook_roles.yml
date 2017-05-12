@@ -1,0 +1,88 @@
+---
+- name: Playbook_Name_1
+  hosts : box12
+
+  tags: ['copy_file']
+  gather_facts: yes
+
+  become: yes
+  become_method: sudo
+
+  vars:
+    playbook_name: "Playbook_Name"
+
+  # 1. т.к. роли, определённые в плёйбуке выполняются первыми, то такси, которые должны быть выподнены до исполнения роли указываются в секции pre_tasks
+  pre_tasks:
+  - name: "Pre-task: {{playbook_name}}"
+    debug: msg="---- Say HELLO '{{playbook_name}}' --------"
+
+  # 2. роль-это по сути вынесение тасков в отдельные файлы. В данном случае роль test это набор YALM файлав, расположенных в /roles/test/tasks/main.yml
+  # роли всегда выполняются до тасков, перечисленных в плейбуке, в независимости от их расположения.
+  roles:
+  - {role: concrete_role}
+
+  # в роль могут быть переданы: параметры, теги, условия
+  #- {role: concrete_role, port: 5000, dir: '/opt/a', tags: [ 'web', 'foo' ],  when: "ansible_os_family == 'RedHat'" }
+
+  # 3. таски плейбука, всегда выполняются до тасков в ролях, даже если секция роли указана ниже
+  tasks:
+  - name: "Task1: {{playbook_name}}"
+    debug: msg="IP адреса интерфейсов хоста {{ansible_all_ipv4_addresses}}. Переменная группы хостов '{{group_hosts_var}}'. Переменная хоста '{{host_var}}'"
+
+  - name: "Удаление файла hosts"
+    file:
+      path: "/home/vagrant/dest_dir/hosts"
+      state: absent
+    # обработчик вызывается, если файл не существовал и был удалён
+    notify:
+    - run handler
+    # метка, позволяющая запускать не весь плейбук, а только теггированные таски. Одним тегом могут помечаться несколько тесков, тогда будет выполняться группа тасков.
+    tags:
+      - delete_file
+
+  - name: "Task2: {{playbook_name}}. Копированиe hosts"
+    copy:
+      src="/etc/hosts"
+      dest="/home/vagrant/dest_dir"
+    # обработчик вызывается, если файл не существовал и был скопирован.
+    notify:
+    - handler name 1
+    tags:
+      - copy_file
+
+  - name: "Task3: {{prompt_var}}"
+    debug: msg="run Task3"
+    notify:
+    - run handler
+
+  - debug: var=hostvars
+    tags:
+      - show_var
+  - debug: var=group_names
+    tags:
+      - show_var
+  - debug: var=inventory_hostname
+    tags:
+      - show_var
+
+
+  # 5. Пост-обработчики выполняются последними, даже после handlers
+  post_tasks:
+    - name: "Post-task: {{playbook_name}}"
+      debug: msg="----- Say GOODBYE '{{playbook_name}}' --------"
+
+  # 4. Обработчики выполняются в последнюю очередь. Запускаются в объявленом порядке, а не в том в котором уведомляются, кроме тасков в разделе post_tasks
+  # имена обработчиков являются глобальными переменными, если имеются два обработчика с одинаковым именем, то выполнится один
+  handlers:
+  - name: handler name 1
+    debug: msg="Исполнение обработчика handler name 1. Копирование файла"
+
+  - name: handler name 2
+    debug: msg="Исполнение обработчика handler name 2. Удаление файла"
+    listen: "run handler"
+
+
+####### Плейбук может содержать несколько независимых сценариев, например, для другой группы хостов, см. hosts ##################################################
+
+# включенный плейбук должен  находится на самом верхнем уровне
+#- include: playbook_test.yml
