@@ -161,17 +161,17 @@
             <version>${slf4j-version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j-version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.slf4j</groupId>-->
+            <!--<artifactId>slf4j-log4j12</artifactId>-->
+            <!--<version>${slf4j-version}</version>-->
+        <!--</dependency>-->
 
-        <!--           <dependency>
-                     <groupId>log4j</groupId>
-                     <artifactId>log4j</artifactId>
-                     <version>${log4j-version}</version>
-                 </dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>joda-time</groupId>-->
+            <!--<artifactId>joda-time</artifactId>-->
+            <!--<version>2.9.9</version>-->
+        <!--</dependency>-->
 
         <!-- Для тестов -->
         <dependency>
@@ -229,6 +229,32 @@
                             <directory>D:\!Files\Git_Repositories\JavaProjectLab\target</directory>
         -->
         <plugins>
+
+            <!-- важный плагин для обеспечения определённых правил накладываемых на проект, например,
+                 можем определять различные версии транзитивных зависимостей и падать в случае обнаружения последних (http://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html)
+                 т.е. если обнаружили зависимости от разных версий одной библиотеки, то это потенциальный jar hell. В этом случае, либо исключаем зависимость (exclusions, см. ссылку), либо
+                 прописываем нужную версию в dependencyManagement (см. ниже)
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce</id>
+                        <configuration>
+                            <rules>
+                                <!-- правило сходимости версий -->
+                                <dependencyConvergence/>
+                            </rules>
+                        </configuration>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -241,6 +267,7 @@
                     </execution>
                 </executions>
             </plugin>
+
 
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
@@ -401,5 +428,31 @@
             -->
         </plugins>
     </build>
+
+    <!-- Этот раздел позволяет централизованно определить только версии используемых библиотек в многомодульном приложении
+         Если в подмодуле требуется зависимость от какой-то библиотеки, то мы её обязаны все равно прописать в обычной секции
+         <dependencies>, но уже без указания версии.
+         Версия библиотеки определённая в dependencyManagement не означает, что от неё зависят подпроекты.
+         Этот механизм позволяет гарантированно использовать одну версию библиотеки, если она используется в разных подпроектах,
+         т.е. обеспечивается удобный контроль версий артифактов
+
+         Ещё одно предназначение dependencyManagement - отключение транзитивных зависимостей, т.е. по сути в dependencyManagement напрямую указывается
+         версия артифакта, которая будет использоваться вне зависимости от версии указанных в транзитивных зависимостях.
+         Зависимость указанная в данном разделе может напрямую и не использоваться в проекте
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>2.9.7</version>
+            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>log4j</groupId>-->
+                <!--<artifactId>log4j</artifactId>-->
+                <!--<version>1.2.16</version>-->
+            <!--</dependency>-->
+        </dependencies>
+    </dependencyManagement>
 
 </project>
