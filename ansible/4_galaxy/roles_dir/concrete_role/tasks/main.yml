@@ -1,0 +1,6 @@
+---  
+
+- name: "ROLE_Test_glalaxy: Task1"
+  debug: msg="Host {{inventory_hostname}} has gateway {{ansible_default_ipv4.gateway}}"
+- name: "ROLE_Test_galaxy: Task2"
+  debug: msg="{{ansible_distribution}}"

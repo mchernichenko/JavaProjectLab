@@ -196,6 +196,7 @@
             <scope>${artifact.scope}</scope>
         </dependency>
 
+
     </dependencies>
 
     <!--Using Alternative Output Directory для javadoc

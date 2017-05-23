@@ -1,0 +1,4 @@
+# путь и имя папки устанавливаемой роли
+# уставанливаемая роль в свою очередь может иметь зависимости прописанные в common-installer/meta/mail.yml
+- src: http://srv5-kosovo.net.billing.ru/artifactory/QA/ps/TAILORED_SOL_MEGAFON/COMMON_INSTALLER/001.00/COMMON-INSTALLER/app/common-installer-001.00.tar.gz
+  name: common/common-installer

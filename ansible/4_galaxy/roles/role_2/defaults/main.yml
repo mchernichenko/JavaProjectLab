@@ -1,0 +1,21 @@
+---
+
+megavar_1:
+  var1: "abra_new"
+  var3: "-_-"
+
+users:
+  user_1:  # key
+    name: "name_1_new" # value.name
+    telephone: 111-111-111 # value.telephone
+  user_3:
+    name: "name3"
+    telephone: 333-333-333
+
+users_1:
+  alice:  # key
+    name: "ФИО_3" # value.name
+    telephone: 123-456-7890 # value.telephone
+  bobik:
+    name: "ФИО_2"
+    telephone: 987-654-3210

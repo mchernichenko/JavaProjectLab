@@ -1,0 +1,29 @@
+---
+# https://github.com/ansible/ansible/issues/7345
+# стратегия hash_behaviour=merge работает очень странно.
+#
+#
+
+- name: "Тестируем hash_behaviour=merge в ansible.cfg"
+  hosts : box1
+
+  gather_facts: yes
+  become: yes
+  become_method: sudo
+
+  vars_files:
+    - vars1.yml
+    - vars2.yml
+
+  roles:
+  - {role: concrete_role} # эта роль в папке  roles_dir определённой в аnsible.cfg
+  - {role: role_2} # тестируем переоплередение переменных: megavar_1, users, users_1
+
+  tasks:
+#    - name: load vars1
+#      include_vars: vars1.yml
+#    - name: load vars2
+#      include_vars: vars2.yml
+    - name: "Тестируем переопределение переменной megavar"
+      debug:
+        msg: "{{ megavar }}"

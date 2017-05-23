@@ -1,0 +1,21 @@
+---
+
+megavar_1:
+  var1: "abra"
+  var2: "kadabra"
+
+users:
+  user_1:  # key
+    name: "name_1" # value.name
+    telephone: 111-111-111 # value.telephone
+  user_2:
+    name: "name_2"
+    telephone: 222-222-222
+
+users_1:
+  alice:  # key
+    name: "ФИО_1" # value.name
+    telephone: 123-456-7890 # value.telephone
+  bob:
+    name: "ФИО_2"
+    telephone: 987-654-3210
