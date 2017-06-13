@@ -1,0 +1,39 @@
+Речь идет про сборка standalone-приложения:
+
+Пример сборки spp-bis-adapter:
+Т.к. это п/с, а не продукт, то имеем 4 компоненты в виде zip-архивов:
+ - spp_bis_adapter-doc-002.00-rus.zip
+ - spp_bis_adapter-srv-002.00.zip
+ - spp_bis_adapter-rol-001.04.zip
+ - spp_bis_adapter-usr-002.01.zip -> Distrib -> spp_bis_adapter-usr-002.01-bin.zip -> spp_bis_adapter-usr-002.01\bin    -- содержит запускалку приложения run.bat/run.sh
+                                     Update.!!!                                       spp_bis_adapter-usr-002.01\conf   -- конфиги для приложения
+                                                                                      spp_bis_adapter-usr-002.01\lib    -- все jar-ки (свои и чужие)
+                                                                                      spp_bis_adapter-usr-002.01\mib
+
+Собирается приложение через родительский pom, который компилит сначала модули, а сама компановка архива spp_bis_adapter-usr-002.01-bin.zip
+реализуется через отдельный модуль (spp-bis-adapter-app) в который выносится: конфигурация, запускалка, mib и конфигурация maven для сборки дистрибутива
+(копирование jar-ок приложения (уже без компиляции) + копирование зависимостей в \lib и делее упаковка в структуру см. выше))
+Структура spp-bis-adapter-app :
+   scr\assembly\bin.xml  -- конфигурация maven для сборки дистрибутива
+   scr\bin
+   scr\conf
+   scr\mib
+
+Сам порядок сборки spp-bis-adapter через головной pom определяет сам мавен и он следующий:
+[INFO]
+[INFO] spp-bis-adapter                    -- головной pom
+[INFO] spp-bis-adapter-core
+[INFO] spp-bis-adapter-base
+[INFO] spp-bis-adapter-utils
+[INFO] spp-bis-adapter-processor
+[INFO] spp-bis-adapter-generator
+[INFO] spp-bis-adapter-reply-receiver
+[INFO] spp-bis-adapter-app               -- модуль компановки
+
+=====================================================
+в CCI все аналогично, только что в компоненте cci_srv нет Update.!!!:
+
+cci-srv-usr-1.8.2-bin.zip -> cci-srv-usr-1.8.2\bin
+                             cci-srv-usr-1.8.2\conf
+                             cci-srv-usr-1.8.2\lib
+                             cci-srv-usr-1.8.2\mib
