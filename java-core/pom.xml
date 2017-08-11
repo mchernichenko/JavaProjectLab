@@ -3,13 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--cсылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
-    <parent>
-        <groupId>org.billing.jlab</groupId>
-        <artifactId>JavaProjectLab</artifactId>
-        <version>1.0-SNAPSHOT</version>
+    <!--<parent>-->
+        <!--<groupId>org.billing.jlab</groupId>-->
+        <!--<artifactId>JavaProjectLab</artifactId>-->
+        <!--<version>1.0-SNAPSHOT</version>-->
         <!--<relativePath>../pom.xml</relativePath>-->
-    </parent>
+    <!--</parent>-->
 
+    <groupId>org.billing.jlab</groupId>
     <artifactId>JavaCore</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>JavaCore(FullNameProject)</name>
@@ -17,10 +18,28 @@
 
     <packaging>pom</packaging>
 
-    <!--<modules>-->
-        <!--<module>java-4-javadoc</module>-->
-        <!--<module>java-1-intro</module>-->
-    <!--</modules>-->
+    <modules>
+        <module>java-4-javadoc</module>
+        <module>java-1-intro</module>
+    </modules>
+
+    <properties>
+        <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.6.1</maven-compiler-plugin.version>
+        <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
+        <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+        <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
+        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+
+        <java.version>1.8</java.version>
+        <joda-time-version>2.9.7</joda-time-version>
+        <testng-version>6.8.8</testng-version>
+        <log4j-version>1.2.17</log4j-version>
+        <slf4j-version>1.7.5</slf4j-version>
+        <junit-version>4.12</junit-version>
+        <subsystemName>java-core</subsystemName>
+    </properties>
 
     <!-- Общая зависимость для подпроектов java-core -->
     <dependencies>
@@ -29,9 +48,93 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <!-- версия используемой библиотеки определяется в <dependencyManagement> головного POM -->
-            <!--<version>2.9.7</version>-->
+            <version>${joda-time-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng-version}</version>
+            <scope>compile</scope>
+            <!--<scope>${artifact.scope}</scope>-->
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit-version}</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <!-- source: версия JVM, для которой написан (обеспечивается совместимость) исходный код. Чтобы не корректировать старый код, иногда бывает полезно использовать этот ключик.-->
+                    <!-- target: это версия JVM, с которой можно будет запускать приложение, т.е. классы компилируются для указанной JVM -->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+
+            <!--Настройка копирования зависимостей от которых зависит проект в папку /lib, которая прописана в манифесте ниже. ЖЦ install -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!--includeScope задаёт фильтр для dependencies, которые попадут в lib. Это позволяет, к примеру, не включать junit (у которого scope test).-->
+                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--Настройка упаковки в JAR. По дефолту привязан к циклу package -->
+           <!-- <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.billing.jlab.javacore.javadoc.Client</mainClass>
+                        </manifest>
+                        <manifestEntries>
+                            <Built-Date>${maven.build.timestamp}</Built-Date>
+                            <subsystemName>${subsystemName} ${project.version}</subsystemName>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>-->
+        </plugins>
+    </build>
 
 </project>

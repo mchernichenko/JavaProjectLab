@@ -52,10 +52,10 @@
          и сначала соберёт проект от которого зависят другие, например, server.jar, положит атрифакт в локальный рапозиторий, а затем соберуться зависимые проекты, которые будут использовать собранный ранее артифакт.
          Например: проект может состоять из busines-logic, web-interface. Можно сделать отдельные независимые проекты, т.е. разные п/с, но использовать модули удобнее для сборки сразу нескольких подпроектов
     -->
-    <modules>
-        <module>java-core/java-4-javadoc</module>
-        <module>java-core/java-1-intro</module>
-    </modules>
+    <!--<modules>-->
+        <!--<module>java-core/java-4-javadoc</module>-->
+        <!--<module>java-core/java-1-intro</module>-->
+    <!--</modules>-->
 
     <!--Здесь определяются переменные проекта, которые используются так: ${maven-jar-plugin.customClasspathLayout}
         По Ctrl+Alt+V можно выделить любую переменную в properties автоматически  -->
@@ -87,7 +87,7 @@
         <artifact.scope>compile</artifact.scope>
         <oracle.version>12.1.0.2</oracle.version>
         <spring-rabbit.version>1.5.4.RELEASE</spring-rabbit.version>
-        <spring.version>4.2.5.RELEASE</spring.version>
+        <spring.version>4.3.10.RELEASE</spring.version>
 
         <skipTests>true</skipTests>
     </properties>
@@ -135,31 +135,31 @@
             <version>${spring.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-oracle</artifactId>
-            <version>1.0.0.RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.data</groupId>-->
+            <!--<artifactId>spring-data-oracle</artifactId>-->
+            <!--<version>1.0.0.RELEASE</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>org.springframework.amqp</groupId>
-            <artifactId>spring-rabbit</artifactId>
-            <version>1.3.6.RELEASE</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.amqp</groupId>-->
+            <!--<artifactId>spring-rabbit</artifactId>-->
+            <!--<version>1.3.6.RELEASE</version>-->
+        <!--</dependency>-->
 
         <!-- Зависимость для использования Apache Camel -->
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-core</artifactId>
-            <version>${camel-version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.camel</groupId>-->
+            <!--<artifactId>camel-core</artifactId>-->
+            <!--<version>${camel-version}</version>-->
+        <!--</dependency>-->
 
         <!-- Логи -->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-version}</version>
-        </dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-version}</version>
+    </dependency>
 
         <!--<dependency>-->
             <!--<groupId>org.slf4j</groupId>-->
@@ -346,8 +346,11 @@
                             <!--includeScope задаёт фильтр для dependencies, которые попадут в lib. Это позволяет, к примеру, не включать junit (у которого scope test).-->
                             <includeScope>compile</includeScope>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
+
+                            <!--перезаписываем библиотеки с наличием более новых версий, не перезаписываем текущие версии и не перезаписываем зависимости без окончательной версии (SNAPSHOT)-->
                             <overWriteReleases>false</overWriteReleases>
                             <overWriteSnapshots>false</overWriteSnapshots>
+                            <!-- overWriteIfNewer - флаг необходимости перезаписывания библиотек с наличием более новых версий -->
                             <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>

@@ -34,17 +34,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.4</version>
-                <!-- В конфигурации jar плагина определяем правила формирования MANIFEST.MF-->
                 <configuration>
                     <archive>
-                        <!--Добавляем в динамически созданный maven`ом манифест строками из собственного манифеста-->
-                        <!--<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
                         <manifest>
-                            <!-- Общепринятой методикой является создание структуры установочного каталога в виде двух подкаталогов: bin и lib.
-                            Внутри lib находится и ваш код и абсолютно все библиотеки нужные для его запуска. В каталоге bin находится исполняемый файл в виде cmd-скрипта (для windows)
-                            Для поиска библиотек в /lib включаем в манифест добавление Class-Path и позволяем дописывать префикс перед каждым ресурсом
-                            т.е. все зависимые библиотеки должны быть в папке /lib. Копирование производится плагином maven-dependency-plugin, см. ниже.
-                            Пример: Class-Path: lib/plexus-utils-1.1.jar , а также указываетм точку входа mainClass-->
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>org.billing.jlab.obj.App</mainClass>
