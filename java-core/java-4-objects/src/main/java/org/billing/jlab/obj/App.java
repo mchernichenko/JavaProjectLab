@@ -4,7 +4,7 @@ package org.billing.jlab.obj;
  * Hello world!
  *
  */
-public class App 
+public class App
 {
     public static void main( String[] args ) {
         Employer[] staff = new Employer[3];
@@ -17,5 +17,6 @@ public class App
 
         System.out.println(staff[2].getFinalName());
         System.out.println(staff[2].getId());
+
     }
 }

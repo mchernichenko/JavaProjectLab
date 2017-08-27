@@ -9,7 +9,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <!--<groupId>org.billing.jlab</groupId>-->
+    <groupId>org.billing.jlab</groupId>
     <artifactId>java-1-intro</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>

@@ -4,23 +4,22 @@
 
     <!--cсылка на родительский pom, где в artifactId указывается родительский artifactId. groupId и version указываем как в родительском pom, т.к. модули одного проекта -->
     <!--<parent>-->
-        <!--<groupId>org.billing.jlab</groupId>-->
-        <!--<artifactId>JavaProjectLab</artifactId>-->
-        <!--<version>1.0-SNAPSHOT</version>-->
-        <!--<relativePath>../pom.xml</relativePath>-->
+    <!--<groupId>org.billing.jlab</groupId>-->
+    <!--<artifactId>JavaProjectLab</artifactId>-->
+    <!--<version>1.0-SNAPSHOT</version>-->
+    <!--<relativePath>../pom.xml</relativePath>-->
     <!--</parent>-->
 
     <groupId>org.billing.jlab</groupId>
-    <artifactId>JavaCore</artifactId>
+    <artifactId>JavaPattern</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>JavaCore(FullNameProject)</name>
-    <description>Description JavaCore project</description>
+    <name>JavaPattent</name>
+    <description>Description JavaPattern project</description>
 
     <packaging>pom</packaging>
 
     <modules>
-        <module>java-4-javadoc</module>
-        <module>java-1-intro</module>
+        <module>pattern-5-singleton</module>
     </modules>
 
     <properties>
@@ -31,7 +30,6 @@
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
         <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
-        <maven-assembly-plugin.version>2.2-beta-5</maven-assembly-plugin.version>
 
         <java.version>1.8</java.version>
         <joda-time-version>2.9.7</joda-time-version>
@@ -42,13 +40,11 @@
         <subsystemName>java-core</subsystemName>
     </properties>
 
-    <!-- Общая зависимость для подпроектов java-core -->
     <dependencies>
 
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <!-- версия используемой библиотеки определяется в <dependencyManagement> головного POM -->
             <version>${joda-time-version}</version>
         </dependency>
 
@@ -118,23 +114,23 @@
             </plugin>
 
             <!--Настройка упаковки в JAR. По дефолту привязан к циклу package -->
-           <!-- <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven-jar-plugin.version}</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>org.billing.jlab.javacore.javadoc.Client</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Built-Date>${maven.build.timestamp}</Built-Date>
-                            <subsystemName>${subsystemName} ${project.version}</subsystemName>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>-->
+            <!-- <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-jar-plugin</artifactId>
+                 <version>${maven-jar-plugin.version}</version>
+                 <configuration>
+                     <archive>
+                         <manifest>
+                             <addClasspath>true</addClasspath>
+                             <mainClass>org.billing.jlab.javacore.javadoc.Client</mainClass>
+                         </manifest>
+                         <manifestEntries>
+                             <Built-Date>${maven.build.timestamp}</Built-Date>
+                             <subsystemName>${subsystemName} ${project.version}</subsystemName>
+                         </manifestEntries>
+                     </archive>
+                 </configuration>
+             </plugin>-->
         </plugins>
     </build>
 
