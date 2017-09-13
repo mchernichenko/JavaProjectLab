@@ -3,6 +3,8 @@ package org.billing.jlab.javacore.intro;
 import java.io.Console;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -121,8 +123,14 @@ public class StringType {
         String str1 = "Строка_1";
         String str2 = "Строка_2";
 
-        str1.charAt(0); // первая кодовая единица
+        System.out.println( str1.charAt(0)); // первая кодовая единица, т.е. символ 'C'
+
+        char[] charArray = new char[10];
+        str1.getChars(0, 4, charArray, 2);
+        System.out.println(charArray);
+
         str1.codePointAt(0); // первая кодовая точка, т.е. первая буква unicode
+
         if (str1.compareTo(str2) == -1) { // сравнение строк
             System.out.println("str1 < str2");
         }
@@ -137,13 +145,19 @@ public class StringType {
         System.out.println("Индекс начала подстроки \'_\' в строке начиная с позиции 0: " + str1.indexOf("_", 0));
         System.out.println("Индекс начала последней подстроки \'а\' в строке начиная с конца: " + str1.lastIndexOf("а"));
 
-        String replace = str1.replace("Строка", " Stroka");
+        String replace = str1.replace("Строка", "Stroka");
         System.out.println("Замена подстроки подстрокой: " + replace); // в качестве CharSequence могут быть String или StringBuilder, т.к. это интерфейс
 
-        System.out.println("Выделение подстроки из строки: " + replace.substring(0, 7)); // Stroka
+        // выделение подстроки из строки, 1-я граница включена, верхняя нет, итого - Strok.
+        // верхняя граница может не указываться => до конца
+        System.out.println("Выделение подстроки из строки: " + replace.substring(0, 5));
 
         System.out.println("Перевод в верхний регистр: " + replace.toUpperCase());
         System.out.println("Убираем начальные и конечные пробелы: " + replace.trim());
+
+        String[] strArr = new String[10];
+        System.out.println(Arrays.toString("123,456,7,8,90".split(","))); // разделяет данную строку вокруг данного регулярного выражения
+
     }
 
     /**
