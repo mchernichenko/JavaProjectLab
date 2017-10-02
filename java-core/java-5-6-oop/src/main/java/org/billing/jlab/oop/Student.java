@@ -3,7 +3,7 @@ package org.billing.jlab.oop;
 /**
  * Расширение абстрактного класса
  */
-public class Student extends Person {
+public class Student extends AbstractExample {
     private String major;
 
     /**

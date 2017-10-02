@@ -4,6 +4,7 @@ package org.billing.jlab.javacore.intro;
  * Константы OAPI
  */
 public class Constants {
+
     //********************************
     // Форматы даты
     //********************************

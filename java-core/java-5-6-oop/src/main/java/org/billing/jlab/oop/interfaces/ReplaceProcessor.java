@@ -19,17 +19,17 @@ import org.billing.jlab.oop.interfaces.reader.Reader;
  *
  */
 
-public class Replacer {
+public class ReplaceProcessor {
 
     private IReader reader;
     private IPrinter printer;
 
-    public Replacer(IReader reader, IPrinter printer) {
+    public ReplaceProcessor(IReader reader, IPrinter printer) {
         this.reader = reader;
         this.printer = printer;
     }
 
-    public void replacer () {
+    public void processor () {
         String str1 = reader.reader();
         String str2 = str1.replace("=)",";)");
         printer.printer(str2);
@@ -44,15 +44,15 @@ public class Replacer {
         IPrinter printer = new ConsolePrinter();
 
         // создаём экзампляр класса заменителя, куда передаём конктетный источник текста и куда следует выводить результат
-        Replacer replacer = new Replacer(reader, printer);
+        ReplaceProcessor replacer = new ReplaceProcessor(reader, printer);
 
         // собственно вызов функции чтения, замены и вывода результата
-        replacer.replacer();
+        replacer.processor();
 
         // пример изменения функции вывода. Ничего в реализации Replacer не меняется!!
         // передаётся другая реализация метода вывода и всё
         IPrinter advPrinter = new AdvanceConsolePrinter();
-        replacer = new Replacer(reader, advPrinter);
-        replacer.replacer();
+        replacer = new ReplaceProcessor(reader, advPrinter);
+        replacer.processor();
     }
 }

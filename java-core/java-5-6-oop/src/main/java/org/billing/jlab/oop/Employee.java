@@ -13,7 +13,7 @@ import java.util.Objects;
  * - Клонирование - интерфейс Cloneable
  *
  */
-public class Employee extends Person implements Comparable<Employee>, Cloneable {
+public class Employee extends AbstractExample implements Comparable<Employee>, Cloneable {
 
     //private String name;
     private double salary;

@@ -54,7 +54,5 @@ public class A {
     }
 }
 
-class X {
-    public int x, y;
-}
+
 

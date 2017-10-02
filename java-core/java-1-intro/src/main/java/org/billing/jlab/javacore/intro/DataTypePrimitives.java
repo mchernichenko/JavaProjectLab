@@ -13,11 +13,14 @@ import java.util.ArrayList;
  *   <img src="../../../../resources/IntegerEnvelope.png" alt="API работы с объектными оболочками" />
  */
 public class DataTypePrimitives {
+    private double side = 0;
+
     public static void main(String[] args) {
         byte b = 1;     // 1 байт, от -128 до 128
         short s = 1;    // 2 байта, от -32768 до 32767
         int i = 1;      // 4 байта, от -2147483648 до -2147483647
-  //      long l = 10_000_000_000L; // 8 байт, длинные с суффиксом L
+        long l = 3_000_000_000L; // 8 байт, длинные с суффиксом L
+        long ll = 2_000_000_000; // можно без L, т.к. 2 млрд. это < 32 байт, а вот 3 млрд. уже нельзя без L
 
     //  0xFFFF = 0b1111_1111_1111_1111 = 65536 = 2 байта = 16 бит (UTF-16 - кодиуется 2-х байтовыми словами)
         int x16 = 0xCAFE; // 16-тиричное число
@@ -83,6 +86,7 @@ public class DataTypePrimitives {
 
         //str = "𤴊";
         System.out.println("Конец");
+
     }
 
 

@@ -15,6 +15,7 @@ public class Operations {
     public static final String STROKA = "Глобальная костанта класса"; // можно использовать в любых методах класса. Public позволяет использовать её везде.
 
     public static void main(String[] args) {
+
         /* объявление переменных, инкремент, ?: , булевы операции && ||*/
         declareVar();
 
