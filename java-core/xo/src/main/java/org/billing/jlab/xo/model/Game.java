@@ -1,4 +1,6 @@
-package org.billing.jlab.rmq.model;
+package org.billing.jlab.xo.model;
+
+import org.billing.jlab.rmq.xo.Player;
 
 import java.lang.reflect.Field;
 

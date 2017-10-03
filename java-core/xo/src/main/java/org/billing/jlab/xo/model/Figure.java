@@ -1,4 +1,4 @@
-package org.billing.jlab.rmq.model;
+package org.billing.jlab.xo.model;
 
 public enum Figure {
     X,

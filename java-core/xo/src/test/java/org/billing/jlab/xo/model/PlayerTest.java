@@ -1,4 +1,4 @@
-package org.billing.jlab.rmq.model;
+package org.billing.jlab.xo.model;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
