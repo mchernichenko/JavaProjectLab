@@ -1,0 +1,5 @@
+[box1]
+server_name_1 ansible_host=10.10.0.101
+
+[box2]
+server_name_2 ansible_host=10.10.0.102
