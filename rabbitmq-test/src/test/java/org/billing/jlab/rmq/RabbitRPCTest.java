@@ -1,5 +1,7 @@
-package org.billing.jlab;
+package org.billing.jlab.rmq;
 
+import org.billing.jlab.RPCClient;
+import org.billing.jlab.RPCServer;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;

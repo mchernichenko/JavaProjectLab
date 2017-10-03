@@ -33,4 +33,4 @@
  assertNotSame([String], expected, actual) - Проверяет, что обе переменные относятся к разным объектам.
 
  */
-package org.billing.jlab;
+package org.billing.jlab.rmq;

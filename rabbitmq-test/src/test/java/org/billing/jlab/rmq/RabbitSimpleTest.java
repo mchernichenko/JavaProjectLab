@@ -1,6 +1,7 @@
-package org.billing.jlab;
+package org.billing.jlab.rmq;
 
 import com.rabbitmq.client.*;
+import org.billing.jlab.UnsuccessWriteOff;
 import org.junit.*;
 import org.slf4j.Logger;
 
