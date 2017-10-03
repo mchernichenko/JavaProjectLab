@@ -21,6 +21,7 @@
     <modules>
         <module>java-4-javadoc</module>
         <module>java-1-intro</module>
+        <module>xo</module>
     </modules>
 
     <properties>
