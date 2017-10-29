@@ -1,6 +1,6 @@
 package org.billing.jlab.xo.model;
 
-import org.billing.jlab.rmq.xo.Player;
+import org.billing.jlab.xo.model.Player;
 
 import java.lang.reflect.Field;
 
