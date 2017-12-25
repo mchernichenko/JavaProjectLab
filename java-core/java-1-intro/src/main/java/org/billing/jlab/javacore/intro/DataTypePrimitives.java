@@ -16,6 +16,7 @@ public class DataTypePrimitives {
     private double side = 0;
 
     public static void main(String[] args) {
+
         byte b = 1;     // 1 байт, от -128 до 128
         short s = 1;    // 2 байта, от -32768 до 32767
         int i = 1;      // 4 байта, от -2147483648 до -2147483647
@@ -67,7 +68,7 @@ public class DataTypePrimitives {
         System.out.println("Пример \"использоваиния\" управляющих последовательностей\n");
 
         // конвертация char <-> int в зависимости от основания числа (м.б. 2,8,10,16- ричное число)
-        System.out.println("Представление числа 14 в виде символа в 10-ной системе: " + Character.forDigit(14, 10));
+        System.out.println("Представление числа 4 в виде символа в 10-ной системе: " + Character.forDigit(4, 10) + ".");
         System.out.println("Представление числа 14  в виде символа в 16-ной системе: " + Character.forDigit(14, 16));
         int xx = Character.digit('A', 16);  // будет 10, char -> int, где 'A' символ в виде цифры, 16 - основание
 
