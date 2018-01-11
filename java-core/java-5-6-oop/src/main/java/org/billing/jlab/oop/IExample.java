@@ -24,7 +24,7 @@ interface IExample {
     abstract double methodXXX1();
     public double methodXXX2();
 
-    public static void method() {
+    public static void staticMethod() {
         System.out.println("dd");
     }
 

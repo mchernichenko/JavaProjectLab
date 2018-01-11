@@ -15,7 +15,7 @@ import java.util.GregorianCalendar;
     </p>
     <img src="../../../../resources/Format_printf.png" alt="Символы преобразования, флаги" />
  */
-public class FormatData {
+public class DataFormat {
     public static void main(String[] args) {
         Calendar date = new GregorianCalendar();
         Date currentTime = new Date();
@@ -33,9 +33,6 @@ public class FormatData {
         // Пример составления форматированной строки
         String frmString = String.format("Пример составления отформатированной строки без последующего вывода: %2$s  %1$f", d, str);
         System.out.println("\n"+frmString);
-
-        // для форматирования дат удобно использовать SimpleDateFormat
-        StringToDate.convertCalendarToString(date);
 
     }
 }

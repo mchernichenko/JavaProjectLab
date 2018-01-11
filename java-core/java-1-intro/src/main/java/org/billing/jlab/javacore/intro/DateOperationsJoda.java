@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class DateOperations {
+public class DateOperationsJoda {
 
 //********************************************************************************************************
 //// Перевод даты из строки без тайм-зоны в заданную тайм-зону (если tz = null => tz = tz сервера)
