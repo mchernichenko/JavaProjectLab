@@ -1,5 +1,8 @@
 package org.billing.jlab.oop;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -125,11 +128,8 @@ public class Employee extends AbstractExample implements Comparable<Employee>, C
 
     @Override
     public String toString() {
-        return super.toString()
-                + getClass().getName() + "{" +
-                "hireDay=" + hireDay +
-                ", salary=" + salary +
-                '}';
+
+        return super.toString() + ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     /**
@@ -193,5 +193,10 @@ public class Employee extends AbstractExample implements Comparable<Employee>, C
         Employee cloned = (Employee) super.clone();  // здесь происходит копирование полей простых типов (salary) т.е. частичное клонирование
         cloned.hireDay = (Date) hireDay.clone(); // hireDate имеет тип Date, от реализует интерфейс Clonable поэтому просто копируетм и ссылаемя на клон hireDate в клоне Employee
         return cloned;
+    }
+
+    public static void main(String[] args) {
+        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
+        System.out.println(employee);
     }
 }
