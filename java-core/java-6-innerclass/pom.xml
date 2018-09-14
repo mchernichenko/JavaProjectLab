@@ -2,23 +2,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-<!--    <parent>
-        <artifactId>JavaProjectLab</artifactId>
-        <groupId>${myapp.groupId}</groupId>
-        <version>${myapp.version}</version>
-    </parent>-->
-
     <parent>
-        <artifactId>JavaProjectLab</artifactId>
+        <artifactId>JavaCore</artifactId>
         <groupId>org.billing.jlab</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>innerclass</artifactId>
+    <groupId>org.billing.jlab</groupId>
+    <artifactId>java-6-innerclass</artifactId>
     <packaging>jar</packaging>
-
-    <name>innerclass</name>
-    <url>http://maven.apache.org</url>
+    <version>1.0-SNAPSHOT</version>
+    <name>java-6-innerclass</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

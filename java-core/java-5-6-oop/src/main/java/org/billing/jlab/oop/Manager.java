@@ -39,19 +39,19 @@ public class Manager extends Employee {
      * сначала вызываем equals из суперкласса, и затем сравниваем поля, относящиеся только к классу Managers/
      * В данном случае считаем, что два менеджара равнозначны, если, кроме name/salary/hireDay их бонусы тоже равны.
      */
-/*    @Override
+    @Override
     public boolean equals(Object o) {
-        / определяя метод для подкласса, сначала следует вызвать одноимённый метод из суперкласса, если он конечно есть.
-        / Если поля суперкласса совпадают, можно перейтик сравнению полей подкласа
+        // определяя метод для подкласса, сначала следует вызвать одноимённый метод из суперкласса, если он конечно есть.
+        // Если поля суперкласса совпадают, можно перейтик сравнению полей подкласа
         if (!super.equals(o)) return false;
 
-        / при вызове super.equals(o) мы уже проверили, что объекты принадлежат одному классу, поэтому спокойно приводим тип
+        // при вызове super.equals(o) мы уже проверили, что объекты принадлежат одному классу, поэтому спокойно приводим тип
         Manager manager = (Manager) o;
 
         if (Double.compare(manager.bonus, bonus) != 0) return false;
 
         return true;
-    }*/
+    }
 
     @Override
     public int hashCode() {
@@ -70,5 +70,18 @@ public class Manager extends Employee {
                 + getClass().getName() + "{" + "bonus=" + bonus + '}';
     }
 
+    public static void main(String[] args) {
+        Employee employee = new Employee("Имя Чувака", 75000, "15.12.1987");
+        Manager manager = new Manager("Имя манагера", 15000, "15.11.1987");
+        Manager manager1 = new Manager("Имя манагера", 15000, "15.11.1987");
+
+        manager.setBonus(5);
+        manager1.setBonus(5);
+
+        if (manager.equals(manager1)) {
+            System.out.println("ok");
+        }
+
+    }
 }
 

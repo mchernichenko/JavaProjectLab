@@ -1,5 +1,6 @@
 package org.billing.jlab.oop;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -85,7 +86,7 @@ public class Employee extends AbstractExample implements Comparable<Employee>, C
      * Также следует обратить внимание на тип явного параметра Object!!!, если будет другой, то это будет не переопределение метода!!!
      */
     @Override
-    public final boolean equals(Object o) {  // явный параметр должен иметь тип Object!
+    public boolean equals(Object o) {  // явный параметр должен иметь тип Object!
         // 1. быстрая проверка на идентичность
         if (this == o) return true;
 
@@ -94,10 +95,10 @@ public class Employee extends AbstractExample implements Comparable<Employee>, C
 
         // 3. т.к. проверка производится средствами суперкласса, то можно использовать instanceof.
         // это позволит сравнить объекты разных типов Employee и Manager в одной иерархии наследования.
-        if (!(o instanceof Employee)) return false;
+        //if (!(o instanceof Employee)) return false;
 
         // 3. этот вариант, если сементика проверка на равнозначность может измениться в подклассе
-        //if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         // 4. теперь известно, что объект "o" относится к типу Employee, можно сделать преобразоваине типов.
         Employee employee = (Employee) o;
@@ -122,6 +123,8 @@ public class Employee extends AbstractExample implements Comparable<Employee>, C
 
         // можно объединить несколько хэш-значений
         result = Objects.hash(super.getName(), this.salary, this.hireDay);
+
+        // return HashCodeBuilder.reflectionHashCode(this);
 
         return result;
     }

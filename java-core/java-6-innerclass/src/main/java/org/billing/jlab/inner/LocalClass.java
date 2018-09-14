@@ -41,6 +41,7 @@ class TalkingClockLocal {
     // фиктивное поле, чтобы показать генерацию static boolean access$000(org.billing.jlab.inner.TalkingClockLocal);
     // прииспользовании переменной в локальном классе
     private boolean aBoolean = true;
+    private boolean beep = true;
 
     /**
      * Запуск часов с помощью локального класса.
@@ -52,8 +53,9 @@ class TalkingClockLocal {
      * Этим гарантируется, что локальная переменная и её копия, созданная в локальном классе, всегда имеют одно и тоже значение.
      *
      */
-    public void start(int interval, final boolean beep) {
+    public void start(int interval, boolean beep) {
 
+        int i = 3;
         /*
          * Локальные классы всегда объявляются без модификатора доступа. Их область действия всегда ограничена блоком, в котором он объявлен
          * Они польностью скрыты от внешнего мира и даже от класса TalkingClock. О классе знает только метод start()
@@ -73,6 +75,7 @@ class TalkingClockLocal {
                 System.out.println("(use local class) The time is " + now);
                 if (beep) Toolkit.getDefaultToolkit().beep();
                 if (aBoolean) System.out.println("ok");
+                int j = i;
             }
         }
 
