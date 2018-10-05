@@ -21,6 +21,7 @@
     <modules>
         <module>pattern-5-singleton</module>
         <module>pattern-builder</module>
+        <module>pattern-10-state</module>
     </modules>
 
     <properties>
