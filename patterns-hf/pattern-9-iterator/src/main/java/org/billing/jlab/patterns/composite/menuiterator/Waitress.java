@@ -21,9 +21,9 @@ public class Waitress {
 			MenuComponent menuComponent = 
 					(MenuComponent)iterator.next();
 			try {
-				if (menuComponent.isVegetarian()) {
+			//	if (menuComponent.isVegetarian()) {
 					menuComponent.print();
-				}
+			//	}
 			} catch (UnsupportedOperationException e) {}
 		}
 	}

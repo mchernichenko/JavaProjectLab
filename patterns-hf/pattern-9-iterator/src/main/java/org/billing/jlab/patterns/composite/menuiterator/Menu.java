@@ -38,8 +38,7 @@ public class Menu extends MenuComponent {
 	public Iterator createIterator() {
 		return new CompositeIterator(menuComponents.iterator());
 	}
- 
- 
+
 	public void print() {
 		System.out.print("\n" + getName());
 		System.out.println(", " + getDescription());

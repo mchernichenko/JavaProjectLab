@@ -3,6 +3,9 @@ package org.billing.jlab.oop;
 import org.billing.jlab.oop.pak2.B;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Рассматривается:
@@ -80,8 +83,16 @@ public class App
             System.out.println(employee1.getSalary());
         }
 
+        List<Employee> list = Arrays.asList(e1);
+      //  list.sort(Comparator.comparing(Employee::getName));
+  //      Comparator<Employee> c = (v1, v2) -> v1.getName().compareTo(v2.getName());
+        list.sort(Comparator.comparing(v -> v.getName()));
+        list.sort((v1, v2) -> v1.getName().compareTo(v2.getName()));
+        System.out.println("qqqqqqqqqqqqqqqq " + list);
+
+
         // Пример работы c protected методами и модификаторами по-умолчанию
-        testProtectMethod();
+     //   testProtectMethod();
 
         // клонирование объектов
         Employee ee = new Employee("Имя1", 76000, "15.12.1990");

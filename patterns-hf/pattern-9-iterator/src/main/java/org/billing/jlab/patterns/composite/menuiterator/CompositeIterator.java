@@ -4,8 +4,8 @@ import java.util.*;
   
 public class CompositeIterator implements Iterator {
 	private Stack stack = new Stack();
-//	private Deque<Iterator> stack1 = new ArrayDeque<Iterator>();
-   
+	private Queue<Iterator> stack1 = new ArrayDeque<>();
+
 	public CompositeIterator(Iterator iterator) {
 		stack.push(iterator);
 	}

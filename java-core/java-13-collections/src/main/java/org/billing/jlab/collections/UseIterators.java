@@ -44,17 +44,7 @@ public class UseIterators {
         listA.removeAll(listB);
         System.out.println(listA);
 
-        Collection<String> collectionA = new LinkedList<>();
-        Queue<String> queueA = new LinkedList<>();
-
-        Deque<String> dequeA = new ArrayDeque<>();
-
-
-        collectionA.add("aaa");
-        queueA.add(null);
-
-        System.out.println(collectionA);
-        System.out.println(queueA);
+        listA.forEach(value-> System.out.println(value));
     }
 
 }
