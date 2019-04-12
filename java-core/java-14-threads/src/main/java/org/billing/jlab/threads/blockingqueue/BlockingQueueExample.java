@@ -1,4 +1,4 @@
-package org.billing.jlab.threads;
+package org.billing.jlab.threads.blockingqueue;
 
 import java.util.concurrent.*;
  

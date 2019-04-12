@@ -1,4 +1,4 @@
-package org.billing.jlab.threads;
+package org.billing.jlab.threads.blockingqueue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class SynchQueuesExample
 
 	private void printMessage(final String templ)
 	{
-		String text = String.format(templ, Thread .currentThread().getName(), sdf.format(new Date()));
+		String text = String.format(templ, Thread.currentThread().getName(), sdf.format(new Date()));
 		System.out.println(text);
 	}
 
