@@ -24,6 +24,8 @@
         <module>java-5-6-oop</module>
         <module>java-6-innerclass</module>
         <module>xo</module>
+        <module>java-agent</module>
+        <module>java-5-reflection</module>
     </modules>
 
     <properties>

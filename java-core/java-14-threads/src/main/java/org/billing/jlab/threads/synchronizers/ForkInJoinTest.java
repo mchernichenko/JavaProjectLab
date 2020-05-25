@@ -2,13 +2,15 @@ package org.billing.jlab.threads.synchronizers;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
 import java.util.concurrent.RecursiveTask;
 
 public class ForkInJoinTest {
 
-    static long numOfOperation =  20_000_000_000L;
-    static int numOfThread = 8;// Runtime.getRuntime().availableProcessors(); // количество ядер
+    static long numOfOperation =  10_000_000_000L;
+    static int numOfThread = Runtime.getRuntime().availableProcessors(); // количество ядер
 
     public static void main(String[] args) {
 
@@ -43,7 +45,7 @@ public class ForkInJoinTest {
           //  System.out.println("Складываем числа с " + from + " до " + to);
             long sum = 0;
             for (long i = from; i <= to; i++) {
-                sum += i;
+                sum += i; //new Random().nextInt(100);
             }
             return sum;
         }
@@ -67,12 +69,18 @@ public class ForkInJoinTest {
                 MyFork firstHalf = new MyFork(from, middle);
                 MyFork secondHalf = new MyFork((middle + 1), to);
 
-                firstHalf.fork();
-                secondHalf.fork();
+                // 1-й вариант
+               /* invokeAll(firstHalf, secondHalf);
+                long result = secondHalf.join() + firstHalf.join();*/
 
-                long result = 0;
-                result += secondHalf.join();
-                result += firstHalf.join();
+                // 2-й вариант
+                /*firstHalf.fork();
+                secondHalf.fork();
+                long result = secondHalf.join() + firstHalf.join();*/
+
+                // 3-й вариант
+                firstHalf.fork();
+                long result = secondHalf.compute() + firstHalf.join();
 
                 return result;
             }

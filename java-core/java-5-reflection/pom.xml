@@ -3,15 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>JavaProjectLab</artifactId>
+        <artifactId>JavaCore</artifactId>
         <groupId>org.billing.jlab</groupId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>reflection</artifactId>
+    <artifactId>java-5-reflection</artifactId>
     <packaging>jar</packaging>
 
-    <name>reflection</name>
+    <name>java-5-reflection</name>
     <url>http://maven.apache.org</url>
     
     <properties>
