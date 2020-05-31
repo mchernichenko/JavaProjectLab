@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Демонстрация применения прокси-классов, реализующие произвольные интерфейсы
+ * ЭТО ЧИТАТЬ ПОСЛЕ pattern-11-proxy
  *
  * <a href="http://www.ibm.com/developerworks/ru/library/j-jtp08305/">Декорирование при помощи динамического прокси</a>
  * <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html">Dynamic Proxy Classes</a>
@@ -15,7 +16,7 @@ import java.util.Random;
  * Используется для:
  * - Переадресация вызовов методов на удалённый сервер.
  * - Связывание событий GUI с определёнными действиями в программе
- * - Отслеживание вызовов методов при отдалке, которое рассматривается в примере
+ * - Отслеживание вызовов методов при отладке, которое рассматривается в примере
  *
  */
 public class ProxyTest {

@@ -70,7 +70,7 @@
         <maven-dependency-plugin.version>3.0.0</maven-dependency-plugin.version>
         <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
         <maven-resources-plugin.version>3.0.2</maven-resources-plugin.version>
-        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
         <maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
 
         <sonar-maven-plugin.version>3.0.1</sonar-maven-plugin.version>
@@ -201,19 +201,19 @@
 
     <!--Using Alternative Output Directory для javadoc
         работает только при запуске при запуске ЖЦ site. Путь автоматичечки берется из ${project.reporting.outputDirectory}  -->
-    <reporting>
+    <!--<reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
+                <version>3.2.0</version>
                 <configuration>
-                    <!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
+                    &lt;!&ndash;<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>&ndash;&gt;
                     <destDir>myapidocs</destDir>
                 </configuration>
             </plugin>
         </plugins>
-    </reporting>
+    </reporting>-->
 
     <!--  Тэг <build> - располагается сразу после перечисления зависимостей проекта
           Этот раздел содержит информацию по самой сборке: где находятся исходные файлы, где ресурсы, какие ПЛАГИНЫ используются и их настроики.
@@ -430,6 +430,31 @@
                             </executions>
                         </plugin>
             -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.5.201505241946</version>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-help-plugin</artifactId>
+                <version>3.2.0</version>
+            </plugin>
         </plugins>
     </build>
 

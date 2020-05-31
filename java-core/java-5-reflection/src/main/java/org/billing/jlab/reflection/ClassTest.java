@@ -44,7 +44,7 @@ public class ClassTest {
         Class aClass2 = Double[].class;
         Class dateClass = Date.class;
 
-        System.out.println("======= Получение информации о классе Emploeee ======= ");
+        System.out.println("======= Получение информации о классе Emploee ======= ");
         ReflectionTest.printClass("org.billing.jlab.oop.Employee");
 
         System.out.println("===========Сравнение объектов и создание объектов через рефлексию=======================");
