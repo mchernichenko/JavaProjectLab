@@ -1,4 +1,4 @@
-package com.nexign.corona;
+package com.nexign.buttons3;
 
 import static org.junit.Assert.assertTrue;
 
