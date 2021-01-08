@@ -34,7 +34,7 @@ public class ProxyTestEasyExample {
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
             System.out.println(args); // "qwerty_1"
-            return method.invoke(target, args); // method - compareTo, target - исходный обект "qwerty", т.е. по сути вызывается "qwerty".compareTo("qwerty_1")
+            return method.invoke(target, args); // method - compareTo, target - исходный объект "qwerty", т.е. по сути вызывается "qwerty".compareTo("qwerty_1")
         }
     }
 }

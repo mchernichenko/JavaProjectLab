@@ -91,7 +91,7 @@ class TraceHandler implements InvocationHandler {
         }
         System.out.println(")");
 
-        // вызов контретного метода, в данном случае конкретный объект Integer сравнивается к key, т.е. target.compаreTo(key)
+        // вызов конкретного метода, в данном случае конкретный объект Integer сравнивается к key, т.е. target.compаreTo(key)
         return method.invoke(target, args);
     }
 }
