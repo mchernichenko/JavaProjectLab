@@ -1,4 +1,4 @@
-package org.billing.jlab.webproject1.serlvet;
+package mch.code.web.servlettomcat;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

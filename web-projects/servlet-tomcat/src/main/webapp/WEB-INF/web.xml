@@ -12,7 +12,7 @@
    -->
   <servlet>
     <servlet-name>HelloWorld</servlet-name>
-    <servlet-class>org.billing.jlab.webproject1.serlvet.HelloServlet</servlet-class>
+    <servlet-class>mch.code.web.servlettomcat.HelloServlet</servlet-class>
   </servlet>
 
   <!-- указываем имя сервлета (идентификатор) который хотим замапить на определенный URL.
