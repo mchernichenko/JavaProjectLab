@@ -3,12 +3,12 @@ package mch.code.web.servlettomcat;
 import java.util.Date;
 
 public class User {
-    private Integer id;
+    private Integer idCounter; // количество созданных пользователей
     private String name;
     private Date birthday;
 
     public Integer getId() {
-        return id;
+        return idCounter;
     }
 
     public String getName() {
@@ -27,10 +27,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    public void setId(Integer id) {
+        this.idCounter = id;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "id=" + idCounter +
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 '}';
