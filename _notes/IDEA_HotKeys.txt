@@ -3,6 +3,7 @@ C:\>assoc .jar=jarfile
 C:\>ftype jarfile="C:\path\to\your\javaw.exe" -jar "%1" %*
 
 Просмотр JAR в ТotalСommander: На архиве нажать Ctrl-PgDown.
+Просмотр WAR в ТotalСommander: На архиве нажать Shift-Enter.
 
 Рекомендации по использованию
 ====================================== Интерфейс =========================================
